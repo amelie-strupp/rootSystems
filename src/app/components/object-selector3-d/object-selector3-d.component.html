@@ -1,19 +1,36 @@
 <div id="object-selector-panel">
     <h3 id="heading">Highlight</h3>
     <div id="type-selection-container">
-    <div class="selection-item">
+    <div class="switch-mode-item">
         <input type="checkbox" (click)="switchHighlightMode(RootSystemColorMode.base)">
-        <p class="item-text">Base</p>
+        <p class="switch-mode-text">Base</p>
     </div>
-    <div class="selection-item">
+    <div class="switch-mode-item">
         <input type="checkbox" (click)="switchHighlightMode(RootSystemColorMode.positiveRoots)">
-        <p class="item-text">Positive roots</p>
+        <p class="switch-mode-text">Positive roots</p>
     </div>
     </div>
     <div class="divider"></div>
     <h4 class="subsection-heading">Highlight specific object</h4>
-    <div class="selection-item">
-        <input type="checkbox" (click)="highlightRoot()">
-        <p class="item-text">Highlight Root</p>
+    <div id="highlight-table">
+        <div id="highlight-table-header">
+        <p></p>
+        <p>Root (+,-)</p>
+        <p>Hyperplanes</p>
     </div>
+
+    <div class="object-highlight-item" *ngFor="let root of this.getRoots(); let i = index">
+        <div class="root-vector">
+            <p class="root-vector-text">{{root.name}}</p>
+            <div class="root-vector-background" [style.background-color]="getColor(i)"></div>
+        </div>
+        <div class="highlight-toggle">
+            <input type="checkbox" (click)="toggleRootHighlight(root)">
+        </div>
+
+        <div class="hyperplane-toggle">
+            <input type="checkbox" (click)="toggleHyperplane(root)">
+        </div>
+    </div>
+</div>
 </div>

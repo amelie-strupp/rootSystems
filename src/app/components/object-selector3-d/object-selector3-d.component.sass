@@ -2,7 +2,7 @@
     position: absolute
     right: 16px
     bottom: 16px
-    height: 300px
+    height: 400px
     width: 400px
     padding: 16px
     box-sizing: border-box
@@ -27,22 +27,74 @@
         padding: 0
         color: var(--text-light)
     .subsection-heading
-        
+        font-size: 14px
+        font-weight: 600
+        margin: 0
+        padding: 0
+        color: var(--text-medium)
     #type-selection-container
         padding: 12px 0
         display: grid
         grid-template-rows: max-content
         row-gap: 8px
-        .selection-item
+        .switch-mode-item
             display: grid
             grid-template-columns: max-content 1fr
-            .item-text
-                font-size: 14px
+            .switch-mode-text
+                font-size: 13px
                 color: var(--text-medium)
                 font-weight: 600
                 margin: 0
                 padding: 0
     .divider
         height: 1px
+        margin: 4px 0 12px 0px
         width: 100%
         background-color: var(--purple-light)
+    #highlight-table-header
+        margin-top: 8px
+        display: grid
+        grid-template-columns: 70px 64px 128px
+        justify-items: center
+
+        p
+            color: var(--text-light)
+            padding: 0
+            margin: 0
+            font-size: 13px
+            font-weight: 600
+    #highlight-table
+        display: grid
+        grid-template-rows: repeat(8, max-content)
+        row-gap: 4px
+        grid-auto-flow: column
+    .object-highlight-item
+        display: grid
+        grid-template-columns: 70px 64px 128px
+        .root-vector
+            position: relative
+            height: max-content
+            width: 64px
+            display: grid
+            justify-content: center
+            .root-vector-text
+                display: block
+                position: relative
+                z-index: 1
+                font-size: 14px
+                padding: 4px 4px
+                margin: 0
+                cursor: pointer
+                font-weight: 500
+            .root-vector-background
+                opacity: 0.6
+                position: absolute
+                top: 0
+                left: 0
+                height: 100%
+                width: 100%
+                border-radius: 4px
+        .highlight-toggle
+            justify-self: center
+        .hyperplane-toggle
+            justify-self: center

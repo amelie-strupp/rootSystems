@@ -23,7 +23,10 @@ export class RootSystemPainter3D implements Painter3D {
     private sceneManager: SceneManagerService
   ) {
     this.rootSystem = rootSystemService.rootSystem;
-    this.rootSystemService.repaintEvent.subscribe(() => {
+    this.rootSystemService.rootSystemChangeEvent.subscribe(() => {
+      this.rootWithVisibleHyperplanes = [];
+      this.highlightedRoots = [];
+
       this.repaint();
     });
   }
@@ -52,8 +55,25 @@ export class RootSystemPainter3D implements Painter3D {
     this.highlightedRoots.push(root);
     this.repaint();
   }
+  removeHighlightFromRoot(root: Root3D){
+    this.highlightedRoots = this.highlightedRoots.filter((other)=>!other.equal(root))
+    this.repaint();
+  }
+  showHyperplaneToRoot(root: Root3D){
+    this.rootWithVisibleHyperplanes.push(root);
+    this.repaint();
+  }
+  hideHyperplaneToRoot(root: Root3D){
+    this.rootWithVisibleHyperplanes = this.rootWithVisibleHyperplanes.filter((other)=>!other.equal(root))
+    this.repaint();
+
+  }
   rootIsHighlighted(root: Root3D){
     return this.highlightedRoots.some((highlightedRoot)=>highlightedRoot.equal(root));
+  }
+  hyperplaneToRootIsVisible(root: Root3D){
+    return this.rootWithVisibleHyperplanes.some((other)=>other.equal(root));
+
   }
   paintCenter() {
     this.painter.drawSphere(
@@ -118,15 +138,17 @@ export class RootSystemPainter3D implements Painter3D {
 
   paintHyperplanes() {
     let i = 0;
-    const colorSystem = colors[this.rootSystem.type];
+    const colorSystem = rootSystemColors[this.rootSystem.type];
     for (let root of this.rootSystem.getPositiveRoots()) {
       let hyperplane = root.getHyperplane();
       if(this.colorMode == RootSystemColorMode.highlight){
               if(this.rootIsHighlighted(root)){
                 hyperplane.color = colorSystem[i];
-              } 
+              }
+              if(this.hyperplaneToRootIsVisible(root)){
+                this.painter.drawPlane(hyperplane);
+              }
       }
-      this.painter.drawPlane(hyperplane);
       i+=1;
     }
   }
@@ -149,7 +171,7 @@ export class RootSystemPainter3D implements Painter3D {
     }
   }
   paintRootWithHighlight(root: Root3D, index: number){
-    const colorSystem = colors[this.rootSystem.type];
+    const colorSystem = rootSystemColors[this.rootSystem.type];
     let color = Colors.white;
     if(this.rootIsHighlighted(root) || this.rootIsHighlighted(root.getNegative())){
       color = colorSystem[index];
@@ -232,7 +254,7 @@ export class RootSystemPainter3D implements Painter3D {
   }
 }
 
-const colors = {
+export const rootSystemColors = {
   A3: [
     Colors.red,
     Colors.orange,
@@ -250,29 +272,26 @@ const colors = {
     Colors.blue,
   ],
   C3: [
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.turqouis,
-    Colors.green,
-    Colors.blue,
-    Colors.azul,
-    Colors.purple,
-    Colors.pink,
-
-  ],
-  B3: [
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.turqouis,
-    Colors.green,
-    Colors.blue,
-    Colors.azul,
-    Colors.purple,
     Colors.purpleDark,
     Colors.pink,
-
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    Colors.turqouis,
+    Colors.green,
+    Colors.blue,
+    Colors.azulDark,
+  ],
+  B3: [
+    Colors.purpleDark,
+    Colors.pink,
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    Colors.turqouis,
+    Colors.green,
+    Colors.blue,
+    Colors.azulDark,
   ],
 };
 export enum RootSystemColorMode {

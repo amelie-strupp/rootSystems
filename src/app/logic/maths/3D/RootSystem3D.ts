@@ -10,22 +10,24 @@ export class Root3D{
     length: number;
     isSimple: boolean = false;
     isPositive: boolean = true;
+    name: string;
     constructor(d:
         {
             vector: Point3D,
             isSimple: boolean,
-            isPositive?: boolean
+            isPositive?: boolean,
         }){
         this.direction = d.vector.normalized();
         this.length = d.vector.length();
         this.isSimple = d.isSimple;
+        this.name = `(${this.getVector().x} ${this.getVector().y} ${this.getVector().z})`;
         this.isPositive = d.isPositive != undefined ? d.isPositive : true;
     }
     getNegative(){
         return new Root3D({
             vector: this.direction.getNegative().stretchedBy(this.length),
             isSimple: false,
-            isPositive: !this.isPositive
+            isPositive: !this.isPositive,
         })
     }
     plus(other: Root3D){
@@ -33,13 +35,13 @@ export class Root3D{
             this.direction.y*this.length + other.direction.y*other.length, this.direction.z*this.length + other.direction.z*other.length);
         return new Root3D({
             vector: newPoint,
-            isSimple: false
+            isSimple: false,
         })
     }
     times(number: number){
         return new Root3D({
             vector: this.direction.normalized().stretchedBy(this.length*number),
-            isSimple: false
+            isSimple: false,
         })
     }
     equal(other: Root3D){

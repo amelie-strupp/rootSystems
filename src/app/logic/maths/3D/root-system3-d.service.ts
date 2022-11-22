@@ -8,11 +8,11 @@ import RootSystem3D from './RootSystem3D';
 })
 export class RootSystem3DService {
   rootSystem: RootSystem3D = rootSystems3D.A3;
-  repaintEvent: Subject<void> = new Subject();
+  rootSystemChangeEvent: Subject<void> = new Subject();
 
   constructor() { }
   switchRootSystem(rootSystem: RootSystem3D){
     this.rootSystem = rootSystem;
-    this.repaintEvent.next();
+    this.rootSystemChangeEvent.next();
   }
 }

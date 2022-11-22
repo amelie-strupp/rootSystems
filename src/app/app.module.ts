@@ -10,7 +10,6 @@ import { SwitchRootSystemPanelComponent } from './components/switch-root-system-
 import { RootSystems3DComponent } from './components/root-systems3-d/root-systems3-d.component';
 import { SwitchRootSystem3DComponent } from './components/switch-root-system3-d/switch-root-system3-d.component';
 import { ObjectSelector3DComponent } from './components/object-selector3-d/object-selector3-d.component';
-import {MatCheckboxModule} from '@angular/material/checkbox'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +24,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
