@@ -7,18 +7,25 @@ import { RootSystems2DComponent } from './components/root-systems2-d/root-system
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { TransformPanelComponent } from './components/transform-panel/transform-panel.component';
 import { SwitchRootSystemPanelComponent } from './components/switch-root-system-panel/switch-root-system-panel.component';
-
+import { RootSystems3DComponent } from './components/root-systems3-d/root-systems3-d.component';
+import { SwitchRootSystem3DComponent } from './components/switch-root-system3-d/switch-root-system3-d.component';
+import { ObjectSelector3DComponent } from './components/object-selector3-d/object-selector3-d.component';
+import {MatCheckboxModule} from '@angular/material/checkbox'; 
 @NgModule({
   declarations: [
     AppComponent,
     RootSystems2DComponent,
     HomepageComponent,
     TransformPanelComponent,
-    SwitchRootSystemPanelComponent
+    SwitchRootSystemPanelComponent,
+    RootSystems3DComponent,
+    SwitchRootSystem3DComponent,
+    ObjectSelector3DComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
