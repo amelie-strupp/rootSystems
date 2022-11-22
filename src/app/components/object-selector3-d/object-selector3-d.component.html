@@ -1,0 +1,19 @@
+<div id="object-selector-panel">
+    <h3 id="heading">Highlight</h3>
+    <div id="type-selection-container">
+    <div class="selection-item">
+        <input type="checkbox" (click)="switchHighlightMode(RootSystemColorMode.base)">
+        <p class="item-text">Base</p>
+    </div>
+    <div class="selection-item">
+        <input type="checkbox" (click)="switchHighlightMode(RootSystemColorMode.positiveRoots)">
+        <p class="item-text">Positive roots</p>
+    </div>
+    </div>
+    <div class="divider"></div>
+    <h4 class="subsection-heading"></h4>
+    <div class="selection-item">
+        <input type="checkbox" (click)="highlightRoot()">
+        <p class="item-text">Highlight Root</p>
+    </div>
+</div>

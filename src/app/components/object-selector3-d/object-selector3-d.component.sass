@@ -1,0 +1,46 @@
+#object-selector-panel
+    position: absolute
+    right: 16px
+    bottom: 16px
+    height: 300px
+    width: 400px
+    padding: 16px
+    box-sizing: border-box
+    background-color: white
+    border-radius: 8px
+    shadow: var(--light-shadow)
+    display: grid
+    align-content: flex-start
+    justify-content: stretch
+    align-items: flex-start
+    #heading
+        font-size: 16px
+        font-weight: 700
+        margin: 0
+        padding: 0
+        color: var(--text-dark)
+        margin-bottom: 4px
+    .subheading
+        font-size: 13px
+        font-weight: 600
+        margin: 0
+        padding: 0
+        color: var(--text-light)
+    #type-selection-container
+        padding: 12px 0
+        display: grid
+        grid-template-rows: max-content
+        row-gap: 8px
+        .selection-item
+            display: grid
+            grid-template-columns: max-content 1fr
+            .item-text
+                font-size: 14px
+                color: var(--text-medium)
+                font-weight: 600
+                margin: 0
+                padding: 0
+    .divider
+        height: 1px
+        width: 100%
+        background-color: var(--purple-light)
