@@ -11,11 +11,16 @@ export class RootSystemService {
   repaintEvent: Subject<void> = new Subject();
   constructor() { }
   switchRootSystem(rootSystem: RootSystem2D){
+    if(rootSystem.type != this.rootSystem.type){
     this.rootSystem = rootSystem
     this.repaintEvent.next();
+    }
   }
   getRoots(){
     return this.rootSystem.getAllRoots();
+  }
+  getPositiveRoots(){
+    return this.rootSystem.getPositiveRoots();
   }
   getWeylChambers(){
     return this.rootSystem.getAllWeylChambers();
@@ -25,5 +30,8 @@ export class RootSystemService {
   }
   getType(){
     return this.rootSystem.type;
+  }
+  getBase(){
+    return this.rootSystem.getBase();
   }
 }

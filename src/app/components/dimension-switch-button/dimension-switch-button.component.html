@@ -1,0 +1,13 @@
+<div id="dimension-button">
+    <div class="dimension-item"
+    (click)="switchToDimension('2D')"
+    [class.selected]="selectedDimension == '2D'">
+        <p>2D</p>
+    </div>
+    <div class="dimension-item"
+    (click)="switchToDimension('3D')"
+    
+    [class.selected]="selectedDimension == '3D'">
+        <p>3D</p>
+    </div>
+</div>

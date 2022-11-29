@@ -8,6 +8,7 @@ import { CoordinateSystemService } from "src/app/services/2D/coordinate-system.s
 import { PaintLayer, PaintService } from "src/app/services/2D/paint.service";
 import { Colors } from "../../values/colors";
 import Painter from "./Painter.interface";
+import { RootSystemTransformer2DService } from "src/app/services/2D/root-system-transformer2-d.service";
 
 @Injectable({
     providedIn: 'root',
@@ -19,12 +20,16 @@ export default class WeylChamberPainter implements Painter{
     constructor(
         private rootSystemService: RootSystemService,
         private painter: PaintService,
-        private coord: CoordinateSystemService
+        private coord: CoordinateSystemService,
+        private transformService: RootSystemTransformer2DService
     ){
 
     }
     paint(layer?: PaintLayer){
-        const weylChamber = this.rootSystemService.getFundamentalWeylChamber();
+        let weylChamber = this.rootSystemService.getFundamentalWeylChamber();
+        if(this.transformService.transformationAppliedTo('WEYL_CHAMBERS')){
+            weylChamber = weylChamber.getTransformedWeylChamber(this.transformService.currentTranformation)
+        }
         this.weylChamber = this.paintWeylChamber(weylChamber);
         this.paintLayer = layer ?? PaintLayer.default;
     }

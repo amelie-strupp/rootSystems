@@ -13,6 +13,7 @@ export enum RootSystems2D{
 
 const A1 = new RootSystem2D(
     RootSystems2D.A1,
+    [1],
   [
     new Root({
       angle: 0,
@@ -24,6 +25,7 @@ const A1 = new RootSystem2D(
 );
 const A1_A1 = new RootSystem2D(
     RootSystems2D.A1_A1,
+    [1,2,2,1],
   [
     new Root({
       angle: 0,
@@ -40,6 +42,7 @@ const A1_A1 = new RootSystem2D(
 );
 const D2 = new RootSystem2D(
     RootSystems2D.D2,
+    [1,2,2,1],
     [
       new Root({
         angle: Math.PI/4,
@@ -56,19 +59,20 @@ const D2 = new RootSystem2D(
   );
 const A2 = new RootSystem2D(
     RootSystems2D.A2,
+    [1,3,3,1],
   [
     new Root({
-      angle: Math.PI / 2,
+      angle: Math.PI / 2 + Math.PI/6,
       length: 1,
       isSimple: true,
     }),
     new Root({
-      angle: Math.PI / 2 - Math.PI / 3,
+      angle: Math.PI / 2 - Math.PI / 3+ Math.PI/6,
       length: 1,
       isSimple: false,
     }),
     new Root({
-      angle: Math.PI / 2 + Math.PI / 3 + Math.PI,
+      angle: Math.PI / 2 + Math.PI / 3 + Math.PI+ Math.PI/6,
       length: 1,
       isSimple: true,
     }),
@@ -77,6 +81,7 @@ const A2 = new RootSystem2D(
 );
 const B2 = new RootSystem2D(
     RootSystems2D.B2,
+    [1,4,4,1],
     [
       new Root({
         angle: 0,
@@ -103,6 +108,7 @@ const B2 = new RootSystem2D(
   );
 const C2 = new RootSystem2D(
     RootSystems2D.C2,
+    [1,4,4,1],
     [
       new Root({
         angle: 0,
@@ -129,11 +135,12 @@ const C2 = new RootSystem2D(
   );
 const G2 = new RootSystem2D(
     RootSystems2D.G2,
+    [1,6,6,1],
     [
     new Root({
         angle: 0,
         length: 1,
-        isSimple: false,
+        isSimple: true,
       }),
     new Root({
         angle: Math.PI/6,
@@ -148,17 +155,17 @@ const G2 = new RootSystem2D(
     new Root({
         angle: Math.PI/2,
         length: Math.sqrt(3),
-        isSimple: true,
+        isSimple: false,
     }),
     new Root({
-        angle: Math.PI/6 + Math.PI/2 + Math.PI,
+        angle: Math.PI/6 + Math.PI/2,
         length: 1,
-        isSimple: true,
+        isSimple: false,
     }),
     new Root({
         angle: 2*Math.PI/6 + Math.PI/2,
         length: Math.sqrt(3),
-        isSimple: false,
+        isSimple: true,
     }),
 ],
 Math.PI/6)

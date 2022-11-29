@@ -8,6 +8,7 @@ import { RootSystemService } from 'src/app/logic/maths/2D/root-system.service';
 import RootSystem2D, { Root } from 'src/app/logic/maths/2D/RootSystem';
 import { Canvas, CanvasService } from 'src/app/services/2D/canvas.service';
 import { PaintLayer } from 'src/app/services/2D/paint.service';
+import { RootSystemTransformer2DService } from 'src/app/services/2D/root-system-transformer2-d.service';
 
 @Component({
   selector: 'app-root-systems2-d',
@@ -31,11 +32,18 @@ export class RootSystems2DComponent implements OnInit {
     private gridPainter: GridPainter,
     private rootSystemPainter: RootSystemPainter,
     private weylChamberPainter: WeylChamberPainter,
-    private rootSystemService: RootSystemService
+    private rootSystemService: RootSystemService,
+    private transformService: RootSystemTransformer2DService
     ) {
       rootSystemService.repaintEvent.subscribe(() => {
         this.repaintObjects();
       });
+      rootSystemPainter.repaintEvent.subscribe(() => {
+        this.repaintObjects();
+      })
+      this.transformService.transformationChanged.subscribe(() => {
+        this.repaintObjects();
+      })
   }
 
   ngOnInit(): void {
@@ -76,7 +84,7 @@ export class RootSystems2DComponent implements OnInit {
     const canvas = new Canvas({
       height: canvasHeight,
       width: canvasWidth,
-      pixelsInOneUnit: 150
+      pixelsInOneUnit: 130
     });
     this.canvas.initializeCanvas(canvas);
     this.canvas.initializePaintLayers(layers);

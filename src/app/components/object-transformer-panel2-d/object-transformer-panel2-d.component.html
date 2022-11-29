@@ -1,0 +1,150 @@
+<div id="object-selector-panel">
+  <h3 id="heading">Transform</h3>
+  <button id="expand-button">
+    <mat-icon
+      [fontIcon]="isExpanded ? 'expand_more' : 'expand_less'"
+      (click)="toggleExpand()"
+    ></mat-icon>
+  </button>
+  <div id="inner-content" [@expanded]="isExpanded">
+    <div id="more-information" (click)="toggleMoreInformation()">
+      <div id="more-information-header" >
+      <h5 id="more-information-text">More Information</h5>
+
+      <button id="more-information-toggle-button">
+      <mat-icon
+          [fontIcon]="moreInformationShown ? 'expand_less' : 'expand_more'"
+        ></mat-icon>
+      </button>
+      </div>
+      <div id="content-wrapper">
+      <div id="information-container"  [@expanded]="moreInformationShown">
+        <div class="information-item">
+        <p class="information-item-text">Coxeter Matrix</p>
+        <div 
+        [ngClass]="{
+          'matrix3': getCoxeterMatrix().length == 9,
+          'matrix2': getCoxeterMatrix().length == 4,
+          'matrix1': getCoxeterMatrix().length == 1
+        }"
+        >
+          <div class="matrix-bracket-left">[</div>
+          <p *ngFor="let element of getCoxeterMatrix()">{{element}}</p>
+          
+          <div class="matrix-bracket-right">]</div>
+        </div>
+        </div>
+        <!-- <div class="information-item">
+          <p class="information-item-text">Schläfli Matrix</p>
+          <div class="matrix3">
+            <div class="matrix-bracket-left">[</div>
+            <p>1</p>
+            <p>2</p>
+            <p>3</p>
+            <p>4</p>
+            <p>5</p>
+            <p>6</p>
+            <p>7</p>
+            <p>8</p>
+            <p>9</p>
+            <div class="matrix-bracket-right">]</div>
+          </div>
+          </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+    <p class="description-text">Have Weyl Group act on:</p>
+    <div id="action-on-table">
+      <div class="action-object">
+        <mat-checkbox
+          [checked]="transformationAppliedTo('ROOTS')"
+          (click)="toggleObjectActedOn('ROOTS')"
+        ></mat-checkbox>
+        <p class="action-object-text">Roots</p>
+      </div>
+      <div class="action-object">
+        <mat-checkbox
+          [checked]="transformationAppliedTo('WEYL_CHAMBERS')"
+          (click)="toggleObjectActedOn('WEYL_CHAMBERS')"
+        ></mat-checkbox>
+        <p class="action-object-text">Weyl Chambers</p>
+      </div>
+      <div class="action-object">
+        <mat-checkbox
+        (click)="toggleObjectActedOn('HYPERPLANES')"
+          [checked]="transformationAppliedTo('HYPERPLANES')"
+        ></mat-checkbox>
+        <p class="action-object-text">Hyperplanes</p>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <p class="description-text">Mirror at hyperplane orthogonal to root:</p>
+    <p class="sub-description-text">Base:</p>
+    <div class="mirror-root-container">
+      <div
+        class="mirror-root-item"
+        *ngFor="let root of getBase()"
+        (click)="mirrorWithRoot(root)"
+      >
+        <div class="root-vector">
+          <p class="root-vector-text">{{ root.name }}</p>
+          <div
+            class="root-vector-background"
+            [style.background-color]="getColor(root)"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <p class="sub-description-text">Other positive roots:</p>
+
+    <div class="mirror-root-container">
+      <div
+        class="mirror-root-item"
+        *ngFor="let root of getPositiveRootsWithoutBase()"
+        (click)="mirrorWithRoot(root)"
+      >
+        <div class="root-vector">
+          <p class="root-vector-text">{{ root.name }}</p>
+          <div
+            class="root-vector-background"
+            [style.background-color]="getColor(root)"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <p class="description-text">Applied relections:</p>
+    <div id="applied-mirrorings-container">
+      <p
+        id="reflection-placeholder-text"
+        *ngIf="rootsToAppliedMirrorings.length == 0"
+      >
+        (None applied)
+      </p>
+      <div id="mirrorings">
+        <div
+          class="mirror-root-item"
+          *ngFor="let root of rootsToAppliedMirrorings"
+          (click)="mirrorWithRoot(root)"
+        >
+          <div class="root-vector">
+            <p class="root-vector-text">{{ root.name }}</p>
+            <div
+              class="root-vector-background"
+              [style.background-color]="getColor(root)"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <p id="length-text" *ngIf="rootsToAppliedMirrorings.length != 0">
+        (Length: {{ getLength() }})
+      </p>
+
+      <div id="reset-button" (click)="resetTransformations()">Reset</div>
+    </div>
+  </div>
+</div>

@@ -25,10 +25,10 @@ export class Paint3dService {
     } );
     const sphere = new THREE.Mesh( geometry, material );
     sphere.position.set(sphereData.center.x*this.scaleFactor, sphereData.center.y*this.scaleFactor, sphereData.center.z*this.scaleFactor);
-    this.sceneManager.scene.add( sphere );
+    this.sceneManager.addToRootGroup( sphere );
   }
   
-  drawLine(lineData: Line3D){
+  drawLine(lineData: Line3D, group: 'ROOT'|'HYPERPLANE'|'WEYL_CHAMBER' = 'ROOT'){
     const directionVector = new Vector3(
       lineData.end.x - lineData.start.x,
       lineData.end.y - lineData.start.y,
@@ -45,9 +45,16 @@ export class Paint3dService {
     // cylinder.position.set(0-directionVector.x, 0-directionVector.y, 0-directionVector.z)
     cylinder.position.copy(directionVector.clone().multiplyScalar(0.5*this.scaleFactor));
     // cylinder.position.set(lineData.start.x*this.scaleFactor, lineData.start.y*this.scaleFactor, lineData.start.z*this.scaleFactor)
-    this.sceneManager.scene.add( cylinder );
+    if(group == 'HYPERPLANE'){
+      this.sceneManager.addToHyperplaneGroup(cylinder);
+
+      }else if(group == 'WEYL_CHAMBER'){
+        this.sceneManager.addToWeylChamberGroup(cylinder);
+      }else{
+        this.sceneManager.addToRootGroup(cylinder);
+      }
   }
-  drawPlane(hyperplane: Hyperplane3D){
+  drawPlane(hyperplane: Hyperplane3D, group: 'ROOT'|'HYPERPLANE'|'WEYL_CHAMBER' = 'HYPERPLANE'){
      // Create plane
     var dir = new THREE.Vector3(hyperplane.normalVector.x,hyperplane.normalVector.y,hyperplane.normalVector.z);
     var centroid = new THREE.Vector3(hyperplane.point.x,hyperplane.point.y,hyperplane.point.z);
@@ -68,7 +75,14 @@ export class Paint3dService {
     var planeMaterial = new THREE.MeshLambertMaterial({color: hyperplane.color, side: THREE.DoubleSide, opacity: 0.65,
 transparent: true});
     var dispPlane = new THREE.Mesh(planeGeometry, planeMaterial);
-    this.sceneManager.scene.add(dispPlane);
+    if(group == 'HYPERPLANE'){
+          this.sceneManager.addToHyperplaneGroup(dispPlane);
+
+    }else if(group == 'WEYL_CHAMBER'){
+      this.sceneManager.addToWeylChamberGroup(dispPlane);
+    }else{
+      this.sceneManager.addToRootGroup(dispPlane);
+    }
   }
 
   drawWeylChamber(chamber: WeylChamber3D){
@@ -81,7 +95,7 @@ transparent: true});
         const mesh = new THREE.Mesh( geometry, material );
         material.polygonOffset = true;
         material.polygonOffsetFactor = -0.1;
-        this.sceneManager.scene.add(mesh);
+        this.sceneManager.addToWeylChamberGroup(mesh);
     }
     let i = -1
     const edgePoints = chamber.edgePoints;
@@ -89,7 +103,10 @@ transparent: true});
     while(i < chamber.edgePoints.length-1){
       
       i+=1
-      this.drawLine(new Line3D({start: chamber.centerPoint, end: edgePoints[i].stretchedBy(100), color: Colors.purple300, width: 0.05}))
+      this.drawLine(
+        new Line3D({start: chamber.centerPoint, end: edgePoints[i].stretchedBy(100), color: Colors.purple300, width: 0.05})
+        , "WEYL_CHAMBER"
+        )
       if(i == edgePoints.length-1){
         const vertices = new Float32Array( [
           ...convertPointToNumberList(chamber.centerPoint),

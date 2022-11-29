@@ -1,36 +1,86 @@
 <div id="object-selector-panel">
-    <h3 id="heading">Highlight</h3>
-    <div id="type-selection-container">
+  <button id="expand-button">
+    <mat-icon [fontIcon]="isExpanded ? 'expand_more' : 'expand_less'" (click)="toggleExpand()"></mat-icon>
+  </button>
+  <h3 id="heading">Highlight</h3>
+  <div id="inner-content" [@expanded]="isExpanded">
+  <div id="type-selection-container">
     <div class="switch-mode-item">
-        <input type="checkbox" (click)="switchHighlightMode(RootSystemColorMode.base)">
-        <p class="switch-mode-text">Base</p>
+    <mat-checkbox
+    [checked]="getCurrentColorMode() == RootSystemColorMode.base"
+        (change)="switchHighlightMode(RootSystemColorMode.base)"></mat-checkbox>
+      <p class="switch-mode-text">Base</p>
     </div>
     <div class="switch-mode-item">
-        <input type="checkbox" (click)="switchHighlightMode(RootSystemColorMode.positiveRoots)">
-        <p class="switch-mode-text">Positive roots</p>
+        <mat-checkbox
+        [checked]="getCurrentColorMode() == RootSystemColorMode.positiveRoots"
+        (change)="switchHighlightMode(RootSystemColorMode.positiveRoots)">
+      </mat-checkbox>
+      <p class="switch-mode-text">Positive roots</p>
     </div>
+    <div class="switch-mode-item">
+        <mat-checkbox
+        [checked]="getCurrentColorMode() == RootSystemColorMode.highlight"
+        (change)="switchHighlightMode(RootSystemColorMode.highlight)">
+      </mat-checkbox>
+      <p class="switch-mode-text">Custom Highlight</p>
     </div>
-    <div class="divider"></div>
-    <h4 class="subsection-heading">Highlight specific object</h4>
-    <div id="highlight-table">
-        <div id="highlight-table-header">
+  </div>
+  <div class="divider"></div>
+  <h4 class="subsection-heading">Highlight specific object</h4>
+  <div id="highlight-table">
+    <div
+      class="highlight-table-column"
+    >
+      <div class="highlight-table-header">
         <p></p>
         <p>Root (+,-)</p>
         <p>Hyperplanes</p>
-    </div>
-
-    <div class="object-highlight-item" *ngFor="let root of this.getRoots(); let i = index">
+      </div>
+      <div class="object-highlight-item">
         <div class="root-vector">
-            <p class="root-vector-text">{{root.name}}</p>
-            <div class="root-vector-background" [style.background-color]="getColor(i)"></div>
+            <p class="root-vector-text">All</p>
+            <div
+              class="root-vector-background"
+            ></div>
+          </div>
+          <div class="highlight-toggle">
+            <mat-checkbox
+            [checked]="allRootsHighlighted()"
+            (click)="toggleAllRootsHighlighted()"></mat-checkbox>
+          </div>
+  
+          <div class="hyperplane-toggle">
+            <mat-checkbox
+            [checked]="allHyperplanesVisible()"
+            (click)="toggleAllRootsHyperplanes()"></mat-checkbox>
+          </div>
+        </div>
+      
+      <div
+        class="object-highlight-item"
+        *ngFor="let root of roots"
+      >
+        <div class="root-vector">
+          <p class="root-vector-text">{{ root.name }}</p>
+          <div
+            class="root-vector-background"
+            [style.background-color]="getColor(root)"
+          ></div>
         </div>
         <div class="highlight-toggle">
-            <input type="checkbox" (click)="toggleRootHighlight(root)">
+          <mat-checkbox
+          [checked]="rootHighlighted(root) && getCurrentColorMode() == RootSystemColorMode.highlight"
+          (click)="toggleRootHighlight(root)"></mat-checkbox>
         </div>
 
         <div class="hyperplane-toggle">
-            <input type="checkbox" (click)="toggleHyperplane(root)">
+          <mat-checkbox
+          [checked]="hyperplaneToRootVisible(root)"
+          (click)="toggleHyperplane(root)"></mat-checkbox>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 </div>

@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 import { rootSystems, RootSystems2D } from "src/app/data/rootSystems";
 import { RootSystemService } from "src/app/logic/maths/2D/root-system.service";
 import RootSystem2D, { Root } from "src/app/logic/maths/2D/RootSystem";
@@ -9,6 +10,9 @@ import Polygon from "src/app/logic/maths_objects/2D/Polygon";
 import { CanvasService } from "src/app/services/2D/canvas.service";
 import { CoordinateSystemService } from "src/app/services/2D/coordinate-system.service";
 import { PaintLayer, PaintService } from "src/app/services/2D/paint.service";
+import { RootSystemTransformer2DService } from "src/app/services/2D/root-system-transformer2-d.service";
+import { Color, Matrix3 } from "three";
+import { RootSystemColorMode, rootSystemColors } from "../../RootSystemColorMode";
 import { Colors } from "../../values/colors";
 import Painter from "./Painter.interface";
 
@@ -17,12 +21,23 @@ import Painter from "./Painter.interface";
 })
 export default class RootSystemPainter implements Painter{
     paintLayer: PaintLayer = PaintLayer.default;
+    colorMode: RootSystemColorMode = RootSystemColorMode.base;
+    repaintEvent: Subject<void> = new Subject();
+    highlightedRoots: Array<Root> = [];
+    highlightedHyperplanes: Array<Root> = [];
+
     constructor(
         private canvas: CanvasService,
         private rootSystem: RootSystemService,
         private coord: CoordinateSystemService,
-        private painter: PaintService
-    ){}
+        private painter: PaintService,
+        private transformService: RootSystemTransformer2DService
+    ){
+        rootSystem.repaintEvent.subscribe(() => {
+            this.clearHyperplaneHighlight();
+            this.clearRootHighlight();
+        })
+    }
     paint(layer?: PaintLayer){
         const roots = this.rootSystem.getRoots();
         this.paintExtraGeometry();
@@ -31,12 +46,64 @@ export default class RootSystemPainter implements Painter{
             this.paintRoot(root);
             // Make sure to only paint the hyperplane once
             if(root.isPositive)
-                this.paintHyperplane(root.angle+Math.PI/2);
+                this.paintHyperplane(root);
         }
         if(layer != undefined){
             this.paintLayer = layer;
         }
-        
+    }
+    switchColorMode(colorMode: RootSystemColorMode){
+        this.colorMode = colorMode;
+        // Make sure the changes are applied by rerendering the scene
+        this.repaintEvent.next();
+    }
+    highlightRoot(root: Root){
+        this.highlightedRoots.push(root);
+        this.repaintEvent.next();
+    }
+    highlightHyperplaneToRoot(root: Root){
+        this.highlightedHyperplanes.push(root);
+        this.repaintEvent.next();
+    }
+    rootIsHighlighted(root: Root){
+        return this.highlightedRoots.some((other) => other.equal(root));
+    }
+    removeHighlightFromRoot(root: Root){
+        this.highlightedRoots = this.highlightedRoots.filter((other) => !root.equal(other))
+        this.repaintEvent.next();
+    }
+    hyperplaneToRootHighlighted(root: Root){
+        return this.highlightedHyperplanes.some((other) => other.equal(root));
+    }
+    removeHighlightOfHyperplaneToRoot(root: Root){
+        this.highlightedHyperplanes = this.highlightedHyperplanes.filter((other) => !root.equal(other))
+        this.repaintEvent.next();
+    }
+    allRootsHighlighted(){
+        return this.highlightedRoots.length == this.rootSystem.getPositiveRoots().length;
+    }
+    allHyperplanesHighlighted(){
+        return this.highlightedHyperplanes.length == this.rootSystem.getPositiveRoots().length;
+    }
+    clearRootHighlight(){
+        this.highlightedRoots = [];
+        this.repaintEvent.next();
+
+    }
+    clearHyperplaneHighlight(){
+        this.highlightedHyperplanes = [];
+        this.repaintEvent.next();
+
+    }
+    highlightAllRoots(){
+        this.highlightedRoots = this.rootSystem.getPositiveRoots();
+        this.repaintEvent.next();
+
+    }
+    highlightAllHyperplanes(){
+        this.highlightedHyperplanes = this.rootSystem.getPositiveRoots();
+        this.repaintEvent.next();
+
     }
     // Used to paint extra objects that should only appear with certain root systems
     paintExtraGeometry(){
@@ -67,22 +134,54 @@ export default class RootSystemPainter implements Painter{
             color: '#ffffff',
             width: 7
         })
-        this.painter.paintLine(line, this.paintLayer);
+        this.painter.paintLine(line, PaintLayer.layer3);
     }
 
     paintRoot(root: Root){
         const point = root.getVector();
+        let color = Colors.white;
         this.paintVectorLine(new Point(0,0), point);
-        this.paintVectorEnd(point, root.isSimple ? Colors.brightRed : Colors.brightGreen);
+        if(this.colorMode == RootSystemColorMode.base){
+            color = root.isSimple ? Colors.brightRed : Colors.brightGreen;
+        }else if(this.colorMode == RootSystemColorMode.positiveRoots){
+            color = root.isPositive ? Colors.brightRed : Colors.brightGreen;
+        }else{
+            if(this.rootIsHighlighted(root) || this.rootIsHighlighted(root.getNegative())){
+            const rootIndex = this.rootSystem.getPositiveRoots().findIndex((other)=>other.equal(root) || other.equal(root.getNegative()));
+            color = rootSystemColors[this.rootSystem.getType()][rootIndex];
+            } 
+        }
+        // Transform the object accoring to the group action if it has been selected
+        // to be transformed
+        if(this.transformService.transformationAppliedTo('ROOTS')){
+            const transformedPoint = root.getVectorUnderTransformation(this.transformService.currentTranformation);
+            this.paintVectorEnd(transformedPoint, color);
+        }
+        else{
+            this.paintVectorEnd(root.getVector(), color);
+        }
     }
 
-    paintHyperplane(startAngle: number){
+    paintHyperplane(root: Root){
+        let color = Colors.white;
+        if(this.hyperplaneToRootHighlighted(root) || this.hyperplaneToRootHighlighted(root.getNegative())){
+            const rootIndex = this.rootSystem.getPositiveRoots().findIndex((other)=>other.equal(root) || other.equal(root.getNegative()));
+            color = rootSystemColors[this.rootSystem.getType()][rootIndex];
+        }
+        let plane = root.getHyperplane()
+        // Transform the object accoring to the group action if it has been selected
+        // to be transformed
+        if(this.transformService.transformationAppliedTo('HYPERPLANES')){
+            plane = root.getHyperplane()
+            .withTransformation(this.transformService.currentTranformation);
+        }
+        let startAngle = plane.angle;
         const startAngleInDegree = (startAngle/(Math.PI*2))*360
         const maxLength = this.coord.getCrossLength()/2;
         const line = new Line({
             start: new Point(-maxLength, 0),
             end: new Point(maxLength, 0),
-            color: '#ffffff',
+            color: color,
             width: 2,
             dashed: true,
             dashString: "12 12"
@@ -93,13 +192,13 @@ export default class RootSystemPainter implements Painter{
         let triangle = new Polygon({
             points: [
                 new Point(
-                    Math.cos(Math.PI/3),
-                    Math.sin(Math.PI/3),
+                    Math.cos(Math.PI/3 + Math.PI/6),
+                    Math.sin(Math.PI/3 + Math.PI/6),
                 ),
-                new Point(Math.cos(Math.PI),Math.sin(Math.PI)),
+                new Point(Math.cos(Math.PI + Math.PI/6),Math.sin(Math.PI + Math.PI/6)),
                 new Point(
-                    Math.cos(2*Math.PI - Math.PI/3),
-                    Math.sin(2*Math.PI - Math.PI/3)
+                    Math.cos(2*Math.PI - Math.PI/3 + Math.PI/6),
+                    Math.sin(2*Math.PI - Math.PI/3 + Math.PI/6)
                 )
             ],
             color: '#9999CC'
@@ -108,6 +207,7 @@ export default class RootSystemPainter implements Painter{
             triangle,
             PaintLayer.layer3
         ).opacity(0.5)
+        
     }
     paintSquare(){
         let square = new Polygon({

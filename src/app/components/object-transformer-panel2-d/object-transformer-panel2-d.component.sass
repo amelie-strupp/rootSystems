@@ -1,0 +1,253 @@
+#object-selector-panel
+    position: absolute
+    right: 16px
+    bottom: 16px
+    height: max-content
+    width: 400px
+    padding: 16px
+    box-sizing: border-box
+    background-color: white
+    border-radius: 8px
+    shadow: var(--light-shadow)
+    display: grid
+    align-content: flex-start
+    justify-content: stretch
+    align-items: flex-start
+    #inner-content
+        overflow: hidden
+    #expand-button
+        position: absolute
+        top: 8px
+        right: 12px
+        color: var(--text-medium)
+        background-color: white
+        border: none
+        border-radius: 50%
+        transition: all 150ms
+        height: 36px
+        display: grid
+        justify-content: center
+        align-content: center
+        cursor: pointer
+        width: 36px
+        &:hover
+            background-color: var(--purple-light)
+    #heading
+        font-size: 16px
+        font-weight: 700
+        margin: 0
+        padding: 0
+        color: var(--text-dark)
+        margin-bottom: 4px
+    .subheading
+        font-size: 13px
+        font-weight: 600
+        margin: 0
+        padding: 0
+        color: var(--text-light)
+    .subsection-heading
+        font-size: 14px
+        font-weight: 600
+        margin: 0
+        padding: 0
+        color: var(--text-medium)
+    .description-text
+        font-size: 14px
+        font-weight: 600
+        margin: 0
+        padding: 0
+        color: var(--text-dark)
+        margin-bottom: 0
+        margin-top: 8px
+    #length-text
+        font-size: 14px
+        font-style: italic
+        font-weight: 500
+        color: var(--text-light)
+        display: block
+        width: 100%
+        box-sizing: border-box
+        text-align: right
+        padding-right: 8px
+    #reflection-placeholder-text
+        font-size: 14px
+        font-weight: 400
+        color: var(--text-light)
+        padding: 0
+        margin: 0
+    .sub-description-text
+        color: var(--text-light)
+        padding: 0
+        margin: 0
+        font-size: 13px
+        font-weight: 600
+        padding: 0px 0
+    #more-information
+        background-color: var(--purple-light)
+        padding: 8px
+        margin-top: 8px
+        border-radius: 4px
+        #more-information-header
+            position: relative
+            display: grid
+            align-content: center
+            align-items: center
+            height: 24px
+            border: 1px solid var(--purple-light)
+            cursor: pointer
+            #more-information-text
+                margin: 0
+                padding: 0
+                font-size: 13px
+                color: var(--text-medium)
+                font-weight: 700
+                margin: 0
+                padding: 0
+            #more-information-toggle-button
+                right: 12px
+                position: absolute
+                top: 0
+                border: none
+                background-color: transparent
+                border-radius: 50%
+                height: 16px
+                width: 16px
+                color: var(--text-medium)
+                cursor: pointer
+        #content-wrapper
+            overflow: hidden
+            #information-container
+                display: grid
+                grid-template-columns: repeat(3, 1fr)
+                .information-item
+                    display: grid
+                    justify-items: center
+                    padding-bottom: 16px
+                    .information-item-text
+                        font-size: 13px
+                        color: var(--text-dark)
+                        font-weight: 700
+                    .matrix3, .matrix2, .matrix1
+                        display: grid
+                        grid-template-columns: 16px 16px 16px
+                        column-gap: 6px
+                        position: relative
+                        margin-left: 4px
+                        box-sizing: border-box
+                        width: max-content
+                        &.matrix2
+                            grid-template-columns: 16px 16px
+                            .matrix-bracket-left, .matrix-bracket-right
+                                font-size: 42px
+                                top: -12px
+                        &.matrix1
+                            grid-template-columns: 16px
+                            .matrix-bracket-left, .matrix-bracket-right
+                                font-size: 24px
+                                top: -8px
+                        .matrix-bracket-left
+                            position: absolute
+                            font-size: 62px
+                            left: -16px
+                            margin: 0
+                            padding: 0
+                            top: -18px
+                            color: var(--text-light)
+                            
+                        .matrix-bracket-right
+                            position: absolute
+                            font-size: 62px
+                            right: -16px
+                            margin: 0
+                            padding: 0
+                            top: -18px
+                            color: var(--text-light)
+                        p
+                            margin: 0
+                            padding: 0
+                            display: block
+                            font-size: 13px
+                            color: var(--text-dark)
+                            font-weight: 700
+                            text-align: center
+    #action-on-table
+        padding: 0
+        display: grid
+        grid-template-rows: max-content
+        .action-object
+            display: grid
+            grid-template-columns: max-content 1fr
+            align-items: center
+            .action-object-text
+                font-size: 13px
+                color: var(--text-medium)
+                font-weight: 600
+                margin: 0
+                padding: 0
+    #option-container
+        padding: 8px 0
+        display: grid
+        grid-template-rows: max-content
+        .option-item
+            display: grid
+            grid-template-columns: max-content 1fr
+            align-items: center
+            .option-text
+                font-size: 13px
+                color: var(--text-medium)
+                font-weight: 500
+                margin: 0
+                padding: 0
+    .divider
+        height: 1px
+        margin: 8px 0 12px 0px
+        width: 100%
+        background-color: var(--purple-light)
+    .mirror-root-container
+        padding: 4px 0
+        margin-bottom: 4px
+        display: grid
+        grid-template-columns: repeat(5, max-content)
+        grid-gap: 8px
+    .mirror-root-item
+        .root-vector
+            position: relative
+            height: max-content
+            width: 64px
+            display: grid
+            justify-content: center
+            .root-vector-text
+                display: block
+                position: relative
+                z-index: 1
+                font-size: 14px
+                padding: 4px 4px
+                margin: 0
+                cursor: pointer
+                font-weight: 500
+            .root-vector-background
+                opacity: 0.6
+                position: absolute
+                top: 0
+                left: 0
+                height: 100%
+                width: 100%
+                border-radius: 4px
+    #applied-mirrorings-container
+        padding-top: 4px
+        #mirrorings
+            display: grid
+            grid-template-columns: repeat(5, max-content)
+            grid-gap: 8px
+        #reset-button
+            background-color: var(--background-color)
+            color: white
+            padding: 8px 16px
+            font-weight: 600
+            font-size: 12px
+            border: none
+            border-radius: 4px
+            cursor: pointer
+            width: max-content
+            margin-top: 12px
+        

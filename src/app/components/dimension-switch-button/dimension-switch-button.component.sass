@@ -1,0 +1,22 @@
+#dimension-button
+    height: 64px
+    background-color: white
+    border-radius: 16px
+    position: absolute
+    display: grid
+    grid-template-columns: 1fr 1fr
+    top: 8px
+    left: 8px
+    z-index: 100
+    .dimension-item
+        width: 64px
+        font-size: 16px
+        font-weight: 700
+        color: var(--text-dark)
+        display: grid
+        justify-content: center
+        align-content: center
+        cursor: pointer
+        &.selected
+            background-color: var(--purple-medium)
+            border-radius: 16px

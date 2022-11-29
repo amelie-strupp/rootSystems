@@ -4,6 +4,7 @@ import { Hyperplane3D } from "./Hyperplane3D";
 import * as THREE from "three";
 import { WeylChamber } from "../2D/WeylChamber";
 import WeylChamber3D from "../../maths_objects/3D/WeylChamber3D";
+import { Matrix3, Vector3 } from "three";
 
 export class Root3D{
     direction: Point3D;
@@ -62,87 +63,23 @@ export default class RootSystem3D{
     type: RootSystems3D
     private _simpleRoots: Array<Root3D> = [];
     private _positiveRoots: Array<Root3D> = [];
+    coxeterMatrix: Array<number> = [];
     // The minimum angle occuring in this root system
     constructor(
         type: RootSystems3D,
+        coxeterMatrix: Array<number>,
         // simpleRoots: Array<Root3D>,
         positiveRoots: Array<Root3D>){
         this.type = type;
+        this.coxeterMatrix = coxeterMatrix;
         // this._simpleRoots = simpleRoots;
         this._positiveRoots = positiveRoots;
         this._simpleRoots = this._positiveRoots.filter((root)=>root.isSimple);
     }
-    // getAllRoots(){
-    //     const positiveAndNegativeNodes = [...this._simpleRoots];
-    //     for(let simpleRoot1 of this._simpleRoots){
-    //         for(let simpleRoot2 of this._simpleRoots){
-    //             if(simpleRoot1 != simpleRoot2){
-    //                 if(simpleRoot1.plus(simpleRoot2).length != 2)
-    //                 positiveAndNegativeNodes.push(simpleRoot1.plus(simpleRoot2));
-    //             }
-    //         }
-    //     }
-    //     positiveAndNegativeNodes.push(this._simpleRoots[0].plus(this._simpleRoots[1]).plus(this._simpleRoots[2]))
-    //     positiveAndNegativeNodes.filter((v,i,a)=>a.findIndex(v2=>(v2.equal(v)))===i)
-    //     positiveAndNegativeNodes.forEach((root: Root3D) => {
-    //         positiveAndNegativeNodes.push(root.getNegative());
-    //     })
-    //     this.getRoots();
-    //     return positiveAndNegativeNodes;
-    // }
-    getLengthOfBetaStringThroughAlpha(alpha: Root3D, beta: Root3D){
-        let alphaVector = alpha.getVector();
-        let betaVector = beta.getVector();
-        return -2*(betaVector.dotProduct(alphaVector)/alphaVector.dotProduct(alphaVector));
+
+    getBase(){
+        return this._simpleRoots;
     }
-    // getRoots(){
-    //     let positiveRoots: Array<Root3D> = [];
-    //     let allRoots: Array<Root3D> = [];
-    //     // Roots of height 1
-    //     positiveRoots.push(...this._simpleRoots);
-    //     let rootsOfHeight2: Array<Root3D> = [];
-    //     // Roots of height 2
-    //     for(let alpha of this._simpleRoots){
-    //         for(let beta of this._simpleRoots){
-    //             if(alpha != beta){
-    //             let length = this.getLengthOfBetaStringThroughAlpha(alpha, beta);
-    //             while(length > 0){
-    //                 rootsOfHeight2.push(alpha.plus(beta.times(length)))
-    //                 positiveRoots.push(alpha.plus(beta.times(length)))
-    //                 length -=1
-    //             }
-    //         }
-    //         }
-    //     }
-    //     // Roots of height 3
-    //     for(let alpha of this._simpleRoots){
-    //         for(let beta of rootsOfHeight2){
-    //             if(alpha != beta){
-    //                 let length = this.getLengthOfBetaStringThroughAlpha(alpha, beta);
-    //                 if(positiveRoots.some((root) => root.equal(
-    //                     beta.plus(alpha.getNegative())
-    //                 ))){
-    //                     length -=1;
-    //                     positiveRoots.push(
-    //                         beta.plus(alpha.getNegative())
-    //                     )
-    //                 }
-    //                 while(length > 0){
-    //                     positiveRoots.push(alpha.plus(beta.times(length)))
-    //                     length -=1
-    //                 }
-    //             }
-    //         }
-    //     }
-        
-    //     positiveRoots = positiveRoots.filter((v,i,a)=>a.findIndex(v2=>(v2.equal(v)))===i)
-    //     allRoots.push(...positiveRoots);
-    //     positiveRoots.forEach((root: Root3D) => {
-    //         allRoots.push(root.getNegative());
-    //     })
-    //     console.log("Roots: ", allRoots);
-    //     return allRoots;
-    // }
     getRoots(){
         let roots: Array<Root3D> = [...this._positiveRoots];
         this._positiveRoots.forEach((root: Root3D) => {
@@ -271,5 +208,38 @@ export default class RootSystem3D{
           const chamber = new WeylChamber3D({edgePoints: chamberEdgePoints});
           return chamber;
     }
+    getLengthOfTransformation(transformations: Array<Root3D>){
+        let finalTransformationMatrix = new Matrix3().identity();
+        for(let transformation of transformations){
+            const {x,y,z} = transformation.getVector().normalized();
+            let transformationMatrix = new Matrix3(
+                ).fromArray([
+                // First Row
+                    1-2*x*x,
+                    -2*x*y,
+                    -2*x*z,
+                    // Second Row
+                    -2*x*y,
+                    1-2*y*y,
+                    -2*y*z,
+                    // Third Row
+                    -2*x*z,
+                    -2*y*z,
+                    1-2*z*z,
+                ]
+                );
+            finalTransformationMatrix = transformationMatrix.multiply(finalTransformationMatrix);
+        }
+        const positiveRoots = this.getPositiveRoots();
+        let transformedPositiveRoots = positiveRoots.map((root) => {
+            const rootVector = root.getVector();
+            const vector = new Vector3(rootVector.x, rootVector.y, rootVector.z).applyMatrix3(finalTransformationMatrix)
+            return new Root3D({vector: new Point3D(vector.x, vector.y, vector.z), isSimple: false})
+        })
+        const rootsThatChangedToNegative = transformedPositiveRoots.filter((transformedRoot) =>
+            positiveRoots.every((root) => !root.equal(transformedRoot))
+        );
 
+        return rootsThatChangedToNegative.length;
+    }
 }

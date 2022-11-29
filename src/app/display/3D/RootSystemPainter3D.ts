@@ -12,6 +12,9 @@ import { SceneManagerService } from 'src/app/services/3D/scene-manager.service';
 import { Color } from 'three';
 import { colorNumber, Colors } from '../values/colors';
 import Painter3D from './Painter3D';
+import * as THREE from "three";
+import { RootSystemTransformer3DService } from 'src/app/services/3D/root-system-transformer3-d.service';
+import { RootSystemColorMode, rootSystemColors } from '../RootSystemColorMode';
 
 @Injectable({
   providedIn: 'root',
@@ -20,17 +23,20 @@ export class RootSystemPainter3D implements Painter3D {
   constructor(
     private painter: Paint3dService,
     private rootSystemService: RootSystem3DService,
-    private sceneManager: SceneManagerService
+    private sceneManager: SceneManagerService,
+    private transformServiece: RootSystemTransformer3DService
   ) {
     this.rootSystem = rootSystemService.rootSystem;
     this.rootSystemService.rootSystemChangeEvent.subscribe(() => {
-      this.rootWithVisibleHyperplanes = [];
-      this.highlightedRoots = [];
-
+      if(this.rootSystemService.rootSystem.type != this.rootSystem.type){
+        this.clearRootHighlight();
+        this.clearHyperplaneVisibility();
+      }
+      
       this.repaint();
     });
   }
-  colorMode: RootSystemColorMode = RootSystemColorMode.highlight;
+  colorMode: RootSystemColorMode = RootSystemColorMode.base;
   highlightedRoots: Array<Root3D> = [];
   rootWithVisibleHyperplanes: Array<Root3D> = [];
 
@@ -67,6 +73,28 @@ export class RootSystemPainter3D implements Painter3D {
     this.rootWithVisibleHyperplanes = this.rootWithVisibleHyperplanes.filter((other)=>!other.equal(root))
     this.repaint();
 
+  }
+  highlightAllRoots(){
+    this.highlightedRoots = this.rootSystem.getPositiveRoots();
+    this.repaint();
+  }
+  clearRootHighlight(){
+    this.highlightedRoots = [];
+    this.repaint();
+  }
+  showAllHyperplanes(){
+    this.rootWithVisibleHyperplanes = this.rootSystem.getPositiveRoots();
+    this.repaint();
+  }
+  allRootsHighlighted(){
+    return this.highlightedRoots.length == this.rootSystem.getPositiveRoots().length;
+  }
+  allHyperplanesVisible(){
+    return this.rootWithVisibleHyperplanes.length == this.rootSystem.getPositiveRoots().length;
+  }
+  clearHyperplaneVisibility(){
+    this.rootWithVisibleHyperplanes = [];
+    this.repaint();
   }
   rootIsHighlighted(root: Root3D){
     return this.highlightedRoots.some((highlightedRoot)=>highlightedRoot.equal(root));
@@ -148,6 +176,11 @@ export class RootSystemPainter3D implements Painter3D {
               if(this.hyperplaneToRootIsVisible(root)){
                 this.painter.drawPlane(hyperplane);
               }
+        }
+      else{
+        if(this.hyperplaneToRootIsVisible(root)){
+          this.painter.drawPlane(hyperplane);
+        }
       }
       i+=1;
     }
@@ -254,48 +287,3 @@ export class RootSystemPainter3D implements Painter3D {
   }
 }
 
-export const rootSystemColors = {
-  A3: [
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.turqouis,
-    Colors.green,
-    Colors.blue,
-  ],
-  D3: [
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.turqouis,
-    Colors.green,
-    Colors.blue,
-  ],
-  C3: [
-    Colors.purpleDark,
-    Colors.pink,
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.turqouis,
-    Colors.green,
-    Colors.blue,
-    Colors.azulDark,
-  ],
-  B3: [
-    Colors.purpleDark,
-    Colors.pink,
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.turqouis,
-    Colors.green,
-    Colors.blue,
-    Colors.azulDark,
-  ],
-};
-export enum RootSystemColorMode {
-  base,
-  positiveRoots,
-  highlight,
-}
