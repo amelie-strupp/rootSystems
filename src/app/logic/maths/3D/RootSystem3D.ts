@@ -117,9 +117,34 @@ export default class RootSystem3D{
     getHyperplaneToRoot(root: Root3D){
         return new Hyperplane3D(root.direction, Point3D.getZero())
     }
-    getFundamentalWeylChamber(){
-        function intersectPlanes(p1: THREE.Plane, p2: THREE.Plane) {
-            // the cross product gives us the direction of the line at the intersection
+    getIntersectionOfPlanes(p1: THREE.Plane, p2: THREE.Plane){
+        /*
+          
+          This method helps finding a point on the intersection between two planes.
+          Depending on the orientation of the planes, the problem could solve for the
+          zero point on either the x, y or z axis
+          
+          */
+          function solveIntersectingPoint(zeroCoord: any, A: any, B:any, p1:any, p2:any){
+            var a1 = p1.normal[A]
+            var b1 = p1.normal[B]
+            var d1 = p1.constant
+        
+            var a2 = p2.normal[A]
+            var b2 = p2.normal[B]
+            var d2 = p2.constant
+        
+            var A0 = ((b2 * d1) - (b1 * d2)) / ((a1 * b2 - a2 * b1))
+            var B0 = ((a1 * d2) - (a2 * d1)) / ((a1 * b2 - a2 * b1))
+        
+            var point:any = new THREE.Vector3()
+            point[zeroCoord] = 0
+            point[A] = A0
+            point[B] = B0
+        
+            return point
+          }
+                    // the cross product gives us the direction of the line at the intersection
             // of the two planes, and gives us an easy way to check if the two planes
             // are parallel - the cross product will have zero magnitude
             var direction = new THREE.Vector3().crossVectors(p1.normal, p2.normal)
@@ -148,35 +173,13 @@ export default class RootSystem3D{
             }
           
             return [point, direction]
-          }
+          
 
-          /*
           
-          This method helps finding a point on the intersection between two planes.
-          Depending on the orientation of the planes, the problem could solve for the
-          zero point on either the x, y or z axis
-          
-          */
-          function solveIntersectingPoint(zeroCoord: any, A: any, B:any, p1:any, p2:any){
-              var a1 = p1.normal[A]
-              var b1 = p1.normal[B]
-              var d1 = p1.constant
-          
-              var a2 = p2.normal[A]
-              var b2 = p2.normal[B]
-              var d2 = p2.constant
-          
-              var A0 = ((b2 * d1) - (b1 * d2)) / ((a1 * b2 - a2 * b1))
-              var B0 = ((a1 * d2) - (a2 * d1)) / ((a1 * b2 - a2 * b1))
-          
-              var point:any = new THREE.Vector3()
-              point[zeroCoord] = 0
-              point[A] = A0
-              point[B] = B0
-          
-              return point
-          }
-    
+
+    }
+    getFundamentalWeylChamber(){
+
           const planes: Array<THREE.Plane> = [];
           for(let root of this._simpleRoots){
             const hyperplane = this.getHyperplaneToRoot(root)
@@ -190,8 +193,7 @@ export default class RootSystem3D{
           for(let plane1 of planes){
             for(let plane2 of planes){
                 if(plane1 != plane2){
-                    let intersection = intersectPlanes(plane1, plane2);
-                    console.log("Intersection: ", intersection);
+                    let intersection = this.getIntersectionOfPlanes(plane1, plane2);
                     let direction = intersection![1];
                     let directionPoint = new Point3D(direction.x, direction.y, direction.z);
                     cutPoints.push(directionPoint)

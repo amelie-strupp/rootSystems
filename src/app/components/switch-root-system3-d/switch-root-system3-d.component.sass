@@ -1,3 +1,30 @@
+@media (max-width: 650px)
+    #switch-panel-container
+        left: auto !important
+        right: 16px !important
+        width: max-content !important
+        justify-content: flex-end !important
+        padding-left: 0 !important
+        #switch-panel
+            justify-content: flex-end
+@media (max-width: 500px)
+    #switch-panel-container
+        right: 0px !important
+        left: 0px !important
+        top: 74px !important
+        width: 100% !important
+        justify-content: center !important
+@media (max-width: 500px)
+    #switch-panel-container
+        width: calc(100% - 32px) !important
+        right: 16px !important
+        left: 16px !important
+        top: auto !important
+        bottom: 130px !important
+        #switch-panel
+            #root-systems-container
+                grid-template-columns: 1fr 1fr 1fr 1fr !important
+    
 #switch-panel-container
     left: 0
     top: 0

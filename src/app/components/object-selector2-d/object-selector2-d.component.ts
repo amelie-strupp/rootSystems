@@ -13,13 +13,16 @@ import { Root } from 'src/app/logic/maths/2D/RootSystem';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations:[
     trigger('expanded', [
+      state('void', style({
+        height: '0',
+      })),
       state('true', style({
         height: '*',
       })),
       state('false', style({
         height: '0',
       })),
-      transition('* => *', [
+      transition('true <=> false', [
         animate('125ms ease-in-out')
       ]),
 
@@ -46,6 +49,9 @@ export class ObjectSelector2DComponent implements OnInit {
     })
       this.rootSystemColors = rootSystemColors[rootSystemService.rootSystem.type];
       this.roots = this.rootSystemService.getPositiveRoots();
+      if(window.innerWidth < 1000){
+        this.isExpanded = false;
+      }
     }
   toggleExpand(){
     this.isExpanded = !this.isExpanded;

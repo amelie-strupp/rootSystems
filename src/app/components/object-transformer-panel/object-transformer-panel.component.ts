@@ -49,6 +49,9 @@ export class ObjectTransformerPanelComponent {
     })
     this.roots = this.getRoots();
     this.rootSystemColors = rootSystemColors[rootSystemService.rootSystem.type];
+    if(window.innerWidth < 1000){
+      this.isExpanded = false;
+    }
   }
   toggleMoreInformation(){
     this.moreInformationShown = !this.moreInformationShown;

@@ -4,7 +4,7 @@ export enum Colors{
     purple500 = '#343466',
     purple400 = '#40407a',
     purple300 = '#706fd3',
-
+    purple200 = '#abaafa',
     brightRed = '#ff0066',
     brightGreen = '#33d9b2',
 

@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
+import { HostListener, Injectable } from '@angular/core';
 import { G, Svg } from '@svgdotjs/svg.js';
 import { PaintLayer } from './paint.service';
 
 export class Canvas{
+  offsetTop: number = 0;
   height: number;
   width: number;
   pixelsInOneUnit: number;
-  constructor(d: {height: number, width: number, pixelsInOneUnit: number }){
+  constructor(d: {height: number, width: number, pixelsInOneUnit: number, offsetTop?: number}){
     this.height = d.height;
     this.width = d.width;
     this.pixelsInOneUnit = d.pixelsInOneUnit;
+    this.offsetTop = d.offsetTop ?? 0;
   }
 }
 
@@ -27,7 +29,9 @@ export class CanvasService {
   paintLayers: Array<Svg> = [];
   miniViewPaintLayers: Array<Svg> = [];
 
-
+  adjustPixelsInUnit(nmb: number){
+    this.canvas.pixelsInOneUnit = nmb;
+  }
   initializeCanvas(c: Canvas){
     this.canvas = c;
   }

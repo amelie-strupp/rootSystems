@@ -26,6 +26,9 @@ export class RootSystemPainter3D implements Painter3D {
     private sceneManager: SceneManagerService,
     private transformServiece: RootSystemTransformer3DService
   ) {
+    addEventListener("resize", (event) => {
+      this.repaint();
+    });
     this.rootSystem = rootSystemService.rootSystem;
     this.rootSystemService.rootSystemChangeEvent.subscribe(() => {
       if(this.rootSystemService.rootSystem.type != this.rootSystem.type){

@@ -1,6 +1,7 @@
-import { Component, ContentChild, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ContentChild, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Svg, SVG } from '@svgdotjs/svg.js';
 import { rootSystems } from 'src/app/data/rootSystems';
+import AffinePainter from 'src/app/display/2D/painters/AffinePainter';
 import GridPainter from 'src/app/display/2D/painters/GridPainter';
 import RootSystemPainter from 'src/app/display/2D/painters/RootSystemPainter';
 import WeylChamberPainter from 'src/app/display/2D/painters/WeylChamberPainter';
@@ -25,16 +26,56 @@ export class RootSystems2DComponent implements OnInit {
   @ViewChild('paintContainerLayer4') layer4!: ElementRef;
 
   paintSvgContainer!: Svg;
-
+  pixelsInOneUnit: number = 130;
+  // Used to move the canvas a little to the top on smaller screens to make space
+  // for navigational elements
+  offsetTop: number = 0;
 
   constructor(
     private canvas: CanvasService,
     private gridPainter: GridPainter,
     private rootSystemPainter: RootSystemPainter,
     private weylChamberPainter: WeylChamberPainter,
+    private affinePainter: AffinePainter,
     private rootSystemService: RootSystemService,
     private transformService: RootSystemTransformer2DService
     ) {
+      if(window.innerWidth < 750){
+        this.pixelsInOneUnit = 100;
+        this.offsetTop = -80;
+      }
+      if(window.innerHeight < 700 && window.innerWidth < 750){
+        this.offsetTop = -90;
+      }
+      if(window.innerHeight < 700 && window.innerWidth < 680){
+        this.offsetTop = -140;
+      }
+      if(window.innerHeight < 600 && window.innerWidth < 680){
+        this.pixelsInOneUnit = 65;
+        this.offsetTop = -140;
+      }
+      addEventListener("resize", (event) => {
+        if(window.innerWidth < 750){
+          this.pixelsInOneUnit = 100;
+          this.offsetTop = -80;
+        }else{
+          this.pixelsInOneUnit = 130;
+          this.offsetTop = 0;
+        }
+        if(window.innerHeight < 700 && window.innerWidth < 750){
+          this.offsetTop = -90;
+        }
+        if(window.innerHeight < 700 && window.innerWidth < 680){
+          this.pixelsInOneUnit = 80;
+          this.offsetTop = -140;
+        }
+        if(window.innerHeight < 600 && window.innerWidth < 680){
+          this.pixelsInOneUnit = 65;
+          this.offsetTop = -140;
+        }
+        this.repaintObjects();
+
+      });
       rootSystemService.repaintEvent.subscribe(() => {
         this.repaintObjects();
       });
@@ -44,6 +85,7 @@ export class RootSystems2DComponent implements OnInit {
       this.transformService.transformationChanged.subscribe(() => {
         this.repaintObjects();
       })
+
   }
 
   ngOnInit(): void {
@@ -60,6 +102,7 @@ export class RootSystems2DComponent implements OnInit {
   paintObjects(){
     this.gridPainter.paint(PaintLayer.layer0);
     this.weylChamberPainter.paint(PaintLayer.layer1);
+    this.affinePainter.paint(PaintLayer.layer3)
     this.rootSystemPainter.paint(PaintLayer.layer4);
   }
   clearCanvas(){
@@ -84,7 +127,8 @@ export class RootSystems2DComponent implements OnInit {
     const canvas = new Canvas({
       height: canvasHeight,
       width: canvasWidth,
-      pixelsInOneUnit: 130
+      pixelsInOneUnit: this.pixelsInOneUnit,
+      offsetTop: this.offsetTop
     });
     this.canvas.initializeCanvas(canvas);
     this.canvas.initializePaintLayers(layers);

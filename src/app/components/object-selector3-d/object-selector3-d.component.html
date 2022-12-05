@@ -6,23 +6,23 @@
   <div id="inner-content" [@expanded]="isExpanded">
   <div id="type-selection-container">
     <div class="switch-mode-item">
-    <mat-checkbox
+    <mat-radio-button
     [checked]="getCurrentColorMode() == RootSystemColorMode.base"
-        (change)="switchHighlightMode(RootSystemColorMode.base)"></mat-checkbox>
+        (change)="switchHighlightMode(RootSystemColorMode.base)"></mat-radio-button>
       <p class="switch-mode-text">Base</p>
     </div>
     <div class="switch-mode-item">
-        <mat-checkbox
+        <mat-radio-button
         [checked]="getCurrentColorMode() == RootSystemColorMode.positiveRoots"
         (change)="switchHighlightMode(RootSystemColorMode.positiveRoots)">
-      </mat-checkbox>
+      </mat-radio-button>
       <p class="switch-mode-text">Positive roots</p>
     </div>
     <div class="switch-mode-item">
-        <mat-checkbox
+        <mat-radio-button
         [checked]="getCurrentColorMode() == RootSystemColorMode.highlight"
         (change)="switchHighlightMode(RootSystemColorMode.highlight)">
-      </mat-checkbox>
+      </mat-radio-button>
       <p class="switch-mode-text">Custom Highlight</p>
     </div>
   </div>

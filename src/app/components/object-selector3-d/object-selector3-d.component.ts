@@ -12,13 +12,16 @@ import RootSystem3D, { Root3D } from 'src/app/logic/maths/3D/RootSystem3D';
   styleUrls: ['./object-selector3-d.component.sass'],
   animations:[
     trigger('expanded', [
+      state('void', style({
+        height: '0',
+      })),
       state('true', style({
         height: '*',
       })),
       state('false', style({
         height: '0',
       })),
-      transition('* => *', [
+      transition('true <=> false', [
         animate('125ms ease-in-out')
       ]),
 
@@ -44,7 +47,9 @@ export class ObjectSelector3DComponent implements OnInit {
       })
       this.roots = this.getRoots();
       this.rootListForDisplay = this.getDividedRootListForDisplay();
-
+      if(window.innerWidth < 1000){
+        this.isExpanded = false;
+      }
     }
   toggleExpand(){
     this.isExpanded = !this.isExpanded;

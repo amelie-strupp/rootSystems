@@ -6,10 +6,11 @@ import Point from '../../logic/maths_objects/2D/Point';
   providedIn: 'root'
 })
 export class CoordinateSystemService {
-
+  topOffset: number = -100;
   constructor(private c: CanvasService) { }
   getCenterPoint(){
-    return new Point(this.c.width/2, this.c.height/2);
+    
+    return new Point(this.c.width/2, this.c.height/2 + this.c.canvas.offsetTop);
   }
   getCoordinateSystemDimensions(){
     const distances =  {

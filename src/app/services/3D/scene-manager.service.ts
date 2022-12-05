@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { HostListener, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { colorNumber, Colors } from 'src/app/display/values/colors';
 import * as THREE from "three";
@@ -13,12 +13,12 @@ import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass
 })
 export class SceneManagerService {
   scene!: Scene;
-  camera!: Camera;
+  camera!: PerspectiveCamera;
   renderer!: WebGLRenderer;
   rendererDom!: HTMLCanvasElement;
   canvasReference!: HTMLElement;
   composer!: EffectComposer;
-
+  orbitControls!: OrbitControls;
   rootGroup: THREE.Group = new THREE.Group();
   hyperplaneGroup: THREE.Group = new THREE.Group();
   weylChamberGroup: THREE.Group = new THREE.Group();
@@ -34,20 +34,35 @@ export class SceneManagerService {
   miniViewRootSystemGroup: THREE.Group = new THREE.Group();
   miniViewOrbitControls!: OrbitControls;
 
-  constructor() { }
+
+
+  constructor() {
+    
+  }
 
   initializeScene(canvasReference: HTMLElement){
     this.canvasReference = canvasReference;
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera( 75, canvasReference.clientWidth / canvasReference.clientHeight, 0.1, 1000 );
-    this.renderer = new THREE.WebGLRenderer();
+    this.camera = new THREE.PerspectiveCamera( 50, canvasReference.clientWidth / canvasReference.clientHeight, 0.1, 1000 );
+    this.renderer = new THREE.WebGLRenderer({antialias: true});
+
     this.renderer.setSize( canvasReference.clientWidth, canvasReference.clientHeight );
     this.rendererDom = this.renderer.domElement
     canvasReference.appendChild( this.rendererDom);
     this.camera.position.set( -20, 5, 0 );
+    if(this.canvasReference.clientWidth < 500){
+      this.camera.position.set( -25, 5, 0 );
+      this.camera.updateProjectionMatrix();
+    }
+    if(this.canvasReference.clientHeight < 700){
+      this.camera.position.set( -30, 5, 0 );
+      this.camera.updateProjectionMatrix();
+    }
+    this.camera.updateProjectionMatrix();
+    this.addOrbitControls();
+
     this.addComposer();
     this.displayScene();
-    this.addOrbitControls();
     this.scene.add( this.rootGroup );
     this.scene.add(this.weylChamberGroup);
     this.scene.add(this.hyperplaneGroup)
@@ -56,7 +71,7 @@ export class SceneManagerService {
   initializeMiniView(canvasReference: HTMLElement){
     this.canvasReferenceMiniView = canvasReference;
     this.sceneMiniView = new THREE.Scene();
-    this.cameraMiniView = new THREE.PerspectiveCamera( 60, canvasReference.clientWidth / canvasReference.clientHeight, 0.1, 70 );
+    this.cameraMiniView = new THREE.PerspectiveCamera( 50, canvasReference.clientWidth / canvasReference.clientHeight, 0.1, 70 );
     this.rendererMiniView = new THREE.WebGLRenderer();
     this.rendererMiniView.setSize( canvasReference.clientWidth, canvasReference.clientHeight );
     this.rendererDomMiniView = this.rendererMiniView.domElement
@@ -120,8 +135,7 @@ export class SceneManagerService {
       this.weylChamberGroup.applyMatrix4(transformationMatrix);
     }
   }
-  
-  reinitializeScene(){
+  clearScene(){
     if(!this.scene){
       return
     }
@@ -145,6 +159,13 @@ export class SceneManagerService {
     }   
     clearThree(this.scene);
     clearThree(this.sceneMiniView);
+  }
+  reinitializeScene(){
+    this.clearScene();
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(this.canvasReference.clientWidth,this.canvasReference.clientHeight)
+
     this.rootGroup = new THREE.Group();
     this.hyperplaneGroup = new THREE.Group();
     this.weylChamberGroup = new THREE.Group();
@@ -184,8 +205,8 @@ export class SceneManagerService {
     this.renderer.setClearColor( color);
   }
   addOrbitControls(){
-    const orbitControls = new OrbitControls( this.camera, this.renderer.domElement );
-    orbitControls.addEventListener('change', (event) => {this.reactToMainSceneOrbitChange()});
+    this.orbitControls = new OrbitControls( this.camera, this.renderer.domElement );
+    this.orbitControls.addEventListener('change', (event) => {this.reactToMainSceneOrbitChange()});
   }
   reactToMainSceneOrbitChange(){
     // Could be called before the camera is initialized -> In that case return
@@ -202,12 +223,12 @@ export class SceneManagerService {
     const renderScene = new RenderPass(this.scene, this.camera);
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(renderScene);
-    const bloomPass = new UnrealBloomPass(new Vector2(this.canvasReference.clientWidth, this.canvasReference.clientHeight),
-      0.08,
-      0.2,
-      0.1
-    );
-    this.composer.addPass(bloomPass);
+    // const bloomPass = new UnrealBloomPass(new Vector2(this.canvasReference.clientWidth, this.canvasReference.clientHeight),
+    //   0.08,
+    //   0.2,
+    //   0.1
+    // );
+    // this.composer.addPass(bloomPass);
 
   }
   addLight(){

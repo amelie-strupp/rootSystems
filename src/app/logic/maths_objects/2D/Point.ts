@@ -8,6 +8,13 @@ export default class Point{
     equal(other: Point){
         return Math.abs(other.x - this.x) < 0.01 && Math.abs(other.y - this.y) < 0.01
     }
+    multiply(l: number){
+        return new Point(this.x*l, this.y*l);
+    }
+    add(other: Point){
+        return new Point(this.x+other.x, this.y+other.y);
+
+    }
     normalized(){
         const length = Math.sqrt(this.x*this.x + this.y*this.y);
         return new Point(this.x/length, this.y/length);

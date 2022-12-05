@@ -51,6 +51,9 @@ export class ObjectTransformerPanel2DComponent {
     })
     this.roots = this.getRoots();
     this.rootSystemColors = rootSystemColors[rootSystemService.rootSystem.type];
+    if(window.innerWidth < 1000){
+      this.isExpanded = false;
+    }
   }
   toggleExpand(){
     this.isExpanded = !this.isExpanded;

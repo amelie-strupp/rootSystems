@@ -1,8 +1,18 @@
+@media (max-width: 550px)
+    #object-selector-panel
+        max-width: calc(100% - 32px) !important
+        width: 100% !important
+        left: 16px  !important
+        bottom: 70px !important
 #object-selector-panel
     position: absolute
     right: 16px
     bottom: 16px
+    z-index: 10
     height: max-content
+    max-height: calc(100vh - 100px)
+    overflow-y: auto
+
     width: 400px
     padding: 16px
     box-sizing: border-box
@@ -13,6 +23,7 @@
     align-content: flex-start
     justify-content: stretch
     align-items: flex-start
+    max-width: calc(50vw - 30px)
     #inner-content
         overflow: hidden
 
@@ -200,7 +211,7 @@
         padding: 4px 0
         margin-bottom: 4px
         display: grid
-        grid-template-columns: repeat(5, max-content)
+        grid-template-columns: repeat(auto-fill, 64px)
         grid-gap: 8px
     .mirror-root-item
         .root-vector
@@ -230,7 +241,7 @@
         padding-top: 4px
         #mirrorings
             display: grid
-            grid-template-columns: repeat(5, max-content)
+            grid-template-columns: repeat(auto-fill, 64px)
             grid-gap: 8px
         #reset-button
             background-color: var(--background-color)

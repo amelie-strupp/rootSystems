@@ -51,6 +51,13 @@ export class Root{
     getHyperplane(){
         return new Hyperplane(this.angle+Math.PI/2);
     }
+
+    getDual(){
+        let vector = this.getVector();
+        let dotProduct = vector.dot(vector)
+        return new Point(2*vector.x*1/dotProduct, 2*vector.y*1/dotProduct);
+
+    }
 }
 
 export default class RootSystem2D{

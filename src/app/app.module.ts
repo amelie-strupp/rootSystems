@@ -19,6 +19,7 @@ import { MiniView3DComponent } from './components/mini-view3-d/mini-view3-d.comp
 import { ObjectSelector2DComponent } from './components/object-selector2-d/object-selector2-d.component';
 import { MiniView2DComponent } from './components/mini-view2-d/mini-view2-d.component';
 import { ObjectTransformerPanel2DComponent } from './components/object-transformer-panel2-d/object-transformer-panel2-d.component'; 
+import {MatRadioModule} from '@angular/material/radio'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +42,8 @@ import { ObjectTransformerPanel2DComponent } from './components/object-transform
     AppRoutingModule,
     BrowserAnimationsModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

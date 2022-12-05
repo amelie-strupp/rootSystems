@@ -1,3 +1,38 @@
+@media (max-width: 1000px)
+    #switch-panel-container
+        left: auto !important
+        right: 16px !important
+        width: max-content !important
+        justify-content: flex-end !important
+        #switch-panel
+            justify-content: flex-end
+@media (max-width: 750px)
+    #switch-panel-container
+        width: calc(100% - 32px) !important
+        right: 16px !important
+        left: 16px !important
+        justify-content: center !important
+        top: auto !important
+        bottom: 80px !important
+        #switch-panel
+            
+            #root-systems-container
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr !important
+                grid-auto-flow: row !important
+@media (max-width: 550px)
+    #switch-panel-container
+        bottom: 130px !important
+        #switch-panel
+            
+            #root-systems-container
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr !important
+                grid-auto-flow: row !important
+
+@media (max-width: 450px)
+    #switch-panel-container
+        #switch-panel
+            #root-systems-container
+                grid-template-columns: 1fr 1fr 1fr 1fr !important
 #switch-panel-container
     left: 0
     top: 0
@@ -7,9 +42,6 @@
     padding-top: 8px
     position: absolute
     #switch-panel
-        
-        left: 160px
-        top: 8px
         padding: 12px
         box-sizing: border-box
         height: max-content
