@@ -14,4 +14,7 @@ export class Hyperplane3D{
     getNormalVectorAsThreeVector(){
         return new THREE.Vector3(this.normalVector.x, this.normalVector.y, this.normalVector.z)
     }
+    getCuttingPoints(other1: Hyperplane3D, other2: Hyperplane3D){
+        
+    }
 }
