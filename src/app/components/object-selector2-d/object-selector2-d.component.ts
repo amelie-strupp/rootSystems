@@ -36,6 +36,7 @@ export class ObjectSelector2DComponent implements OnInit {
   isExpanded: boolean = true;
   roots: Array<Root>;
   rootListForDisplay: Array<Array<Root>> = [];
+  isAffineRootSystem: boolean = false;
   constructor(
     private rootSystemService: RootSystemService,
     private rootSystemPainter: RootSystemPainter,
@@ -45,7 +46,6 @@ export class ObjectSelector2DComponent implements OnInit {
       this.rootSystemColors = rootSystemColors[rootSystemService.rootSystem.type];
       this.roots = this.rootSystemService.getPositiveRoots();
       this.cd.detectChanges();
-
     })
       this.rootSystemColors = rootSystemColors[rootSystemService.rootSystem.type];
       this.roots = this.rootSystemService.getPositiveRoots();
@@ -65,6 +65,11 @@ export class ObjectSelector2DComponent implements OnInit {
     }else{
       this.rootSystemPainter.switchColorMode(colorMode);
     }
+  }
+
+  switchAffineVersion(showAffine: boolean){
+    this.isAffineRootSystem = showAffine;
+    this.rootSystemPainter.switchVersion(this.isAffineRootSystem);
   }
   toggleRootHighlight(root: Root){
     this.rootSystemPainter.switchColorMode(RootSystemColorMode.highlight);

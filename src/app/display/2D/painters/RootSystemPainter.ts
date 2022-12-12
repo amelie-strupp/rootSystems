@@ -14,6 +14,7 @@ import { RootSystemTransformer2DService } from "src/app/services/2D/root-system-
 import { Color, Matrix3 } from "three";
 import { RootSystemColorMode, rootSystemColors } from "../../RootSystemColorMode";
 import { Colors } from "../../values/colors";
+import AffinePainter from "./AffinePainter";
 import Painter from "./Painter.interface";
 
 @Injectable({
@@ -22,6 +23,7 @@ import Painter from "./Painter.interface";
 export default class RootSystemPainter implements Painter{
     paintLayer: PaintLayer = PaintLayer.default;
     colorMode: RootSystemColorMode = RootSystemColorMode.base;
+    showAffineVersion: boolean = false;
     repaintEvent: Subject<void> = new Subject();
     highlightedRoots: Array<Root> = [];
     highlightedHyperplanes: Array<Root> = [];
@@ -31,6 +33,7 @@ export default class RootSystemPainter implements Painter{
         private rootSystem: RootSystemService,
         private coord: CoordinateSystemService,
         private painter: PaintService,
+        private affinePainter: AffinePainter,
         private transformService: RootSystemTransformer2DService
     ){
         rootSystem.repaintEvent.subscribe(() => {
@@ -51,11 +54,19 @@ export default class RootSystemPainter implements Painter{
         if(layer != undefined){
             this.paintLayer = layer;
         }
+        if(this.showAffineVersion){
+            this.affinePainter.paint(PaintLayer.layer3)
+        }
     }
     switchColorMode(colorMode: RootSystemColorMode){
         this.colorMode = colorMode;
         // Make sure the changes are applied by rerendering the scene
         this.repaintEvent.next();
+    }
+    switchVersion(toAffineVersion: boolean){
+        this.showAffineVersion = toAffineVersion;
+        this.rootSystem.repaintEvent.next();
+
     }
     highlightRoot(root: Root){
         this.highlightedRoots.push(root);

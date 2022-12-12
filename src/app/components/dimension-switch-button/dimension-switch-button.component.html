@@ -10,4 +10,10 @@
     [class.selected]="selectedDimension == '3D'">
         <p>3D</p>
     </div>
+    <div class="dimension-item"
+    (click)="switchToDimension('Projection')"
+    
+    [class.selected]="selectedDimension == 'Projection'">
+        <p>Projection</p>
+    </div>
 </div>

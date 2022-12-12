@@ -19,7 +19,13 @@ import { MiniView3DComponent } from './components/mini-view3-d/mini-view3-d.comp
 import { ObjectSelector2DComponent } from './components/object-selector2-d/object-selector2-d.component';
 import { MiniView2DComponent } from './components/mini-view2-d/mini-view2-d.component';
 import { ObjectTransformerPanel2DComponent } from './components/object-transformer-panel2-d/object-transformer-panel2-d.component'; 
-import {MatRadioModule} from '@angular/material/radio'; 
+import {MatRadioModule} from '@angular/material/radio';
+import { RotationControlComponent } from './components/projected_root_systems/controls/rotation-control/rotation-control.component'; 
+import { ProjectedRootSystemsComponent } from './components/projected_root_systems/projected-root-systems/projected-root-systems.component';
+import { ProjectionPlaneControlComponent } from './components/projected_root_systems/controls/projection-plane-control/projection-plane-control.component';
+import { ProjectionControlSectionComponent } from './components/projected_root_systems/projection-control-section/projection-control-section.component';
+import { ProjectionControlSection3DComponent } from './components/projected_root_systems/projection-control-section3-d/projection-control-section3-d.component';
+import { ProjectionCubesControlComponent } from './components/projected_root_systems/controls/projection-cubes-control/projection-cubes-control.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +41,13 @@ import {MatRadioModule} from '@angular/material/radio';
     MiniView3DComponent,
     ObjectSelector2DComponent,
     MiniView2DComponent,
-    ObjectTransformerPanel2DComponent
+    ObjectTransformerPanel2DComponent,
+    ProjectedRootSystemsComponent,
+    RotationControlComponent,
+    ProjectionPlaneControlComponent,
+    ProjectionControlSectionComponent,
+    ProjectionControlSection3DComponent,
+    ProjectionCubesControlComponent
   ],
   imports: [
     BrowserModule,

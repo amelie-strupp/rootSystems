@@ -29,6 +29,7 @@ export class PaintService {
     const end = this.coord.convertToPaintCoordinates(line.end);
     return this.canvas.getPaintLayer(layer)
     .line(start.x, start.y, end.x, end.y)
+    .opacity(line.opacity)
     .stroke({ width: line.width, color: line.color, dasharray: line.dashed ? line.dashString: ""})
   }
   paintCircle(circle: Circle, layer: PaintLayer = PaintLayer.layer2){

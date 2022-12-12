@@ -2,9 +2,31 @@
     <button id="expand-button">
       <mat-icon [fontIcon]="isExpanded ? 'expand_more' : 'expand_less'" (click)="toggleExpand()"></mat-icon>
     </button>
-    <h3 id="heading">Highlight</h3>
+    <h3 id="heading">Objects & Selection</h3>
     <div id="inner-content" [@expanded]="isExpanded">
-      
+    <h4 class="subsection-heading">Version</h4>
+    <div>
+      <mat-radio-group id="version-switch-container">
+        <div class="switch-version-item">
+        <mat-radio-button
+        [checked]="!isAffineRootSystem"
+        (click)="switchAffineVersion(false)"
+        >
+        </mat-radio-button>
+          <p class="switch-version-text">Root System</p>
+        </div>
+        <div class="switch-version-item">
+            <mat-radio-button
+            [checked]="isAffineRootSystem"
+            (click)="switchAffineVersion(true)">
+          </mat-radio-button>
+          <p class="switch-version-text">Affine Root System</p>
+        </div>
+      </mat-radio-group>
+    </div>
+    <div class="divider"></div>
+
+    <h4 class="subsection-heading">Highlights</h4>
     <mat-radio-group id="type-selection-container">
       <div class="switch-mode-item">
       <mat-radio-button

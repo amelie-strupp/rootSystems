@@ -8,8 +8,8 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./dimension-switch-button.component.sass']
 })
 export class DimensionSwitchButtonComponent {
-  @Output() switchedToDimension: EventEmitter<"3D" | "2D"> = new EventEmitter();
-  selectedDimension: "3D" | "2D" = "2D";
+  @Output() switchedToDimension: EventEmitter<"3D" | "2D" | "Projection"> = new EventEmitter();
+  selectedDimension: "3D" | "2D" | "Projection" = "2D";
   constructor(route: ActivatedRoute, router: Router){
     router.events.subscribe((event)=>{
         if(event instanceof NavigationEnd){
@@ -26,7 +26,7 @@ export class DimensionSwitchButtonComponent {
       }});
 
   }
-  switchToDimension(dim: "3D" | "2D"){
+  switchToDimension(dim: "3D" | "2D" | "Projection"){
     this.selectedDimension = dim;
     this.switchedToDimension.emit(dim);
   }

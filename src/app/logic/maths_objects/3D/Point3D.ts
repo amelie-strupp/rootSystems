@@ -34,4 +34,7 @@ export default class Point3D{
     dotProduct(other: Point3D){
         return other.x*this.x + other.y*this.y+other.z*this.z;
     }
+    add(other: Point3D){
+        return new Point3D(this.x + other.x, this.y + other.y, this.z + other.z);
+    }
 }

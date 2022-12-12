@@ -9,17 +9,20 @@ export class Root{
     length: number;
     isSimple: boolean = false;
     isPositive: boolean = true;
+    isHighestRoot: boolean = false;
     constructor(d:
         {
             angle: number,
             length: number,
             isSimple: boolean,
-            isPositive?: boolean
+            isPositive?: boolean,
+            isHighestRoot?: boolean
         }){
         this.angle = d.angle;
         this.length = d.length;
         this.isSimple = d.isSimple;
         this.isPositive = d.isPositive != null ? d.isPositive : true;
+        this.isHighestRoot = d.isHighestRoot != null ? d.isHighestRoot : false;
     }
     equal(other: Root){
         return other.getVector().equal(this.getVector())
@@ -70,7 +73,8 @@ export default class RootSystem2D{
         type: RootSystems2D,
         coxeterMatrix: Array<number>,
         simpleRoots: Array<Root>,
-        minimumAngle: number){
+        minimumAngle: number,
+        ){
         this.type = type;
         this.coxeterMatrix = coxeterMatrix;
         this._positiveRoots = simpleRoots;
@@ -85,6 +89,22 @@ export default class RootSystem2D{
     }
     getCoxeterMatrix(){
         return this.coxeterMatrix;
+    }
+    hasHighestRoot(){
+        return this._positiveRoots.some((root)=>root.isHighestRoot)
+    }
+    getHighestRoot(){
+        return this._positiveRoots.find((root)=>root.isHighestRoot)
+    }
+    getAffineReflectionBase(){
+        if(this.hasHighestRoot()){
+            let highestRoot = this.getHighestRoot()!;
+        let affineReflectionBase = [
+            ...this.getBase().map((root) => {return {root: root, hyperplane: root.getHyperplane()}}),
+            {root: highestRoot, hyperplane: highestRoot.getHyperplane().moveBy(highestRoot.getVector())}]
+        return affineReflectionBase;
+    }
+        return [...this.getBase().map((root) => {return {root: root, hyperplane: root.getHyperplane()}})];
     }
     getHyperplanes(){
         const hyperplanes: Array<Hyperplane> = [];

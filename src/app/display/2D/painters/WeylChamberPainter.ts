@@ -40,13 +40,13 @@ export default class WeylChamberPainter implements Painter{
             Math.sin(chamber.startAngle) * scaleFactor
         )
         const topHyperplaneVector = new Point(
-            Math.cos(chamber.startAngle + chamber.angle) * scaleFactor,
-            Math.sin(chamber.startAngle + chamber.angle) * scaleFactor
+            Math.cos(chamber.startAngle + chamber.spanningAngle) * scaleFactor,
+            Math.sin(chamber.startAngle + chamber.spanningAngle) * scaleFactor
         )
 
         // Check if the angle is pi -> Draw a rectangle 
         // Float comparison -> A little error is fine
-        if(Math.abs(chamber.angle - Math.PI) < 0.01){
+        if(Math.abs(chamber.spanningAngle - Math.PI) < 0.01){
             const orthogonalVector1 = new Point(
                 bottomHyperplaneVector.y, -bottomHyperplaneVector.x);
             // Position vector at the end of the generating one

@@ -36,7 +36,6 @@ export class RootSystems2DComponent implements OnInit {
     private gridPainter: GridPainter,
     private rootSystemPainter: RootSystemPainter,
     private weylChamberPainter: WeylChamberPainter,
-    private affinePainter: AffinePainter,
     private rootSystemService: RootSystemService,
     private transformService: RootSystemTransformer2DService
     ) {
@@ -95,20 +94,22 @@ export class RootSystems2DComponent implements OnInit {
     this.paintObjects();
   }
   repaintObjects(){
+    if(this.paintSvgContainer != undefined){
     this.clearCanvas();
     this.initializeCanvas();
-    this.paintObjects();
+    this.paintObjects();}
   }
   paintObjects(){
     this.gridPainter.paint(PaintLayer.layer0);
     this.weylChamberPainter.paint(PaintLayer.layer1);
-    this.affinePainter.paint(PaintLayer.layer3)
     this.rootSystemPainter.paint(PaintLayer.layer4);
   }
   clearCanvas(){
-    this.paintSvgContainer.remove();
+    if(this.paintSvgContainer != undefined)
+      this.paintSvgContainer.remove();
   }
   initializeCanvas(){
+    if(this.paintContainer == undefined){return;}
     // Set canvas dimensions
     const canvasHeight = document.body.clientHeight-4;
     const canvasWidth = document.body.clientWidth-1;

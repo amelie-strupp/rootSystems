@@ -1,0 +1,31 @@
+<section id="projection-control-section">
+<app-projection-plane-control
+id="projection-display"
+[rotateX]="angleX"
+[rotateY]="angleY"
+[rotateZ]="angleZ"
+></app-projection-plane-control>
+<div id="projection-controls">
+<div class="projection-control-item">
+<h5 class="projection-control-item-text">Rotate around X-Axis</h5>
+<app-rotation-control
+[color]="Colors.red"
+(angleChanged)="changeAngle('x', $event)"></app-rotation-control>
+</div>
+<div class="projection-control-item">
+    <h5 class="projection-control-item-text">Rotate around Z-Axis</h5>
+
+<app-rotation-control
+(angleChanged)="changeAngle('z', $event)"
+[color]="Colors.yellow"></app-rotation-control>
+</div>
+<div class="projection-control-item">
+    <h5 class="projection-control-item-text">Rotate around Y-Axis</h5>
+
+<app-rotation-control
+(angleChanged)="changeAngle('y', $event)"
+[color]="Colors.blue"></app-rotation-control>
+    </div>
+    </div>
+</section>
+

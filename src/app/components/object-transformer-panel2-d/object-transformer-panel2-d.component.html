@@ -80,6 +80,50 @@
       </div>
     </div>
     <div class="divider"></div>
+    <p class="description-text">Apply affine reflection:</p>
+    <p class="sub-description-text">Base:</p>
+    <div class="mirror-root-container">
+      <div
+        class="mirror-root-item"
+        *ngFor="let rootWithHyperplane of getAffineReflectionBase()"
+        (click)="applyAffineReflection(rootWithHyperplane.root, rootWithHyperplane.hyperplane)"
+      >
+        <div class="root-vector">
+          <p class="root-vector-text">{{ rootWithHyperplane.root.name }}</p>
+          <div
+            class="root-vector-background"
+            [style.background-color]="getColor(rootWithHyperplane.root)"
+          ></div>
+        </div>
+      </div>
+      
+    </div>
+    <p class="description-text">Applied affine reflections:</p>
+    <div class="applied-mirrorings-container">
+      <p
+        class="reflection-placeholder-text"
+        *ngIf="rootsToAffineMirrorings.length == 0"
+      >
+        (None applied)
+      </p>
+      <div class="mirrorings">
+        <div
+          class="mirror-root-item"
+          *ngFor="let root of rootsToAffineMirrorings"
+        >
+          <div class="root-vector">
+            <p class="root-vector-text">{{ root.name }}</p>
+            <div
+              class="root-vector-background"
+              [style.background-color]="getColor(root)"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <div class="reset-button" (click)="resetAffineTransformation()">Reset</div>
+    </div>
+
+    <div class="divider"></div>
 
     <p class="description-text">Mirror at hyperplane orthogonal to root:</p>
     <p class="sub-description-text">Base:</p>
@@ -118,14 +162,14 @@
     <div class="divider"></div>
 
     <p class="description-text">Applied relections:</p>
-    <div id="applied-mirrorings-container">
+    <div class="applied-mirrorings-container">
       <p
-        id="reflection-placeholder-text"
+        class="reflection-placeholder-text"
         *ngIf="rootsToAppliedMirrorings.length == 0"
       >
         (None applied)
       </p>
-      <div id="mirrorings">
+      <div class="mirrorings">
         <div
           class="mirror-root-item"
           *ngFor="let root of rootsToAppliedMirrorings"
@@ -144,7 +188,7 @@
         (Length: {{ getLength() }})
       </p>
 
-      <div id="reset-button" (click)="resetTransformations()">Reset</div>
+      <div class="reset-button" (click)="resetTransformations()">Reset</div>
     </div>
   </div>
 </div>

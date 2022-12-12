@@ -1,7 +1,7 @@
 import { colorNumber } from "src/app/display/values/colors";
 import Point3D from "./Point3D";
 
-export default class Circle{
+export default class Sphere{
     center: Point3D;
     radius: number;
     color: string;

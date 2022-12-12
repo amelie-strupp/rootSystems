@@ -1,7 +1,9 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import AffinePainter from 'src/app/display/2D/painters/AffinePainter';
 import { rootSystemColors } from 'src/app/display/RootSystemColorMode';
 import { Colors } from 'src/app/display/values/colors';
+import { Hyperplane } from 'src/app/logic/maths/2D/Hyperplane';
 import { RootSystemService } from 'src/app/logic/maths/2D/root-system.service';
 import { Root } from 'src/app/logic/maths/2D/RootSystem';
 import { RootSystemTransformer2DService } from 'src/app/services/2D/root-system-transformer2-d.service';
@@ -33,16 +35,19 @@ export class ObjectTransformerPanel2DComponent {
   rootSystemColors: Array<Colors> = [];
   roots: Array<Root>;
   rootsToAppliedMirrorings: Array<Root> = [];
+  rootsToAffineMirrorings: Array<Root> = [];
   isExpanded: boolean = true;
   moreInformationShown: boolean = false;
 
   constructor(private rootSystemService: RootSystemService,
     private cd: ChangeDetectorRef,
-    private transformService: RootSystemTransformer2DService){
+    private transformService: RootSystemTransformer2DService,
+    private affinePainter: AffinePainter){
     this.rootSystemService.repaintEvent.subscribe(() => {
       this.resetTransformations();
       this.rootSystemColors = rootSystemColors[rootSystemService.rootSystem.type];
       this.roots = this.getRoots();
+      this.resetAffineTransformation();
       cd.detectChanges();
     })
     this.transformService.transformationChanged.subscribe(() => {
@@ -54,6 +59,7 @@ export class ObjectTransformerPanel2DComponent {
     if(window.innerWidth < 1000){
       this.isExpanded = false;
     }
+    
   }
   toggleExpand(){
     this.isExpanded = !this.isExpanded;
@@ -102,5 +108,22 @@ export class ObjectTransformerPanel2DComponent {
   }
   resetTransformations(){
     this.transformService.resetTransformation();
+    
+  }
+  resetAffineTransformation(){
+    this.affinePainter.resetReflection();
+    this.getAppliedReflections();
+    this.cd.detectChanges();
+  }
+  getAffineReflectionBase(){
+    return this.rootSystemService.getAffineReflectionBase();
+  }
+  applyAffineReflection(root: Root, hyperplane: Hyperplane){
+    this.affinePainter.addReflection(root, hyperplane);
+    this.getAppliedReflections();
+    this.cd.detectChanges();
+  }
+  getAppliedReflections(){
+    this.rootsToAffineMirrorings = this.affinePainter.appliedReflections.map((obj)=>obj.root);
   }
 }

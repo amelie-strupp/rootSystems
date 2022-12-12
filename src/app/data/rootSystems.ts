@@ -70,6 +70,7 @@ const A2 = new RootSystem2D(
       angle: Math.PI / 2 - Math.PI / 3+ Math.PI/6,
       length: 1,
       isSimple: false,
+      isHighestRoot: true
     }),
     new Root({
       angle: Math.PI / 2 + Math.PI / 3 + Math.PI+ Math.PI/6,
@@ -92,11 +93,13 @@ const B2 = new RootSystem2D(
         angle: Math.PI / 4,
         length: Math.sqrt(2),
         isSimple: false,
+        
       }),
       new Root({
         angle: Math.PI / 2,
         length: 1,
         isSimple: false,
+        isHighestRoot: true
       }),
       new Root({
         angle: (3 * Math.PI) / 4,
@@ -119,6 +122,7 @@ const C2 = new RootSystem2D(
         angle: Math.PI / 4,
         length: 1/Math.sqrt(2),
         isSimple: false,
+        isHighestRoot: true
       }),
       new Root({
         angle: Math.PI / 2,
@@ -151,6 +155,7 @@ const G2 = new RootSystem2D(
         angle: 2*Math.PI/6,
         length: 1,
         isSimple: false,
+        isHighestRoot: true
     }),
     new Root({
         angle: Math.PI/2,

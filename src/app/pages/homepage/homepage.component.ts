@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class HomepageComponent implements OnInit {
 
-  showDimension: '3D' | '2D' = '2D';
+  showDimension: '3D' | '2D' | 'Projection' = '2D';
   constructor(private router: Router, private route: ActivatedRoute) {
     this.initializeView();
   }
@@ -24,7 +24,7 @@ export class HomepageComponent implements OnInit {
       }
     }
   }
-  switchDimension(dim: '3D' | '2D'){
+  switchDimension(dim: '3D' | '2D' | 'Projection'){
       this.router.navigateByUrl('/' + dim)
   }
 }

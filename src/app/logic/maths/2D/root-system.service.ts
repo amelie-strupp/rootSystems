@@ -34,4 +34,8 @@ export class RootSystemService {
   getBase(){
     return this.rootSystem.getBase();
   }
+  getAffineReflectionBase(){
+    return this.rootSystem.getAffineReflectionBase();
+  }
+
 }

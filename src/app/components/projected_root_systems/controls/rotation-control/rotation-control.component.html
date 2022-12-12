@@ -1,0 +1,12 @@
+<div id="rotation-control"
+(mouseup)="stopChangingAngle()"
+[style.borderColor]="color"
+(mousemove)="changeAngle($event)">
+    <div id="axis-horizontal"></div>
+    <div id="axis-vertical"></div>
+    <div id="angle-indicator"
+    [style.backgroundColor]="color"
+    (mousedown)="startChangingAngle()"
+    [style.transform]="'rotate(' + (-angle) + 'deg)'"></div>
+    <div id="center-point" #wheelCenter [style.borderColor]="color"></div>
+</div>
