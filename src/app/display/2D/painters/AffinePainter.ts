@@ -39,7 +39,7 @@ export default class AffinePainter implements Painter{
     }
     // Used to paint the affine hyperplanes to a provided root
     paintAffineHyperplanes(root: Root){
-        let color = Colors.purple200;
+        let color = Colors.purple300;
         let plane = root.getHyperplane()
         let startAngle = plane.angle;
         const startAngleInDegree = (startAngle/(Math.PI*2))*360
@@ -53,7 +53,7 @@ export default class AffinePainter implements Painter{
                     color: color,
                     width: 2,
                 })
-                this.painter.paintLine(line, PaintLayer.layer3).transform({rotate: -startAngleInDegree});
+                this.painter.paintLine(line, PaintLayer.layer2).transform({rotate: -startAngleInDegree});
 
         }
     }
@@ -97,7 +97,7 @@ export default class AffinePainter implements Painter{
             alcove?.walls[2].start,
             alcove?.walls[0].start,
         ],
-        color: Colors.purple200})).opacity(0.6)
+        color: Colors.purple200}), PaintLayer.layer2).opacity(0.5)
     }
     paintReflectionBase(){
         let base = this.rootSystem.getAffineReflectionBase();
@@ -114,10 +114,10 @@ export default class AffinePainter implements Painter{
                 start: new Point(-maxLength, 0).add(offset),
                 end: new Point(maxLength, 0).add(offset),
                 color: color,
-                width: 15,
-                opacity: 0.5
+                width: 10,
+                opacity: 1
             })
-            this.painter.paintLine(line, PaintLayer.layer2).transform({rotate: -startAngleInDegree});
+            this.painter.paintLine(line, PaintLayer.layer4).transform({rotate: -startAngleInDegree});
 
             
         }

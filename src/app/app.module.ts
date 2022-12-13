@@ -26,6 +26,7 @@ import { ProjectionPlaneControlComponent } from './components/projected_root_sys
 import { ProjectionControlSectionComponent } from './components/projected_root_systems/projection-control-section/projection-control-section.component';
 import { ProjectionControlSection3DComponent } from './components/projected_root_systems/projection-control-section3-d/projection-control-section3-d.component';
 import { ProjectionCubesControlComponent } from './components/projected_root_systems/controls/projection-cubes-control/projection-cubes-control.component';
+import { ProjectionSettingsPanelComponent } from './components/projected_root_systems/projection-settings-panel/projection-settings-panel.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,8 @@ import { ProjectionCubesControlComponent } from './components/projected_root_sys
     ProjectionPlaneControlComponent,
     ProjectionControlSectionComponent,
     ProjectionControlSection3DComponent,
-    ProjectionCubesControlComponent
+    ProjectionCubesControlComponent,
+    ProjectionSettingsPanelComponent
   ],
   imports: [
     BrowserModule,

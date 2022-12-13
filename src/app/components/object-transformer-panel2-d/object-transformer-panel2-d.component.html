@@ -53,6 +53,7 @@
       </div>
     </div>
   </div>
+  <div *ngIf="!isAffineVersion">
   <div class="divider"></div>
 
     <p class="description-text">Have Weyl Group act on:</p>
@@ -79,7 +80,9 @@
         <p class="action-object-text">Hyperplanes</p>
       </div>
     </div>
+    </div>
     <div class="divider"></div>
+    <div *ngIf="isAffineVersion">
     <p class="description-text">Apply affine reflection:</p>
     <p class="sub-description-text">Base:</p>
     <div class="mirror-root-container">
@@ -89,7 +92,9 @@
         (click)="applyAffineReflection(rootWithHyperplane.root, rootWithHyperplane.hyperplane)"
       >
         <div class="root-vector">
-          <p class="root-vector-text">{{ rootWithHyperplane.root.name }}</p>
+          <p class="root-vector-text" *ngIf="!rootWithHyperplane.root.isHighestRoot"> &#x27C2; {{ rootWithHyperplane.root.name }}</p>
+          <p class="root-vector-text" *ngIf="rootWithHyperplane.root.isHighestRoot"> &#x27C2; {{ rootWithHyperplane.root.name }}</p>
+
           <div
             class="root-vector-background"
             [style.background-color]="getColor(rootWithHyperplane.root)"
@@ -98,8 +103,9 @@
       </div>
       
     </div>
-    <p class="description-text">Applied affine reflections:</p>
     <div class="applied-mirrorings-container">
+          <p class="description-text">Applied affine reflections:</p>
+
       <p
         class="reflection-placeholder-text"
         *ngIf="rootsToAffineMirrorings.length == 0"
@@ -112,7 +118,7 @@
           *ngFor="let root of rootsToAffineMirrorings"
         >
           <div class="root-vector">
-            <p class="root-vector-text">{{ root.name }}</p>
+            <p class="root-vector-text"> &#x27C2; {{ root.name }}</p>
             <div
               class="root-vector-background"
               [style.background-color]="getColor(root)"
@@ -122,9 +128,8 @@
       </div>
       <div class="reset-button" (click)="resetAffineTransformation()">Reset</div>
     </div>
-
-    <div class="divider"></div>
-
+  </div>
+  <div *ngIf="!isAffineVersion">
     <p class="description-text">Mirror at hyperplane orthogonal to root:</p>
     <p class="sub-description-text">Base:</p>
     <div class="mirror-root-container">
@@ -134,7 +139,7 @@
         (click)="mirrorWithRoot(root)"
       >
         <div class="root-vector">
-          <p class="root-vector-text">{{ root.name }}</p>
+          <p class="root-vector-text"> &#x27C2; {{ root.name }}</p>
           <div
             class="root-vector-background"
             [style.background-color]="getColor(root)"
@@ -151,7 +156,7 @@
         (click)="mirrorWithRoot(root)"
       >
         <div class="root-vector">
-          <p class="root-vector-text">{{ root.name }}</p>
+          <p class="root-vector-text"> &#x27C2; {{ root.name }}</p>
           <div
             class="root-vector-background"
             [style.background-color]="getColor(root)"
@@ -159,10 +164,9 @@
         </div>
       </div>
     </div>
-    <div class="divider"></div>
-
-    <p class="description-text">Applied relections:</p>
     <div class="applied-mirrorings-container">
+          <p class="description-text">Applied relections:</p>
+
       <p
         class="reflection-placeholder-text"
         *ngIf="rootsToAppliedMirrorings.length == 0"
@@ -176,7 +180,7 @@
           (click)="mirrorWithRoot(root)"
         >
           <div class="root-vector">
-            <p class="root-vector-text">{{ root.name }}</p>
+            <p class="root-vector-text"> &#x27C2; {{ root.name }}</p>
             <div
               class="root-vector-background"
               [style.background-color]="getColor(root)"
@@ -191,4 +195,5 @@
       <div class="reset-button" (click)="resetTransformations()">Reset</div>
     </div>
   </div>
+</div>
 </div>

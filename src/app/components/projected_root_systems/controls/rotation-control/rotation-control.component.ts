@@ -26,7 +26,36 @@ export class RotationControlComponent {
       var y = event.clientY - (rect.top + rect.height/2);
       const radAngle = Math.atan2(x,y);
       this.angle = ((radAngle/(Math.PI*2))*360)
-      this.angleChanged.next(radAngle+Math.PI/2)
+      if(Math.abs(this.angle-45) < 8){
+        this.angle = 45
+      }
+      else if(Math.abs(this.angle) < 8){
+        this.angle = 0
+      }
+      if(Math.abs(this.angle-90) < 8){
+        this.angle = 90
+      }
+      if(Math.abs(this.angle-135) < 8){
+        this.angle = 135
+      }
+      if(Math.abs(this.angle-180) < 8){
+        this.angle = 180
+      }
+
+      if(Math.abs(this.angle+45) < 8){
+        this.angle = -45
+      }
+
+      if(Math.abs(this.angle+90) < 8){
+        this.angle = -90
+      }
+      if(Math.abs(this.angle+135) < 8){
+        this.angle = -135
+      }
+      if(Math.abs(this.angle+180) < 8){
+        this.angle = -180
+      }
+      this.angleChanged.next((this.angle/360)*2*Math.PI+Math.PI/2)
     }
   }
 }

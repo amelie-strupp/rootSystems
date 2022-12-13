@@ -13,7 +13,6 @@ export class DimensionSwitchButtonComponent {
   constructor(route: ActivatedRoute, router: Router){
     router.events.subscribe((event)=>{
         if(event instanceof NavigationEnd){
-          console.log(event);
           const url = event.url;
           let selectedDim = url.substring(
             url.indexOf("/") + 1, 

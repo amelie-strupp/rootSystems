@@ -14,6 +14,7 @@ export class ProjectionCanvasService {
   camera!: THREE.Camera;
   renderer!: THREE.WebGLRenderer;
   pointGroup: THREE.Group = new THREE.Group();
+  otherObjectsGroup: THREE.Group = new THREE.Group();
 
   initalizeScene(canvas: HTMLElement){
     this.canvas = canvas;
@@ -28,15 +29,20 @@ export class ProjectionCanvasService {
     this.camera.updateMatrix();
     this.addOrbitControls();
     this.addLight();
-    // this.drawPlane();
-    this.drawCube();
     this.displayScene();
     this.scene.add(this.pointGroup);
+    this.scene.add(this.otherObjectsGroup);
+
   }
   reinitializePoints(){
     this.pointGroup.removeFromParent();
     this.pointGroup = new THREE.Group();
     this.scene.add(this.pointGroup);
+  }
+  reinitializeObjects(){
+    this.otherObjectsGroup.removeFromParent();
+    this.otherObjectsGroup = new THREE.Group();
+    this.scene.add(this.otherObjectsGroup);
   }
   addOrbitControls(){
       let orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -45,26 +51,6 @@ export class ProjectionCanvasService {
   displayScene(){
     requestAnimationFrame( () => this.displayScene() );
 	  this.renderer.render( this.scene, this.camera );
-  }
-  drawPlane(){
-    var planeGeometry = new THREE.PlaneGeometry(14,14, 10, 10);
-    var planeMaterial = new THREE.MeshStandardMaterial(
-      {
-        color: Colors.purple200, side: THREE.DoubleSide, opacity:0.1, transparent: true
-    });
-    let plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.position.set(0,0,0)
-    this.scene.add(plane);
-  }
-  drawCube(){
-    var geometry = new THREE.BoxGeometry(10,10, 10,);
-    var material = new THREE.MeshStandardMaterial(
-      {
-        color: Colors.purple200, side: THREE.DoubleSide, opacity:0.05, transparent: true
-    });
-    let cube = new THREE.Mesh(geometry, material);
-    cube.position.set(0,0,0)
-    this.scene.add(cube);
   }
   addLight(){
     const ambientLight = new THREE.AmbientLight( 0xffffff, 0.7);
@@ -75,5 +61,8 @@ export class ProjectionCanvasService {
   }
   drawToPointGroup(mesh: Mesh<any, any>){
     this.pointGroup.add(mesh);
+  }
+  drawToObjectGroup(mesh: Mesh<any, any>){
+    this.otherObjectsGroup.add(mesh);
   }
 }

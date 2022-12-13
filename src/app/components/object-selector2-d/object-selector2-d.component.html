@@ -4,49 +4,54 @@
     </button>
     <h3 id="heading">Objects & Selection</h3>
     <div id="inner-content" [@expanded]="isExpanded">
-    <h4 class="subsection-heading">Version</h4>
+      <div class="divider"></div>
+
+    <h4 class="subsection-heading">Type</h4>
     <div>
       <mat-radio-group id="version-switch-container">
-        <div class="switch-version-item">
+        <div class="switch-version-item" (click)="switchAffineVersion(false)">
         <mat-radio-button
         [checked]="!isAffineRootSystem"
-        (click)="switchAffineVersion(false)"
+        
+        [value]="!isAffineRootSystem"
         >
         </mat-radio-button>
           <p class="switch-version-text">Root System</p>
         </div>
-        <div class="switch-version-item">
+        <div class="switch-version-item" (click)="switchAffineVersion(true)">
             <mat-radio-button
             [checked]="isAffineRootSystem"
-            (click)="switchAffineVersion(true)">
+            [value]="isAffineRootSystem"
+            >
           </mat-radio-button>
           <p class="switch-version-text">Affine Root System</p>
         </div>
       </mat-radio-group>
     </div>
+    <div *ngIf="!isAffineRootSystem">
     <div class="divider"></div>
 
     <h4 class="subsection-heading">Highlights</h4>
     <mat-radio-group id="type-selection-container">
-      <div class="switch-mode-item">
+      <div class="switch-mode-item" (click)="switchHighlightMode(RootSystemColorMode.base)">
       <mat-radio-button
       [checked]="getCurrentColorMode() == RootSystemColorMode.base"
-      (change)="switchHighlightMode(RootSystemColorMode.base)"
+      
       [value]="RootSystemColorMode.base">
       </mat-radio-button>
         <p class="switch-mode-text">Base</p>
       </div>
-      <div class="switch-mode-item">
+      <div class="switch-mode-item" (click)="switchHighlightMode(RootSystemColorMode.positiveRoots)">
           <mat-radio-button
           [checked]="getCurrentColorMode() == RootSystemColorMode.positiveRoots"
-          (change)="switchHighlightMode(RootSystemColorMode.positiveRoots)">
+          >
         </mat-radio-button>
         <p class="switch-mode-text">Positive roots</p>
       </div>
-      <div class="switch-mode-item">
+      <div class="switch-mode-item" (click)="switchHighlightMode(RootSystemColorMode.highlight)">
           <mat-radio-button
           [checked]="getCurrentColorMode() == RootSystemColorMode.highlight"
-          (change)="switchHighlightMode(RootSystemColorMode.highlight)">
+          >
         </mat-radio-button>
         <p class="switch-mode-text">Custom Highlight</p>
       </div>
@@ -106,7 +111,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div></div>
   </div>
   </div>
   

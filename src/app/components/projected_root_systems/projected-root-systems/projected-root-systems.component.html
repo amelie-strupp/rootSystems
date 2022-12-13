@@ -1,7 +1,12 @@
 <section id="projected-root-systems">
-    <app-projection-control-section3-d id="projection-cubes"></app-projection-control-section3-d>
-    <app-projection-control-section
-    (hyperplaneChanged)="drawWithProjectionPlane($event)"
+    <app-projection-settings-panel
+    id="settings-panel" 
+    ></app-projection-settings-panel>
+    <app-projection-control-section3-d *ngIf="projectionType == '3D'"
+    (hyperplaneChanged3D)="repaint3DPoints($event)"
+    id="projection-cubes"></app-projection-control-section3-d>
+    <app-projection-control-section (hyperplaneChanged)="repaint2DPoints($event)"
+    *ngIf="projectionType == '2D'"
     id="projection-control-section"></app-projection-control-section>
     <div id="canvas" #threeCanvas></div>
 </section>

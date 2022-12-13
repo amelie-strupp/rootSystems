@@ -66,16 +66,17 @@ const A2 = new RootSystem2D(
       length: 1,
       isSimple: true,
     }),
+    
+    new Root({
+      angle: Math.PI / 2 + Math.PI / 3 + Math.PI+ Math.PI/6,
+      length: 1,
+      isSimple: true,
+    }),
     new Root({
       angle: Math.PI / 2 - Math.PI / 3+ Math.PI/6,
       length: 1,
       isSimple: false,
       isHighestRoot: true
-    }),
-    new Root({
-      angle: Math.PI / 2 + Math.PI / 3 + Math.PI+ Math.PI/6,
-      length: 1,
-      isSimple: true,
     }),
   ],
   Math.PI / 3

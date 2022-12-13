@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import AffinePainter from 'src/app/display/2D/painters/AffinePainter';
+import RootSystemPainter from 'src/app/display/2D/painters/RootSystemPainter';
 import { rootSystemColors } from 'src/app/display/RootSystemColorMode';
 import { Colors } from 'src/app/display/values/colors';
 import { Hyperplane } from 'src/app/logic/maths/2D/Hyperplane';
@@ -38,12 +39,15 @@ export class ObjectTransformerPanel2DComponent {
   rootsToAffineMirrorings: Array<Root> = [];
   isExpanded: boolean = true;
   moreInformationShown: boolean = false;
-
-  constructor(private rootSystemService: RootSystemService,
+  isAffineVersion: boolean = false;
+  constructor(
+    private rootSystemService: RootSystemService,
+    private rootSystemPainter: RootSystemPainter,
     private cd: ChangeDetectorRef,
     private transformService: RootSystemTransformer2DService,
     private affinePainter: AffinePainter){
     this.rootSystemService.repaintEvent.subscribe(() => {
+      this.isAffineVersion = rootSystemPainter.showAffineVersion;
       this.resetTransformations();
       this.rootSystemColors = rootSystemColors[rootSystemService.rootSystem.type];
       this.roots = this.getRoots();

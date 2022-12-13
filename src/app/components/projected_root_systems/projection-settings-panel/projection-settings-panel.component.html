@@ -1,0 +1,57 @@
+<div id="projection-settings-panel">
+    <button id="expand-button">
+      <mat-icon [fontIcon]="isExpanded ? 'expand_more' : 'expand_less'" (click)="toggleExpand()"></mat-icon>
+    </button>
+    <h3 id="heading">Projection Settings</h3>
+    <div id="inner-content" [@expanded]="isExpanded">
+      <div class="divider"></div>
+    <h4 class="subsection-heading">Projections</h4>
+    <mat-radio-group id="projection-type-container">
+      <div class="projection-item" (click)="switchProjectionType(3,2)">
+      <mat-radio-button
+      [checked]="projectionStart == 3 && projectionEnd == 2"
+      [value]="true"
+      >
+      </mat-radio-button>
+        <p class="projection-text">3D to 2D</p>
+      </div>
+      <div class="projection-item" (click)="switchProjectionType(4,3)">
+          <mat-radio-button
+          [checked]="projectionStart == 4 && projectionEnd == 3"
+          [value]="false"
+          >
+        </mat-radio-button>
+        <p class="projection-text">4D to 3D</p>
+      </div>
+    </mat-radio-group>
+    <div class="divider"></div>
+    <h4 class="subsection-heading">Root Systems</h4>
+    <mat-radio-group id="root-system-list"  *ngIf="projectionStart == 3">
+        <div class="root-system-item" (click)="load3DRootSystem(rootSystem.ref)"
+        *ngFor="let rootSystem of rootSystems3D"
+        >
+        <mat-radio-button
+        [checked]="selectedRootSystem3D == rootSystem.ref"
+        [value]="true"
+        >
+        </mat-radio-button>
+          <p class="root-system-text">{{rootSystem.text}}</p>
+        </div>
+    </mat-radio-group>
+
+    <mat-radio-group id="root-system-list" *ngIf="projectionStart == 4">
+        <div class="root-system-item" (click)="load4DRootSystem(rootSystem.text, rootSystem.ref)"
+        *ngFor="let rootSystem of rootSystems4D"
+        >
+        <mat-radio-button
+        [checked]="selectedRootSystem4D == rootSystem.ref"
+        [value]="true"
+        >
+        </mat-radio-button>
+          <p class="root-system-text">{{rootSystem.text}}</p>
+        </div>
+        
+    </mat-radio-group>
+</div>
+</div>
+  

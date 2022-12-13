@@ -100,8 +100,10 @@ export class RootSystems2DComponent implements OnInit {
     this.paintObjects();}
   }
   paintObjects(){
-    this.gridPainter.paint(PaintLayer.layer0);
-    this.weylChamberPainter.paint(PaintLayer.layer1);
+    if(!this.rootSystemPainter.showAffineVersion)
+      this.gridPainter.paint(PaintLayer.layer0);
+    if(!this.rootSystemPainter.showAffineVersion)
+      this.weylChamberPainter.paint(PaintLayer.layer1);
     this.rootSystemPainter.paint(PaintLayer.layer4);
   }
   clearCanvas(){

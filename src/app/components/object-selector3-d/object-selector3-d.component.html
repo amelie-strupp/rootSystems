@@ -5,23 +5,23 @@
   <h3 id="heading">Highlight</h3>
   <div id="inner-content" [@expanded]="isExpanded">
   <div id="type-selection-container">
-    <div class="switch-mode-item">
+    <div class="switch-mode-item" (click)="switchHighlightMode(RootSystemColorMode.base)">
     <mat-radio-button
     [checked]="getCurrentColorMode() == RootSystemColorMode.base"
-        (change)="switchHighlightMode(RootSystemColorMode.base)"></mat-radio-button>
+        ></mat-radio-button>
       <p class="switch-mode-text">Base</p>
     </div>
-    <div class="switch-mode-item">
+    <div class="switch-mode-item" (click)="switchHighlightMode(RootSystemColorMode.positiveRoots)">
         <mat-radio-button
         [checked]="getCurrentColorMode() == RootSystemColorMode.positiveRoots"
-        (change)="switchHighlightMode(RootSystemColorMode.positiveRoots)">
+        >
       </mat-radio-button>
       <p class="switch-mode-text">Positive roots</p>
     </div>
-    <div class="switch-mode-item">
+    <div class="switch-mode-item" (click)="switchHighlightMode(RootSystemColorMode.highlight)">
         <mat-radio-button
         [checked]="getCurrentColorMode() == RootSystemColorMode.highlight"
-        (change)="switchHighlightMode(RootSystemColorMode.highlight)">
+        >
       </mat-radio-button>
       <p class="switch-mode-text">Custom Highlight</p>
     </div>

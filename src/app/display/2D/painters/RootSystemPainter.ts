@@ -1,5 +1,6 @@
+import { ThisReceiver } from "@angular/compiler";
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { iif, Subject } from "rxjs";
 import { rootSystems, RootSystems2D } from "src/app/data/rootSystems";
 import { RootSystemService } from "src/app/logic/maths/2D/root-system.service";
 import RootSystem2D, { Root } from "src/app/logic/maths/2D/RootSystem";
@@ -43,12 +44,13 @@ export default class RootSystemPainter implements Painter{
     }
     paint(layer?: PaintLayer){
         const roots = this.rootSystem.getRoots();
+        if(!this.showAffineVersion)
         this.paintExtraGeometry();
         // Paint the roots
         for(let root of roots){
             this.paintRoot(root);
             // Make sure to only paint the hyperplane once
-            if(root.isPositive)
+            if(root.isPositive && !this.showAffineVersion)
                 this.paintHyperplane(root);
         }
         if(layer != undefined){
@@ -134,25 +136,32 @@ export default class RootSystemPainter implements Painter{
                 break;
         }
     }
-    paintVectorEnd(point: Point, color: string){
+    paintVectorEnd(point: Point, color: string, opacity: number = 1){
         this.painter.paintCircle(
-            new Circle({center: point, color: color, radius: 16}), PaintLayer.layer4);
+            new Circle({center: point, color: color, radius: 16}), PaintLayer.layer4).opacity(opacity);
     }
-    paintVectorLine(startPoint: Point, endPoint: Point){
+    paintVectorLine(startPoint: Point, endPoint: Point, opacity: number = 1, color: Colors = Colors.white){
         const line = new Line({
             start: startPoint,
             end: endPoint,
-            color: '#ffffff',
+            color: color,
             width: 7
         })
-        this.painter.paintLine(line, PaintLayer.layer3);
+        this.painter.paintLine(line, PaintLayer.layer3).opacity(opacity);
     }
 
     paintRoot(root: Root){
         const point = root.getVector();
         let color = Colors.white;
-        this.paintVectorLine(new Point(0,0), point);
-        if(this.colorMode == RootSystemColorMode.base){
+        let lineColor = Colors.white;
+        let opacity = 1;
+        // Only paint a grayed out root system with the affine version
+        if(this.showAffineVersion){
+            opacity = 1
+            lineColor = Colors.purple900
+            color = Colors.purple900
+        }
+        else if(this.colorMode == RootSystemColorMode.base){
             color = root.isSimple ? Colors.brightRed : Colors.brightGreen;
         }else if(this.colorMode == RootSystemColorMode.positiveRoots){
             color = root.isPositive ? Colors.brightRed : Colors.brightGreen;
@@ -162,14 +171,16 @@ export default class RootSystemPainter implements Painter{
             color = rootSystemColors[this.rootSystem.getType()][rootIndex];
             } 
         }
+        this.paintVectorLine(new Point(0,0), point, opacity, lineColor);
+
         // Transform the object accoring to the group action if it has been selected
         // to be transformed
         if(this.transformService.transformationAppliedTo('ROOTS')){
             const transformedPoint = root.getVectorUnderTransformation(this.transformService.currentTranformation);
-            this.paintVectorEnd(transformedPoint, color);
+            this.paintVectorEnd(transformedPoint, color, opacity);
         }
         else{
-            this.paintVectorEnd(root.getVector(), color);
+            this.paintVectorEnd(root.getVector(), color, opacity);
         }
     }
 

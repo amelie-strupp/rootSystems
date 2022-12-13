@@ -14,9 +14,10 @@ import { ProjectionService } from './projection.service';
 })
 export class ProjectionPainterService {
   scaleFactor = 3;
-  constructor(private projectionService: ProjectionService,
+  constructor(
+    private projectionService: ProjectionService,
     private canvasService: ProjectionCanvasService
-    ) { }
+  ) { }
   drawPointsWith2DProjection(points: Array<Point3D>, projectionNormal: Point3D, colors: Array<Colors>){
     let transformedPoints: Array<Point3D> = [];
     let zProjectionMatrix = this.rotateToZPlane(projectionNormal.normalized());
@@ -38,34 +39,12 @@ export class ProjectionPainterService {
       i += 1
     }
   }
-  drawPointsWith3DProjection(points: Array<PointND>, projectionNormal: PointND, colors: Array<Colors> = []){
+  drawPointsWith3DProjection(points: Array<PointND>, projectionNormal: PointND, colors: Array<Colors>){
     let transformedPoints: Array<PointND> = [];
-    projectionNormal = new PointND([1,1,1,0]);
-    points = [];
-    let positivePoints = [
-      new PointND([1,-1,0,0]),
-      new PointND([0,1,-1,0]),
-      new PointND([0,0,1,-1]),
-      new PointND([0,0,1,1]),
-      new PointND([1,0,-1,0]),
-      new PointND([0,1,0,1]),
-      new PointND([1,0,0,-1]),
-      new PointND([1,0,0,-1]),
-      new PointND([1,0,0,1]),
-      new PointND([0,1,1,0]),
-      new PointND([1,0,0,1]),
-      new PointND([0,1,1,0]),
-      new PointND([1,0,1,0]),
-      new PointND([1,1,0,0]),
-    ];
-    positivePoints.forEach((p)=>{
-      points.push(p);
-      points.push(p.getNegative())
-    })
     let zProjectionMatrix = this.rotateToNormalCube(projectionNormal.normalized());
     for(let point of points){
       let projectedPoint = this.projectionService.projectOnto3DHyperplane(point, projectionNormal);
-      console.log(projectionNormal.dotProduct(projectedPoint));
+      // console.log(projectionNormal.dotProduct(projectedPoint));
       let transformedPoint = projectedPoint.multiplyOnLeftWithMatrix(zProjectionMatrix);
       transformedPoints.push(transformedPoint);
     }
@@ -89,41 +68,41 @@ export class ProjectionPainterService {
     // https://math.stackexchange.com/questions/598750/finding-the-rotation-matrix-in-n-dimensions
     let dim = 4;
     x = x.normalized();
-    console.log("x", x);
+    // console.log("x", x);
     let y = new PointND([0,0,0,1]);
     let u = x.normalized();
     let utyu = u.asMatrix().scalarMultiply((u.getTranspose().multiply(y.asMatrix())).components[0][0])
-    console.log("UTYU", utyu);
+    // console.log("UTYU", utyu);
 
     let v = y.asMatrix().add(utyu.scalarMultiply(-1));
-    console.log("V", v);
+    // console.log("V", v);
     let uut = u.asMatrix().multiply(u.getTranspose());
-    console.log("UUT", uut);
+    // console.log("UUT", uut);
 
     let vvt = v.multiply(v.transpose());
-    console.log("VVT", vvt)
+    // console.log("VVT", vvt)
 
     let cos = x.dotProduct(y)*1/(x.length()*y.length());
     let sin = Math.sqrt(1-cos*cos);
-    console.log("cos", cos)
-    console.log("sin", sin)
+    // console.log("cos", cos)
+    // console.log("sin", sin)
 
     let R = new MatrixND(
       [[cos, -sin], [sin, cos]]
     )
-    console.log("R", R);
+    // console.log("R", R);
 
     let uvMatrixTranspose = new MatrixND([[...u.components], [...v.components.map((o)=>o[0])]]);
-    console.log("uvMatrixTranspose", uvMatrixTranspose);
+    // console.log("uvMatrixTranspose", uvMatrixTranspose);
 
     let uvMatrix = uvMatrixTranspose.transpose();
-    console.log("uvMatrix", uvMatrix);
+    // console.log("uvMatrix", uvMatrix);
 
     let secondPart = (uvMatrix.multiply(R)).multiply(uvMatrixTranspose)
-    console.log("secondPart", secondPart);
-    console.log("ID", MatrixND.identity(dim));
+    // console.log("secondPart", secondPart);
+    // console.log("ID", MatrixND.identity(dim));
     let rotation = MatrixND.identity(dim).add(uut.scalarMultiply(-1)).add(vvt.scalarMultiply(-1)).add(secondPart);
-    console.log("Rotation", rotation);
+    // console.log("Rotation", rotation);
     return rotation;
   }
   // rotateToZPlane(point: Point3D){
@@ -188,4 +167,25 @@ export class ProjectionPainterService {
     let secondStep = addMatrices(firstStep, vMatrixClone);
     return secondStep;
   }
+  drawPlane(){
+    var planeGeometry = new THREE.PlaneGeometry(14,14, 10, 10);
+    var planeMaterial = new THREE.MeshStandardMaterial(
+      {
+        color: Colors.purple200, side: THREE.DoubleSide, opacity:0.1, transparent: true
+    });
+    let plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.position.set(0,0,0)
+    this.canvasService.drawToObjectGroup(plane);
+  }
+  drawCube(){
+    var geometry = new THREE.BoxGeometry(12,12, 12,);
+    var material = new THREE.MeshStandardMaterial(
+      {
+        color: Colors.purple200, side: THREE.DoubleSide, opacity:0.05, transparent: true
+    });
+    let cube = new THREE.Mesh(geometry, material);
+    cube.position.set(0,0,0)
+    this.canvasService.drawToObjectGroup(cube);
+  }
+
 }

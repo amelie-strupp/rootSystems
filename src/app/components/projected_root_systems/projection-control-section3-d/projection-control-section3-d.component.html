@@ -2,42 +2,61 @@
   <div id="cubes-section">
     <app-projection-cubes-control
       class="rotating-cube-display"
-      [rotateX]="angleX1"
-      [rotateY]="angleX2"
+      [rotateX]="xy"
+      [rotateY]="zw"
     ></app-projection-cubes-control>
     <app-projection-cubes-control
       class="rotating-cube-display"
-      [rotateX]="angleY1"
-      [rotateY]="angleY2"
+      [rotateX]="xz"
+      [rotateY]="yw"
       [color1]="Colors.yellow"
       [color2]="Colors.green"
+    ></app-projection-cubes-control>
+    <app-projection-cubes-control
+      class="rotating-cube-display"
+      [rotateX]="xw"
+      [rotateY]="yz"
+      [color1]="Colors.orange"
+      [color2]="Colors.turqouis"
     ></app-projection-cubes-control>
   </div>
   <div id="projection-controls">
     <div class="projection-control-item">
       <app-rotation-control
         [color]="Colors.red"
-        (angleChanged)="changeAngle('x1', $event)"
+        (angleChanged)="changeAngle('xy', $event)"
       ></app-rotation-control>
     </div>
     <div class="projection-control-item">
       <app-rotation-control
-        (angleChanged)="changeAngle('x2', $event)"
+        (angleChanged)="changeAngle('zw', $event)"
         [color]="Colors.blue"
       ></app-rotation-control>
     </div>
     <div class="projection-control-item">
       <app-rotation-control
-        (angleChanged)="changeAngle('y1', $event)"
+        (angleChanged)="changeAngle('xz', $event)"
         [color]="Colors.yellow"
       ></app-rotation-control>
       
     </div>
     <div class="projection-control-item">
     <app-rotation-control
-        (angleChanged)="changeAngle('y2', $event)"
+        (angleChanged)="changeAngle('yw', $event)"
         [color]="Colors.green"
       ></app-rotation-control>
     </div>
+    <div class="projection-control-item">
+      <app-rotation-control
+          (angleChanged)="changeAngle('xw', $event)"
+          [color]="Colors.orange"
+        ></app-rotation-control>
+      </div>
+      <div class="projection-control-item">
+      <app-rotation-control
+          (angleChanged)="changeAngle('yz', $event)"
+          [color]="Colors.turqouis"
+        ></app-rotation-control>
+      </div>
   </div>
 </section>
