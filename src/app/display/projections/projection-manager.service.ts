@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { rootSystems3D } from 'src/app/data/rootSystems3D';
+import MatrixND from 'src/app/logic/maths/nD/MatrixND';
 import PointND from 'src/app/logic/maths/nD/PointND';
 import Point3D from 'src/app/logic/maths_objects/3D/Point3D';
 import { Color } from 'three';
@@ -14,27 +15,38 @@ import { ProjectionPainterService } from './projection-painter.service';
 })
 export class ProjectionManagerService {
   projectionType: "2D"|"3D" = "2D";
+  startDimension: number = 3;
   rootListND: Array<PointND> = [];
-  rootList3D: Array<Point3D> = [];
   normalND: PointND = new PointND([0,0,0,1]);
-  normal2D: Point3D = new Point3D(1,0,0);
   colorList: Array<Colors> = [];
-  dimensionChanged: Subject<"2D"|"3D"> = new Subject();
+
+  // TESTT
+  rotationMatrix: MatrixND = MatrixND.identity(4);
+
+
+  startDimensionChanged: Subject<number> = new Subject();
   constructor(
     private canvasService: ProjectionCanvasService,
     private paintService: ProjectionPainterService,
     ) { }
+  setStartDimension(x: number){
+    this.startDimension = x;
+    this.startDimensionChanged.next(this.startDimension);
+  }
+  setRotationMatrix(m: MatrixND){
+    this.rotationMatrix = m;
+  }
   switchProjectionType(type: "2D"|"3D"){
     this.projectionType = type;
     this.canvasService.reinitializeObjects();
     this.paintObjectForDimension();
-    this.dimensionChanged.next(type);
     if(type == "2D"){
       this.drawAs2DProjection();
     }
     else{
       this.drawAs3DProjection();
     }
+    this.startDimensionChanged.next(this.startDimension);
   }
   paintObjectForDimension(){
     if(this.projectionType == "2D"){
@@ -53,14 +65,10 @@ export class ProjectionManagerService {
       this.drawAs3DProjection();
     }
   }
-  set3DRootsAndColors(roots: Array<Point3D>, colors: Array<Colors>){
-    this.rootList3D = roots;
-    this.colorList = colors;
-  }
-  setNDRootsAndColors(roots: Array<PointND>, colors: Array<Colors>){
+  setRootsAndColors(roots: Array<PointND>, colors: Array<Colors>){
     this.rootListND = roots;
     this.colorList = colors;
-
+    console.log(this.rootListND);
   }
   updateNormalVector2D(normalVector: Point3D){
     this.normal2D = normalVector;
@@ -70,9 +78,18 @@ export class ProjectionManagerService {
     this.normalND = normalVector;
     this.drawAs3DProjection();
   }
+  removePoints(){
+    this.canvasService.reinitializePoints();
+
+  }
   drawAs3DProjection(){
     this.canvasService.reinitializePoints();
-    this.paintService.drawPointsWith3DProjection(
+    // this.paintService.drawPointsWith3DStereographicProjection(
+    //   this.rootListND,
+    //   this.colorList,
+    //   this.rotationMatrix
+    // );
+    this.paintService.draw4DPointsAs3DProjection(
       this.rootListND,
       this.normalND,
       this.colorList
@@ -84,5 +101,19 @@ export class ProjectionManagerService {
       this.rootList3D
       , this.normal2D, this.colorList);
   }
-
+  projectFrom5DTo2D(){
+    this.paintService
+    .draw5DPointsAs2DProjection(this.rootListND, 
+    this.colorList);
+  }
+  projectFrom5DTo3D(){
+    this.paintService
+    .draw5DPointsAs3DProjection(this.rootListND, 
+    this.colorList);
+  }
+  projectFrom6DTo3D(){
+    this.paintService
+    .draw6DPointsAs3DProjection(this.rootListND, 
+    this.colorList);
+  }
 }

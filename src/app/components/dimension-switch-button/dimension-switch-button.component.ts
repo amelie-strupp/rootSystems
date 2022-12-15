@@ -20,10 +20,7 @@ export class DimensionSwitchButtonComponent {
         if(selectedDim == '2D' || selectedDim == '3D'){
           this.selectedDimension = selectedDim;
         }
-        
-        
       }});
-
   }
   switchToDimension(dim: "3D" | "2D" | "Projection"){
     this.selectedDimension = dim;

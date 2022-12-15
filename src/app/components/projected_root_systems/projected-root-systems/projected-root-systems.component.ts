@@ -19,13 +19,13 @@ import { Matrix3, Matrix4 } from 'three';
 })
 export class ProjectedRootSystemsComponent {
   @ViewChild('threeCanvas') canvas!: ElementRef;
-  projectionType: "3D"|"2D" = "2D"
+  projectionStartDim: number = 3;
   constructor(private projectionManager: ProjectionManagerService,
     private cd: ChangeDetectorRef
     ){
-      projectionManager.dimensionChanged.subscribe((type) => {
-        this.projectionType = this.projectionType;
+      projectionManager.startDimensionChanged.subscribe((type) => {
         this.updateProjectionType();
+        console.log(this.projectionStartDim);
         this.cd.detectChanges();
       })
   }
@@ -39,6 +39,6 @@ export class ProjectedRootSystemsComponent {
     this.projectionManager.updateNormalVector2D(normalVector);
   }
   updateProjectionType(){
-    this.projectionType = this.projectionManager.projectionType;
+    this.projectionStartDim = this.projectionManager.startDimension;
   }
 }

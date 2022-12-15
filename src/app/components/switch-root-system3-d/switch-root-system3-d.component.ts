@@ -13,7 +13,6 @@ export class SwitchRootSystem3DComponent implements OnInit {
   constructor(private rootSystemService: RootSystem3DService, private activatedRoute: ActivatedRoute,
     private router: Router) {
       this.activatedRoute.params.subscribe(params => {
-        console.log("Change!")
         let rootSystem = decodeURI(params['root_system'] || '') as RootSystems3D;
         if(rootSystems3D[rootSystem]!= undefined){
           this.rootSystemService.setInitialRootSystem(rootSystems3D[rootSystem])

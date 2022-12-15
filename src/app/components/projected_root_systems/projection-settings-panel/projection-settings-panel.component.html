@@ -23,6 +23,30 @@
         </mat-radio-button>
         <p class="projection-text">4D to 3D</p>
       </div>
+      <div class="projection-item" (click)="switchProjectionType(5,2)">
+        <mat-radio-button
+        [checked]="projectionStart == 5 && projectionEnd == 2"
+        [value]="false"
+        >
+      </mat-radio-button>
+      <p class="projection-text">5D to 2D</p>
+    </div>
+    <div class="projection-item" (click)="switchProjectionType(5,3)">
+      <mat-radio-button
+      [checked]="projectionStart == 5 && projectionEnd == 3"
+      [value]="false"
+      >
+    </mat-radio-button>
+    <p class="projection-text">5D to 3D</p>
+  </div>
+  <div class="projection-item" (click)="switchProjectionType(6,3)">
+    <mat-radio-button
+    [checked]="projectionStart == 6 && projectionEnd == 3"
+    [value]="false"
+    >
+  </mat-radio-button>
+  <p class="projection-text">6D to 3D</p>
+</div>
     </mat-radio-group>
     <div class="divider"></div>
     <h4 class="subsection-heading">Root Systems</h4>
@@ -38,7 +62,6 @@
           <p class="root-system-text">{{rootSystem.text}}</p>
         </div>
     </mat-radio-group>
-
     <mat-radio-group id="root-system-list" *ngIf="projectionStart == 4">
         <div class="root-system-item" (click)="load4DRootSystem(rootSystem.text, rootSystem.ref)"
         *ngFor="let rootSystem of rootSystems4D"
@@ -50,8 +73,31 @@
         </mat-radio-button>
           <p class="root-system-text">{{rootSystem.text}}</p>
         </div>
-        
     </mat-radio-group>
+    <mat-radio-group id="root-system-list" *ngIf="projectionStart == 5">
+      <div class="root-system-item" (click)="load5DRootSystem(rootSystem.text, rootSystem.ref)"
+      *ngFor="let rootSystem of rootSystems5D"
+      >
+      <mat-radio-button
+      [checked]="selectedRootSystem5D == rootSystem.ref"
+      [value]="true"
+      >
+      </mat-radio-button>
+        <p class="root-system-text">{{rootSystem.text}}</p>
+      </div>
+  </mat-radio-group>
+  <mat-radio-group id="root-system-list" *ngIf="projectionStart == 6">
+    <div class="root-system-item" (click)="load6DRootSystem(rootSystem.text, rootSystem.ref)"
+    *ngFor="let rootSystem of rootSystems6D"
+    >
+    <mat-radio-button
+    [checked]="selectedRootSystem5D == rootSystem.ref"
+    [value]="true"
+    >
+    </mat-radio-button>
+      <p class="root-system-text">{{rootSystem.text}}</p>
+    </div>
+</mat-radio-group>
 </div>
 </div>
   

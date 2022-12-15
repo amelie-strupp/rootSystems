@@ -1,0 +1,5 @@
+<section id="rotation-control">
+    <mat-slider min="0" max="360" id="slider" [discrete]="true">
+        <input matSliderThumb [ngModel]="degree" (ngModelChange)="changeDegree($event)">
+    </mat-slider>
+</section>

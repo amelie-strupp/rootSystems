@@ -1,0 +1,6 @@
+<section id="rotation-control">
+    <app-rotation-slider *ngFor="let slider of sliders; let i = index"
+    (degreeChanged)="setAngle(i, $event)"
+    #slider
+    ></app-rotation-slider>
+</section>

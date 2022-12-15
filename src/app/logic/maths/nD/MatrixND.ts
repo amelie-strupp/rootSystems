@@ -75,17 +75,20 @@ export default class MatrixND{
         for(let i = 0; i < numberOfColumns; i++){
             newMatrixComponents.push([]);
         }
-        // let elements: Array<number> = [];
-        // for(let row of this.components){
-        //     for(let element of row){
-        //         elements.push(element)
-        //     }
-        // }
+        
         for(let i = 0; i < numberOfColumns; i++){
             for(let j = 0; j < numberOfRows; j++){
                 newMatrixComponents[i].push(this.components[j][i])
             }
         }
         return new MatrixND(newMatrixComponents);
+    }
+    static basicRotationMatrix(dim: number, base1: number, base2: number, angle: number){
+        let identity = MatrixND.identity(dim);
+        identity.components[base1][base1] = Math.cos(angle)
+        identity.components[base2][base1] = -Math.sin(angle)
+        identity.components[base2][base2] = Math.cos(angle)
+        identity.components[base1][base2] = Math.sin(angle);
+        return identity;
     }
 }

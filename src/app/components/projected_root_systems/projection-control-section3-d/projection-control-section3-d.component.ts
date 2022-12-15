@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { ProjectionManagerService } from 'src/app/display/projections/projection-manager.service';
 import { Colors } from 'src/app/display/values/colors';
 import MatrixND from 'src/app/logic/maths/nD/MatrixND';
 import PointND from 'src/app/logic/maths/nD/PointND';
@@ -17,6 +18,8 @@ export class ProjectionControlSection3DComponent {
   xy: number = Math.PI;
   @Output() hyperplaneChanged3D: EventEmitter<PointND> = new EventEmitter();
   Colors = Colors;
+  constructor(private projectionManager: ProjectionManagerService){
+  }
   changeAngle(axis:
     'zw' | 'yw' | 'yz'| 'xw'|'xz'|'xy', newValue: number) {
     switch (axis) {
@@ -52,10 +55,9 @@ export class ProjectionControlSection3DComponent {
     let Ryw = new MatrixND([
       [Math.cos(this.yw),  0, -Math.sin(this.yw), 0],
       [0,1,0,0],
-      [Math.sin(this.yw), Math.cos(this.yw), 0, 0],
+      [Math.sin(this.yw), 0, Math.cos(this.yw), 0],
       [0,0,0,1],
     ])
-
     let Ryz = new MatrixND([
       [Math.cos(this.yz),  0, 0, -Math.sin(this.yz)],
       [0,1,0,0],
@@ -86,6 +88,7 @@ export class ProjectionControlSection3DComponent {
 
     let matrixProduct = Rzw.multiply(Ryw)
     .multiply(Ryz).multiply(Rxw).multiply(Rxz).multiply(Rxy)
+    this.projectionManager.rotationMatrix = matrixProduct;
     return normalVector.multiplyOnLeftWithMatrix(matrixProduct);
   }
 }

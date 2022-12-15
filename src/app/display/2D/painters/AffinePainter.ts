@@ -114,7 +114,7 @@ export default class AffinePainter implements Painter{
                 start: new Point(-maxLength, 0).add(offset),
                 end: new Point(maxLength, 0).add(offset),
                 color: color,
-                width: 10,
+                width: 5,
                 opacity: 1
             })
             this.painter.paintLine(line, PaintLayer.layer4).transform({rotate: -startAngleInDegree});

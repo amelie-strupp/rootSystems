@@ -20,6 +20,7 @@ import { ObjectSelector2DComponent } from './components/object-selector2-d/objec
 import { MiniView2DComponent } from './components/mini-view2-d/mini-view2-d.component';
 import { ObjectTransformerPanel2DComponent } from './components/object-transformer-panel2-d/object-transformer-panel2-d.component'; 
 import {MatRadioModule} from '@angular/material/radio';
+import {MatSliderModule} from '@angular/material/slider'; 
 import { RotationControlComponent } from './components/projected_root_systems/controls/rotation-control/rotation-control.component'; 
 import { ProjectedRootSystemsComponent } from './components/projected_root_systems/projected-root-systems/projected-root-systems.component';
 import { ProjectionPlaneControlComponent } from './components/projected_root_systems/controls/projection-plane-control/projection-plane-control.component';
@@ -27,6 +28,9 @@ import { ProjectionControlSectionComponent } from './components/projected_root_s
 import { ProjectionControlSection3DComponent } from './components/projected_root_systems/projection-control-section3-d/projection-control-section3-d.component';
 import { ProjectionCubesControlComponent } from './components/projected_root_systems/controls/projection-cubes-control/projection-cubes-control.component';
 import { ProjectionSettingsPanelComponent } from './components/projected_root_systems/projection-settings-panel/projection-settings-panel.component';
+import { ProjectionNDRotationControlComponent } from './components/projected_root_systems/controls/projection-ndrotation-control/projection-ndrotation-control.component';
+import { FormsModule } from '@angular/forms';
+import { RotationSliderComponent } from './components/projected_root_systems/controls/rotation-slider/rotation-slider.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +53,9 @@ import { ProjectionSettingsPanelComponent } from './components/projected_root_sy
     ProjectionControlSectionComponent,
     ProjectionControlSection3DComponent,
     ProjectionCubesControlComponent,
-    ProjectionSettingsPanelComponent
+    ProjectionSettingsPanelComponent,
+    ProjectionNDRotationControlComponent,
+    RotationSliderComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +63,9 @@ import { ProjectionSettingsPanelComponent } from './components/projected_root_sy
     BrowserAnimationsModule,
     MatCheckboxModule,
     MatIconModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSliderModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
