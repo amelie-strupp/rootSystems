@@ -18,6 +18,9 @@ export class ProjectionPainterService {
     private projectionService: ProjectionService,
     private canvasService: ProjectionCanvasService
   ) { }
+  projectPoints(points: ){
+
+  }
   drawPointsWith2DProjection(points: Array<Point3D>, projectionNormal: Point3D, colors: Array<Colors>){
     let transformedPoints: Array<Point3D> = [];
     let zProjectionMatrix = this.rotateToZPlane(projectionNormal.normalized());
@@ -39,12 +42,49 @@ export class ProjectionPainterService {
       i += 1
     }
   }
-  drawPointsWith3DProjection(points: Array<PointND>, projectionNormal: PointND, colors: Array<Colors>){
+  drawPointsWith2DStereographicProjection(points: Array<PointND>, colors: Array<Colors>){
+    let transformedPoints: Array<Point3D> = [];
+    for(let point of points){
+      let point2D = this.projectionService.stereographicProjectionFromND(point, 2)
+      transformedPoints.push(new Point3D(point2D.components[0], point2D.components[1], 0));
+    }
+    let i = 0;
+    for(let transformedPoint of transformedPoints){
+      const geometry = new THREE.SphereGeometry( 0.3, 16, 16 );
+      const material = new THREE.MeshStandardMaterial( {
+        color: colors[i],
+      } );
+      const point = new THREE.Mesh( geometry, material );
+      point.position.set(transformedPoint.x*this.scaleFactor, transformedPoint.y*this.scaleFactor, transformedPoint.z*this.scaleFactor);
+      this.canvasService.drawToPointGroup(point);
+      i += 1
+    }
+  }
+  drawPointsWith3DStereographicProjection(points: Array<PointND>, colors: Array<Colors>,
+    rotationMatrix: MatrixND = MatrixND.identity(4)){
+    let transformedPoints: Array<Point3D> = [];
+    for(let point of points){
+      point = point.multiplyOnLeftWithMatrix(rotationMatrix)
+      let projectedPoint = this.projectionService.stereographicProjectionFromND(point, 3)
+      transformedPoints.push(new Point3D(projectedPoint.components[0], projectedPoint.components[1], projectedPoint.components[2]));
+    }
+    let i = 0;
+    for(let transformedPoint of transformedPoints){
+      const geometry = new THREE.SphereGeometry( 0.3, 16, 16 );
+      const material = new THREE.MeshStandardMaterial( {
+        color: colors[i],
+      } );
+      const point = new THREE.Mesh( geometry, material );
+      point.position.set(transformedPoint.x*this.scaleFactor, transformedPoint.y*this.scaleFactor, transformedPoint.z*this.scaleFactor);
+      this.canvasService.drawToPointGroup(point);
+      i += 1
+    }
+  }
+  draw4DPointsAs3DProjection(points: Array<PointND>, projectionNormal: PointND, colors: Array<Colors>){
     let transformedPoints: Array<PointND> = [];
     let zProjectionMatrix = this.rotateToNormalCube(projectionNormal.normalized());
     for(let point of points){
       let projectedPoint = this.projectionService.projectOnto3DHyperplane(point, projectionNormal);
-      // console.log(projectionNormal.dotProduct(projectedPoint));
       let transformedPoint = projectedPoint.multiplyOnLeftWithMatrix(zProjectionMatrix);
       transformedPoints.push(transformedPoint);
     }
@@ -60,6 +100,68 @@ export class ProjectionPainterService {
         transformedPoint.components[1]*this.scaleFactor,
         transformedPoint.components[2]*this.scaleFactor
       );
+      this.canvasService.drawToPointGroup(point);
+      i += 1
+    }
+  }
+  draw5DPointsAs3DProjection(points: Array<PointND>, colors: Array<Colors>){
+    let projectedPoints: Array<PointND> = [];
+    for(let point of points){
+      let projectedPoint = this.projectionService.projectOnto3DHyperplaneIn5D(point, point);
+      projectedPoints.push(projectedPoint);
+    }
+    let i = 0;
+    for(let projectedPoint of projectedPoints){
+      const geometry = new THREE.SphereGeometry( 0.3, 16, 16 );
+      const material = new THREE.MeshStandardMaterial( {
+        color: colors[i],
+      } );
+      const point = new THREE.Mesh( geometry, material );
+      point.position.set(
+        projectedPoint.components[0]*this.scaleFactor,
+        projectedPoint.components[1]*this.scaleFactor,
+        projectedPoint.components[2]*this.scaleFactor
+      );
+      this.canvasService.drawToPointGroup(point);
+      i += 1
+    }
+  }
+  draw6DPointsAs3DProjection(points: Array<PointND>, colors: Array<Colors>){
+    let projectedPoints: Array<PointND> = [];
+    for(let point of points){
+      let projectedPoint = this.projectionService.projectOnto3DHyperplaneIn6D(point, point);
+      projectedPoints.push(projectedPoint);
+    }
+    let i = 0;
+    for(let projectedPoint of projectedPoints){
+      const geometry = new THREE.SphereGeometry( 0.3, 16, 16 );
+      const material = new THREE.MeshStandardMaterial( {
+        color: colors[i],
+      } );
+      const point = new THREE.Mesh( geometry, material );
+      point.position.set(
+        projectedPoint.components[0]*this.scaleFactor,
+        projectedPoint.components[1]*this.scaleFactor,
+        projectedPoint.components[2]*this.scaleFactor
+      );
+      this.canvasService.drawToPointGroup(point);
+      i += 1
+    }
+  }
+  draw5DPointsAs2DProjection(points: Array<PointND>, colors: Array<Colors>){
+    let transformedPoints: Array<Point> = [];
+    for(let point of points){
+      let projectedPoint = this.projectionService.projectOnto2DHyperplaneIn5D(point);
+      transformedPoints.push(new Point(projectedPoint.components[0], projectedPoint.components[1]));
+    }
+    let i = 0;
+    for(let transformedPoint of transformedPoints){
+      const geometry = new THREE.SphereGeometry( 0.3, 16, 16 );
+      const material = new THREE.MeshStandardMaterial( {
+        color: colors[i],
+      } );
+      const point = new THREE.Mesh( geometry, material );
+      point.position.set(transformedPoint.x*this.scaleFactor, transformedPoint.y*this.scaleFactor, 0);
       this.canvasService.drawToPointGroup(point);
       i += 1
     }
