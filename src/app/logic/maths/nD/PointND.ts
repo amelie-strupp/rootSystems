@@ -8,6 +8,9 @@ export default class PointND{
     get dim(){
         return this.components.length;
     }
+    get(index: number){
+        return this.components[index];
+    }
     getNegative(){
         return new PointND(
             this.components.map((c) => -c)
@@ -57,5 +60,12 @@ export default class PointND{
             return c + other.components[i]
         })
         return new PointND(sum);
+    }
+    crossProduct(other: PointND){
+        return new PointND([
+            this.get(1)*other.get(2) - this.get(2)*other.get(1),
+            this.get(2)*other.get(0) - this.get(0)*other.get(2),
+            this.get(0)*other.get(1) - this.get(1)*other.get(0),
+        ])
     }
 }

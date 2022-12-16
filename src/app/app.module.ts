@@ -31,6 +31,7 @@ import { ProjectionSettingsPanelComponent } from './components/projected_root_sy
 import { ProjectionNDRotationControlComponent } from './components/projected_root_systems/controls/projection-ndrotation-control/projection-ndrotation-control.component';
 import { FormsModule } from '@angular/forms';
 import { RotationSliderComponent } from './components/projected_root_systems/controls/rotation-slider/rotation-slider.component';
+import {MatSelectModule} from '@angular/material/select'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +66,8 @@ import { RotationSliderComponent } from './components/projected_root_systems/con
     MatIconModule,
     MatRadioModule,
     MatSliderModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

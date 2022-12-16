@@ -16,7 +16,6 @@ export class ProjectionControlSection3DComponent {
   xw: number = Math.PI;
   xz: number = Math.PI;
   xy: number = Math.PI;
-  @Output() hyperplaneChanged3D: EventEmitter<PointND> = new EventEmitter();
   Colors = Colors;
   constructor(private projectionManager: ProjectionManagerService){
   }
@@ -42,9 +41,9 @@ export class ProjectionControlSection3DComponent {
         this.xy = newValue;
         break;
     }
-    this.hyperplaneChanged3D.emit(this.emitNewHyperplaneNormalVector());
+    this.applyRotation();
   }
-  emitNewHyperplaneNormalVector(){
+  applyRotation(){
     let normalVector = new PointND([0,0,0,1])
     let Rzw = new MatrixND([
       [Math.cos(this.zw), -Math.sin(this.zw), 0, 0],
@@ -64,7 +63,6 @@ export class ProjectionControlSection3DComponent {
       [0,0,1,0],
       [Math.sin(this.yz), 0, 0, Math.cos(this.yz)],
     ])
-
     let Rxw = new MatrixND([
       [1,0,0,0],
       [0, Math.cos(this.xw), -Math.sin(this.xw), 0],
@@ -88,7 +86,6 @@ export class ProjectionControlSection3DComponent {
 
     let matrixProduct = Rzw.multiply(Ryw)
     .multiply(Ryz).multiply(Rxw).multiply(Rxz).multiply(Rxy)
-    this.projectionManager.rotationMatrix = matrixProduct;
-    return normalVector.multiplyOnLeftWithMatrix(matrixProduct);
+    this.projectionManager.setRotationMatrix(matrixProduct);
   }
 }

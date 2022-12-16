@@ -1,7 +1,10 @@
 import { outputAst } from '@angular/compiler';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Point } from '@svgdotjs/svg.js';
+import { ProjectionManagerService } from 'src/app/display/projections/projection-manager.service';
 import { Colors } from 'src/app/display/values/colors';
+import MatrixND from 'src/app/logic/maths/nD/MatrixND';
+import PointND from 'src/app/logic/maths/nD/PointND';
 import Point3D from 'src/app/logic/maths_objects/3D/Point3D';
 import { Matrix3, Matrix4, Vector3 } from 'three';
 
@@ -15,7 +18,11 @@ export class ProjectionControlSectionComponent {
   angleX: number = Math.PI;
   angleY: number = Math.PI;
   angleZ: number = Math.PI;
-  @Output() hyperplaneChanged: EventEmitter<Point3D> = new EventEmitter();
+  constructor(
+    private projectionManager: ProjectionManagerService
+  ){
+
+  }
   changeAngle(axis: 'y' | 'x' | 'z', newValue: number) {
     switch (axis) {
       case 'x':
@@ -27,14 +34,13 @@ export class ProjectionControlSectionComponent {
       case 'z':
         this.angleZ = newValue;
     }
-    this.hyperplaneChanged.emit(this.emitNewHyperplane());
+    this.applyRotation();
   }
-  emitNewHyperplane(){
-    let rotationX = new Matrix4().makeRotationX(this.angleX)
-    let rotationY = new Matrix4().makeRotationY(this.angleY);
-    let rotationZ = new Matrix4().makeRotationZ(this.angleZ);
-    let projectionMatrix = new Matrix4().multiply(rotationX).multiply(rotationY).multiply(rotationZ);
-    let transformedNormalVector = new Vector3(0,1,0).applyMatrix4(projectionMatrix);
-    return new Point3D(transformedNormalVector.x, transformedNormalVector.y,transformedNormalVector.z);
+  applyRotation(){
+    let rotationX = MatrixND.basicRotationMatrix(3, 1,2, this.angleX);
+    let rotationY = MatrixND.basicRotationMatrix(3, 0,2, this.angleY);
+    let rotationZ = MatrixND.basicRotationMatrix(3, 0,1, this.angleZ);
+    let projectionMatrix = rotationX.multiply(rotationY).multiply(rotationZ);
+    this.projectionManager.setRotationMatrix(projectionMatrix);
   }
 }

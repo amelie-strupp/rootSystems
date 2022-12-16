@@ -1,4 +1,5 @@
 import { ElementRef, Injectable, Input, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 import * as THREE from 'three';
 import { Mesh, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -9,13 +10,14 @@ import { Colors } from '../values/colors';
 })
 export class ProjectionCanvasService {
   canvas!: HTMLElement;
-
+  orbitControls!: OrbitControls;
   scene!: THREE.Scene;
   camera!: THREE.Camera;
   renderer!: THREE.WebGLRenderer;
   pointGroup: THREE.Group = new THREE.Group();
   otherObjectsGroup: THREE.Group = new THREE.Group();
-
+  sceneInitializedSubject: Subject<void> = new Subject();
+  sceneHasBeenInitialized: boolean = false;
   initalizeScene(canvas: HTMLElement){
     this.canvas = canvas;
     this.scene = new THREE.Scene();
@@ -32,7 +34,8 @@ export class ProjectionCanvasService {
     this.displayScene();
     this.scene.add(this.pointGroup);
     this.scene.add(this.otherObjectsGroup);
-
+    this.sceneInitializedSubject.next();
+    this.sceneHasBeenInitialized = true;
   }
   reinitializePoints(){
     this.pointGroup.removeFromParent();
@@ -45,8 +48,14 @@ export class ProjectionCanvasService {
     this.scene.add(this.otherObjectsGroup);
   }
   addOrbitControls(){
-      let orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+      this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
       // orbitControls.enabled = false;
+  }
+  disableOrbiting(){
+    this.orbitControls.enableRotate = false;
+  }
+  enableOrbiting(){
+    this.orbitControls.enableRotate = true;
   }
   displayScene(){
     requestAnimationFrame( () => this.displayScene() );

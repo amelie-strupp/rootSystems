@@ -2,12 +2,15 @@
     <app-projection-settings-panel
     id="settings-panel" 
     ></app-projection-settings-panel>
-    <app-projection-control-section3-d *ngIf="projectionStartDim == 4"
-    (hyperplaneChanged3D)="repaint3DPoints($event)"
+    <app-projection-control-section3-d
+    *ngIf="projectionStartDim == 4"
     id="projection-cubes"></app-projection-control-section3-d>
-    <app-projection-control-section (hyperplaneChanged)="repaint2DPoints($event)"
+    <app-projection-control-section 
     *ngIf="projectionStartDim == 3"
     id="projection-control-section"></app-projection-control-section>
     <div id="canvas" #threeCanvas></div>
-    <app-projection-ndrotation-control id="ND-rotation-control"></app-projection-ndrotation-control>
+    <app-projection-ndrotation-control id="ND-rotation-control"
+    *ngIf="projectionStartDim > 4"
+    [dimension]="projectionStartDim"
+    ></app-projection-ndrotation-control>
 </section>

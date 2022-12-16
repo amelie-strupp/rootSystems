@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChange, SimpleChanges } from '@angular/core';
 import { ProjectionManagerService } from 'src/app/display/projections/projection-manager.service';
 import MatrixND from 'src/app/logic/maths/nD/MatrixND';
 
@@ -12,13 +12,21 @@ export class ProjectionNDRotationControlComponent {
   sliders: Array<Array<number>> = [];
   rotationMatrix!: MatrixND;
   @Input() dimension: number = 4;
-  @Input() numberOfSliders: number = 2;
+  numberOfSliders: number = 2;
   constructor(private projectionManager: ProjectionManagerService){
-    this.generateSliders();
+    
   }
-  ngOnInit(){
+ngOnInit(){    this.generateSliders();
+
     this.angles = Array.apply(null, Array(this.sliders.length)).map((a) => 0)
     this.rotationMatrix = MatrixND.identity(this.dimension);
+  }
+  ngOnChanges(changes: SimpleChanges){
+    if(changes["dimension"]){
+    this.generateSliders();
+    this.angles = Array.apply(null, Array(this.sliders.length)).map((a) => 0)
+    this.rotationMatrix = MatrixND.identity(this.dimension);
+  }
   }
   generateSliders(){
     for(let i = 1; i <= this.dimension; ++i){

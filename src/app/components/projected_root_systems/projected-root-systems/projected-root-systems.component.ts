@@ -25,18 +25,15 @@ export class ProjectedRootSystemsComponent {
     ){
       projectionManager.startDimensionChanged.subscribe((type) => {
         this.updateProjectionType();
-        console.log(this.projectionStartDim);
         this.cd.detectChanges();
       })
   }
   ngAfterViewInit(){
         this.projectionManager.initializeView(this.canvas.nativeElement);
   }
-  repaint3DPoints(normalVector: PointND){
-    this.projectionManager.updateNormalVectorND(normalVector);
-  }
-  repaint2DPoints(normalVector: Point3D){
-    this.projectionManager.updateNormalVector2D(normalVector);
+  updateRotationNormal(normalVector: PointND){
+    this.projectionManager.setNormal(normalVector);
+    this.projectionManager.paintProjection();
   }
   updateProjectionType(){
     this.projectionStartDim = this.projectionManager.startDimension;

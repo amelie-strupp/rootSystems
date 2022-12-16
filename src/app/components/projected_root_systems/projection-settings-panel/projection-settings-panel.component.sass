@@ -18,6 +18,7 @@
     max-height: calc(100vh - 20px)
     overflow-y: auto
     position: relative
+    overflow-y: scroll
     #inner-content
         overflow: hidden
     #expand-button
@@ -56,7 +57,7 @@
         margin: 0
         padding: 0
         color: var(--text-medium)
-    #projection-type-container, #root-system-list
+    .projection-type-container, .root-system-list
         padding: 8px 0
         display: grid
         grid-template-rows: max-content
@@ -71,6 +72,9 @@
                 font-weight: 700
                 margin: 0
                 padding: 0
+    #start-dimension-container
+        display: grid
+        grid-template-columns: 1fr 1fr 1fr
     .divider
         height: 1px
         margin: 6px 0 12px 0px
