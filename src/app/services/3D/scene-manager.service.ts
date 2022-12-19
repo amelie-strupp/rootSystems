@@ -8,7 +8,6 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -99,6 +98,7 @@ export class SceneManagerService {
     // this.composer.render();
   }
   addToRootGroup(object: any){
+
     this.rootGroup.add( object );
     this.miniViewRootSystemGroup.add(object.clone());
   }
@@ -120,7 +120,6 @@ export class SceneManagerService {
     this.hyperplaneGroup.rotation.set( 0, 0, 0 );
     this.hyperplaneGroup.scale.set( 1, 1, 1 );
     this.hyperplaneGroup.updateMatrix();
-
 
     this.weylChamberGroup.position.set( 0, 0, 0 );
     this.weylChamberGroup.rotation.set( 0, 0, 0 );

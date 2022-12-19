@@ -31,7 +31,9 @@ import { ProjectionSettingsPanelComponent } from './components/projected_root_sy
 import { ProjectionNDRotationControlComponent } from './components/projected_root_systems/controls/projection-ndrotation-control/projection-ndrotation-control.component';
 import { FormsModule } from '@angular/forms';
 import { RotationSliderComponent } from './components/projected_root_systems/controls/rotation-slider/rotation-slider.component';
-import {MatSelectModule} from '@angular/material/select'; 
+import {MatSelectModule} from '@angular/material/select';
+import { DimensionIndicatorComponent } from './components/projected_root_systems/dimension-indicator/dimension-indicator.component';
+import { RotationMatrixDisplayComponent } from './components/projected_root_systems/rotation-matrix-display/rotation-matrix-display.component'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +58,9 @@ import {MatSelectModule} from '@angular/material/select';
     ProjectionCubesControlComponent,
     ProjectionSettingsPanelComponent,
     ProjectionNDRotationControlComponent,
-    RotationSliderComponent
+    RotationSliderComponent,
+    DimensionIndicatorComponent,
+    RotationMatrixDisplayComponent
   ],
   imports: [
     BrowserModule,

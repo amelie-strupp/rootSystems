@@ -1,7 +1,7 @@
 import { ElementRef, Injectable, Input, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as THREE from 'three';
-import { Mesh, Vector3 } from 'three';
+import { Mesh, Vector3, Matrix4 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Colors } from '../values/colors';
 
@@ -52,11 +52,23 @@ export class ProjectionCanvasService {
       // orbitControls.enabled = false;
   }
   disableOrbiting(){
+    this.orbitControls.reset();
     this.orbitControls.enableRotate = false;
   }
   enableOrbiting(){
+
     this.orbitControls.enableRotate = true;
   }
+  set3DView(){
+    console.log(this.camera.rotation);
+    if(Math.abs(this.camera.rotation.x) <0.05 && Math.abs(this.camera.rotation.y) <0.05 && Math.abs(this.camera.rotation.z) <0.05){
+      this.orbitControls.reset();
+      this.camera.position.z = 15;
+      this.camera.position.y = 15;
+      this.camera.position.x = 15;
+      this.camera.updateMatrix();
+      this.orbitControls.update();
+  }}
   displayScene(){
     requestAnimationFrame( () => this.displayScene() );
 	  this.renderer.render( this.scene, this.camera );
@@ -64,7 +76,7 @@ export class ProjectionCanvasService {
   addLight(){
     const ambientLight = new THREE.AmbientLight( 0xffffff, 0.7);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
-    directionalLight.position.set(0,30,0)
+    directionalLight.position.set(0,20,0)
     this.scene.add( ambientLight );
     this.scene.add(directionalLight);
   }

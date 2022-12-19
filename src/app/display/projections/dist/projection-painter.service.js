@@ -59,11 +59,11 @@ var ProjectionPainterService = /** @class */ (function () {
         }
         var normalRotation = new PointND_1["default"](normalComponents).multiplyOnLeftWithMatrix(rotationMatrix);
         var projectionRotationMatrix = MatrixND_1["default"].identity(endDim);
-        console.log("Normal vector", normalRotation);
-        console.log("Normal vector start", normalComponents);
+        // console.log("Normal vector", normalRotation);
+        // console.log("Normal vector start", normalComponents);
         projectionRotationMatrix = this.rotateToNormalCube(normalRotation, new PointND_1["default"](normalComponents));
-        console.log("Normal rotation matrix", projectionRotationMatrix);
-        console.log("Result", normalRotation.multiplyOnLeftWithMatrix(projectionRotationMatrix));
+        // console.log("Normal rotation matrix", projectionRotationMatrix)
+        // console.log("Result", normalRotation.multiplyOnLeftWithMatrix(projectionRotationMatrix))
         for (var _i = 0, points_1 = points; _i < points_1.length; _i++) {
             var point = points_1[_i];
             var projectedPoint = this.projectionService.projectWithMatrix(point, rotationMatrix, endDim);
@@ -90,6 +90,11 @@ var ProjectionPainterService = /** @class */ (function () {
             var material = new THREE.MeshStandardMaterial({
                 color: colors[i]
             });
+            if (endDim == 2) {
+                material = new THREE.MeshBasicMaterial({
+                    color: colors[i]
+                });
+            }
             var point = new THREE.Mesh(geometry, material);
             // 2D case
             if (endDim == 2) {
@@ -372,8 +377,23 @@ var ProjectionPainterService = /** @class */ (function () {
             color: colors_1.Colors.purple200, side: THREE.DoubleSide, opacity: 0.05, transparent: true
         });
         var cube = new THREE.Mesh(geometry, material);
+        var axisGeometry = new THREE.CylinderGeometry(0.05, 0.05, 12, 32);
+        var materialAxis = new THREE.MeshStandardMaterial({
+            color: colors_1.Colors.purple400, side: THREE.DoubleSide, opacity: 0.2, transparent: false
+        });
+        var axis1Mesh = new THREE.Mesh(axisGeometry, materialAxis);
+        var axis2Mesh = new THREE.Mesh(axisGeometry, materialAxis);
+        var axis3Mesh = new THREE.Mesh(axisGeometry, materialAxis);
         cube.position.set(0, 0, 0);
+        axis1Mesh.position.set(-6, 0, -6);
+        axis2Mesh.position.set(-6, -6, 0);
+        axis2Mesh.rotateX(Math.PI / 2);
+        axis3Mesh.position.set(0, -6, -6);
+        axis3Mesh.rotateZ(Math.PI / 2);
         this.canvasService.drawToObjectGroup(cube);
+        this.canvasService.drawToObjectGroup(axis1Mesh);
+        this.canvasService.drawToObjectGroup(axis2Mesh);
+        this.canvasService.drawToObjectGroup(axis3Mesh);
     };
     ProjectionPainterService = __decorate([
         core_1.Injectable({

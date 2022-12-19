@@ -1,0 +1,12 @@
+<div id="rotation-matrix-display">
+  <p class="description-text">Rotation Matrix: </p>
+  <div class="matrix3">
+    <div class="row" *ngFor="let row of rotationMatrix.components">
+      <p *ngFor="let column of row">{{ column.toFixed(1) == "-0.0" ? -column.toFixed(1): column.toFixed(1) }}</p>
+    </div>
+  </div>
+  <div id="normal-container" *ngIf="rotationNormals.length > 0">
+  <p class="description-text">Normals to rotation hyperplane:</p>
+  <p class="description-text normal-vector" *ngFor="let normal of rotationNormals">({{normal}})</p>
+  </div>
+</div>

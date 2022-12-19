@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { WeylChamber } from "../2D/WeylChamber";
 import WeylChamber3D from "../../maths_objects/3D/WeylChamber3D";
 import { Matrix3, Vector3 } from "three";
+import MatrixND from "../nD/MatrixND";
 
 export class Root3D{
     direction: Point3D;

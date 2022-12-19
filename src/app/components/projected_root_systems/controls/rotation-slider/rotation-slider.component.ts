@@ -9,6 +9,8 @@ import { MatSlider } from '@angular/material/slider';
 export class RotationSliderComponent {
   @Output() degreeChanged: EventEmitter<number> = new EventEmitter();
   @Input() degree: number = 0;
+  @Input() base1: number = 0;
+  @Input() base2: number = 0;
   changeDegree(value: any){
     this.degree = value;
     this.degreeChanged.emit(value);

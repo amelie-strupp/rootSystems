@@ -20,10 +20,12 @@ import { Matrix3, Matrix4 } from 'three';
 export class ProjectedRootSystemsComponent {
   @ViewChild('threeCanvas') canvas!: ElementRef;
   projectionStartDim: number = 3;
+  projectionEndDim: number = 2;
+
   constructor(private projectionManager: ProjectionManagerService,
     private cd: ChangeDetectorRef
     ){
-      projectionManager.startDimensionChanged.subscribe((type) => {
+      projectionManager.dimensionsChanged.subscribe(() => {
         this.updateProjectionType();
         this.cd.detectChanges();
       })
@@ -31,11 +33,10 @@ export class ProjectedRootSystemsComponent {
   ngAfterViewInit(){
         this.projectionManager.initializeView(this.canvas.nativeElement);
   }
-  updateRotationNormal(normalVector: PointND){
-    this.projectionManager.setNormal(normalVector);
-    this.projectionManager.paintProjection();
-  }
+
   updateProjectionType(){
     this.projectionStartDim = this.projectionManager.startDimension;
+    this.projectionEndDim = this.projectionManager.endDimension;
+
   }
 }

@@ -17,10 +17,12 @@ export class ProjectionManagerService {
   startDimension: number = 3;
   endDimension: number = 2;
   rootList: Array<PointND> = [];
-  normal: PointND|null = null;
+  normals: Array<PointND> = [new PointND([0,0,1])];
   colorList: Array<Colors> = [];
   rotationMatrix: MatrixND = MatrixND.identity(4);
-  startDimensionChanged: Subject<number> = new Subject();
+  dimensionsChanged: Subject<void> = new Subject();
+  rotationsChanged: Subject<void> = new Subject();
+
   rootSystemIdentifier = "A3";
   projectionType: ProjectionType = ProjectionType.orthogonal;
   constructor(
@@ -29,20 +31,36 @@ export class ProjectionManagerService {
     ) { }
   setStartDimension(x: number){
     this.startDimension = x;
-    this.startDimensionChanged.next(this.startDimension);
+    this.dimensionsChanged.next();
   }
   setEndDimension(x: number){
     this.endDimension = x;
+    this.dimensionsChanged.next();
+
   }
   setRotationMatrix(m: MatrixND){
     this.rotationMatrix = m;
     this.paintProjection();
+    this.normals = this.getNormal();
+    this.rotationsChanged.next();
   }
-  setNormal(n: PointND){
-    this.normal = n;
+  getNormal(){
+    let normalComponents = new Array(this.startDimension).fill(0);
+    let normal = new PointND(normalComponents);
+    let normals: Array<PointND> = []
+    for(let dim = this.endDimension; dim < this.startDimension; ++dim){
+      let newComponents = [...normal.components]
+      newComponents[dim] = 1;
+      let newNormal = new PointND(newComponents).multiplyOnLeftWithMatrix(this.rotationMatrix);
+      normals.push(newNormal);
+    }
+    return normals;
+
   }
   setProjectionType(type: ProjectionType){
     this.projectionType = type;
+    this.normals = this.getNormal();
+    this.rotationsChanged.next();
   }
   setPoints(points: Array<PointND>, id: string){
     this.rootList = points;
@@ -61,6 +79,7 @@ export class ProjectionManagerService {
   }
   paintObjectForDimension(){
     this.canvasService.reinitializeObjects();
+    this.canvasService.set3DView();
     if(this.endDimension == 2){
       this.paintService.drawPlane();
       this.canvasService.disableOrbiting();
@@ -74,9 +93,10 @@ export class ProjectionManagerService {
   paintProjection(){
     this.removePoints();
     this.paintObjectForDimension();
-    let normal = this.normal ?? (this.endDimension == 2 ? (new PointND([0,0,1])) : (new PointND([0,0,0,1])))
     if(this.rotationMatrix.components.length != this.startDimension){
       this.rotationMatrix = MatrixND.identity(this.startDimension);
+      this.normals = this.getNormal();
+      this.rotationsChanged.next();
     }
     switch(this.projectionType){
       case ProjectionType.orthogonal:
@@ -94,6 +114,7 @@ export class ProjectionManagerService {
           this.rotationMatrix,
           this.endDimension
           )
+
         // }
         break;
       case ProjectionType.stereographic:

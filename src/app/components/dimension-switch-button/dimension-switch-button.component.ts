@@ -14,10 +14,14 @@ export class DimensionSwitchButtonComponent {
     router.events.subscribe((event)=>{
         if(event instanceof NavigationEnd){
           const url = event.url;
+          const end = url.lastIndexOf(";");
           let selectedDim = url.substring(
-            url.indexOf("/") + 1, 
-            url.lastIndexOf(";"));
-        if(selectedDim == '2D' || selectedDim == '3D'){
+            url.indexOf("/") + 1,
+            end > -1 ? end : url.length
+            );
+            console.log("Dim; ", selectedDim);
+
+        if(selectedDim == '2D' || selectedDim == '3D'|| selectedDim == 'Projection'){
           this.selectedDimension = selectedDim;
         }
       }});

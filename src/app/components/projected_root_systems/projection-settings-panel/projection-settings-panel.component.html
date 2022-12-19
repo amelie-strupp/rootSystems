@@ -19,6 +19,7 @@
           <mat-radio-button
           [checked]="projectionType == ProjectionType.stereographic"
           [value]="false"
+          [disabled]="projectionStart - projectionEnd > 1"
           >
         </mat-radio-button>
         <p class="projection-text">Stereographic</p>
@@ -65,7 +66,7 @@
       <mat-radio-group class="root-system-list" *ngIf="singleSystem.dim == projectionStart">
         <div *ngFor="let rootSystem of singleSystem.systems">
           <div class="root-system-item" (click)="loadRootSystem(rootSystem.ref, rootSystem.colors, rootSystem.text)"
-          
+
           >
           <mat-radio-button
           [checked]="selectedRootSystem == rootSystem.text"
@@ -79,4 +80,3 @@
   </div>
 </div>
 </div>
-  

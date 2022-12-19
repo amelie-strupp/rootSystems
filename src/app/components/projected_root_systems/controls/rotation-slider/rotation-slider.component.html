@@ -1,4 +1,5 @@
 <section id="rotation-control">
+    <p id="rotation-slider-text">(X{{base1}}, X{{base2}})-Plane</p>
     <mat-slider min="0" max="360" id="slider" [discrete]="true">
         <input matSliderThumb [ngModel]="degree" (ngModelChange)="changeDegree($event)">
     </mat-slider>

@@ -1,6 +1,19 @@
-<section id="rotation-control">
-    <app-rotation-slider *ngFor="let slider of sliders; let i = index"
-    (degreeChanged)="setAngle(i, $event)"
-    #slider
-    ></app-rotation-slider>
-</section>
+<div id="nd-rotation-control">
+  <button id="expand-button">
+    <mat-icon [fontIcon]="isExpanded ? 'expand_more' : 'expand_less'" (click)="toggleExpand()"></mat-icon>
+  </button>
+  <h3 id="heading">Rotate Projection</h3>
+  <div id="inner-content" [@expanded]="isExpanded">
+    <div class="divider"></div>
+
+  <section id="rotation-control">
+      <app-rotation-slider
+      [base1]="slider[1]"
+      [base2]="slider[0]"
+
+      *ngFor="let slider of sliders; let i = index"
+      (degreeChanged)="setAngle(i, $event)"
+      #slider
+      ></app-rotation-slider>
+  </section>
+</div>

@@ -62,15 +62,15 @@ var ProjectionSettingsPanelComponent = /** @class */ (function () {
                     { text: "A5", ref: rootSystemsND_1.rootSystemsND.A5, colors: RootSystemColorMode_1.rootSystemColors.A5 },
                     { text: "B5", ref: rootSystemsND_1.rootSystemsND.B5, colors: RootSystemColorMode_1.rootSystemColors.B5 },
                     { text: "C5", ref: rootSystemsND_1.rootSystemsND.C5, colors: RootSystemColorMode_1.rootSystemColors.B5 },
-                    { text: "D5", ref: rootSystemsND_1.rootSystemsND.D5, colors: RootSystemColorMode_1.rootSystemColors.B5 },
+                    { text: "D5", ref: rootSystemsND_1.rootSystemsND.D5, colors: RootSystemColorMode_1.rootSystemColors.D5 },
                 ] },
             { dim: 6,
                 systems: [
-                    { text: "A6", ref: rootSystemsND_1.rootSystemsND.A6, colors: RootSystemColorMode_1.rootSystemColors.B5 },
-                    { text: "B6", ref: rootSystemsND_1.rootSystemsND.B6, colors: RootSystemColorMode_1.rootSystemColors.B5 },
-                    { text: "C6", ref: rootSystemsND_1.rootSystemsND.C6, colors: RootSystemColorMode_1.rootSystemColors.B5 },
-                    { text: "D6", ref: rootSystemsND_1.rootSystemsND.D6, colors: RootSystemColorMode_1.rootSystemColors.B5 },
-                    { text: "E6", ref: rootSystemsND_1.rootSystemsND.E6, colors: RootSystemColorMode_1.rootSystemColors.B5 }
+                    { text: "A6", ref: rootSystemsND_1.rootSystemsND.A6, colors: RootSystemColorMode_1.rootSystemColors.A6 },
+                    { text: "B6", ref: rootSystemsND_1.rootSystemsND.B6, colors: RootSystemColorMode_1.rootSystemColors.A6 },
+                    { text: "C6", ref: rootSystemsND_1.rootSystemsND.C6, colors: RootSystemColorMode_1.rootSystemColors.A6 },
+                    { text: "D6", ref: rootSystemsND_1.rootSystemsND.D6, colors: RootSystemColorMode_1.rootSystemColors.A6 },
+                    { text: "E6", ref: rootSystemsND_1.rootSystemsND.E6, colors: RootSystemColorMode_1.rootSystemColors.A6 }
                 ] }
         ];
         this.canvasService.sceneInitializedSubject.subscribe(function () {

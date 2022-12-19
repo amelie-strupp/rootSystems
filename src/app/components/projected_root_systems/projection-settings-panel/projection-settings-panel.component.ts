@@ -79,15 +79,15 @@ export class ProjectionSettingsPanelComponent {
       {text: "A5", ref: rootSystemsND.A5, colors: rootSystemColors.A5},
       {text: "B5", ref: rootSystemsND.B5, colors: rootSystemColors.B5},
       {text: "C5", ref: rootSystemsND.C5, colors: rootSystemColors.B5},
-      {text: "D5", ref: rootSystemsND.D5, colors: rootSystemColors.B5},
+      {text: "D5", ref: rootSystemsND.D5, colors: rootSystemColors.D5},
   ]},
     {dim: 6,
       systems: [
-      {text: "A6", ref: rootSystemsND.A6, colors: rootSystemColors.B5},
-      {text: "B6", ref: rootSystemsND.B6, colors: rootSystemColors.B5},
-      {text: "C6", ref: rootSystemsND.C6, colors: rootSystemColors.B5},
-      {text: "D6", ref: rootSystemsND.D6, colors: rootSystemColors.B5},
-      {text: "E6", ref: rootSystemsND.E6, colors: rootSystemColors.B5}
+      {text: "A6", ref: rootSystemsND.A6, colors: rootSystemColors.A6},
+      {text: "B6", ref: rootSystemsND.B6, colors: rootSystemColors.A6},
+      {text: "C6", ref: rootSystemsND.C6, colors: rootSystemColors.A6},
+      {text: "D6", ref: rootSystemsND.D6, colors: rootSystemColors.A6},
+      {text: "E6", ref: rootSystemsND.E6, colors: rootSystemColors.A6}
     ]}
   ]
   constructor(private projectionManager: ProjectionManagerService,

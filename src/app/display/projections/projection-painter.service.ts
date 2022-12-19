@@ -56,11 +56,11 @@ export class ProjectionPainterService {
       }
       let normalRotation = new PointND(normalComponents).multiplyOnLeftWithMatrix(rotationMatrix);
       let projectionRotationMatrix = MatrixND.identity(endDim);
-      console.log("Normal vector", normalRotation);
-      console.log("Normal vector start", normalComponents);
+      // console.log("Normal vector", normalRotation);
+      // console.log("Normal vector start", normalComponents);
       projectionRotationMatrix = this.rotateToNormalCube(normalRotation, new PointND(normalComponents));
-      console.log("Normal rotation matrix", projectionRotationMatrix)
-      console.log("Result", normalRotation.multiplyOnLeftWithMatrix(projectionRotationMatrix))
+      // console.log("Normal rotation matrix", projectionRotationMatrix)
+      // console.log("Result", normalRotation.multiplyOnLeftWithMatrix(projectionRotationMatrix))
     for(let point of points){
       let projectedPoint = this.projectionService.projectWithMatrix(
         point,
@@ -90,9 +90,15 @@ export class ProjectionPainterService {
     let i = 0;
     for(let mathPoint of points){
       const geometry = new THREE.SphereGeometry( 0.3, 16, 16 );
-      const material = new THREE.MeshStandardMaterial( {
+      let material: any = new THREE.MeshStandardMaterial( {
         color: colors[i],
       } );
+      if(endDim == 2){
+        material = new THREE.MeshBasicMaterial({
+          color: colors[i],
+
+        })
+      }
       const point = new THREE.Mesh( geometry, material );
       // 2D case
       if(endDim == 2){
@@ -392,8 +398,27 @@ export class ProjectionPainterService {
         color: Colors.purple200, side: THREE.DoubleSide, opacity:0.05, transparent: true
     });
     let cube = new THREE.Mesh(geometry, material);
+    let axisGeometry = new THREE.CylinderGeometry( 0.05, 0.05, 12, 32 );
+    let materialAxis = new THREE.MeshStandardMaterial(
+      {
+        color: Colors.purple400, side: THREE.DoubleSide, opacity:0.2, transparent: false
+    });
+    let axis1Mesh = new THREE.Mesh(axisGeometry, materialAxis);
+    let axis2Mesh = new THREE.Mesh(axisGeometry, materialAxis);
+    let axis3Mesh = new THREE.Mesh(axisGeometry, materialAxis);
+
     cube.position.set(0,0,0)
+    axis1Mesh.position.set(-6,0,-6)
+    axis2Mesh.position.set(-6,-6,0)
+    axis2Mesh.rotateX(Math.PI/2)
+    axis3Mesh.position.set(0,-6,-6)
+    axis3Mesh.rotateZ(Math.PI/2)
     this.canvasService.drawToObjectGroup(cube);
+    this.canvasService.drawToObjectGroup(axis1Mesh);
+    this.canvasService.drawToObjectGroup(axis2Mesh);
+    this.canvasService.drawToObjectGroup(axis3Mesh);
+
+
   }
 
 }

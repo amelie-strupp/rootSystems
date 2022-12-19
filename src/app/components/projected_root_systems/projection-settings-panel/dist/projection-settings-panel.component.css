@@ -1,0 +1,90 @@
+#projection-settings-panel {
+  min-width: 310px;
+  width: max-content;
+  padding: 16px;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 8px;
+  shadow: var(--light-shadow);
+  display: grid;
+  align-content: flex-start;
+  justify-content: stretch;
+  align-items: flex-start;
+  max-width: calc(50vw - 30px);
+  z-index: 100;
+  max-height: calc(100vh - 480px);
+  overflow-y: auto;
+  position: relative;
+}
+#projection-settings-panel #inner-content {
+  overflow: hidden;
+}
+#projection-settings-panel #expand-button {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  color: var(--text-medium);
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  transition: all 150ms;
+  height: 36px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  cursor: pointer;
+  width: 36px;
+}
+#projection-settings-panel #expand-button:hover {
+  background-color: var(--purple-light);
+}
+#projection-settings-panel #heading {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+#projection-settings-panel .subheading {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  color: var(--text-light);
+}
+#projection-settings-panel .subsection-heading {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  color: var(--text-medium);
+}
+#projection-settings-panel .projection-type-container, #projection-settings-panel .root-system-list {
+  padding: 8px 0;
+  display: grid;
+  grid-template-rows: max-content;
+}
+#projection-settings-panel .projection-type-container .projection-item, #projection-settings-panel .projection-type-container .root-system-item, #projection-settings-panel .root-system-list .projection-item, #projection-settings-panel .root-system-list .root-system-item {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: center;
+  cursor: pointer;
+}
+#projection-settings-panel .projection-type-container .projection-item .projection-text, #projection-settings-panel .projection-type-container .projection-item .root-system-text, #projection-settings-panel .projection-type-container .root-system-item .projection-text, #projection-settings-panel .projection-type-container .root-system-item .root-system-text, #projection-settings-panel .root-system-list .projection-item .projection-text, #projection-settings-panel .root-system-list .projection-item .root-system-text, #projection-settings-panel .root-system-list .root-system-item .projection-text, #projection-settings-panel .root-system-list .root-system-item .root-system-text {
+  font-size: 13px;
+  color: var(--text-dark);
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+#projection-settings-panel #start-dimension-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+#projection-settings-panel .divider {
+  height: 1px;
+  margin: 6px 0 12px 0px;
+  width: 100%;
+  background-color: var(--purple-light);
+}

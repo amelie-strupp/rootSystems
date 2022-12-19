@@ -1,0 +1,53 @@
+#rotation-matrix-display
+  background-color: white
+  border-radius: 8px
+  height: max-content
+  min-width: 140px
+  padding: 16px
+  padding-bottom: 24px
+  display: grid
+  justify-content: center
+  justify-items: flex-start
+  align-content: flex-start
+  .description-text
+    margin: 0
+    padding: 0
+    font-size: 14px
+    font-weight: 600
+    color: var(--text-dark)
+    margin-bottom: 6px
+  #normal-container
+    margin-top: 12px
+    display: grid
+  .normal-vector
+    color: var(--text-medium)
+    justify-self: center
+
+  .matrix3
+    display: grid
+    justify-content: center
+    justify-self: center
+    gap: 6px
+    position: relative
+    box-sizing: border-box
+    width: max-content
+    background-color: var(--purple-light)
+    padding: 5px
+    border-radius: 2px
+    border-right: var(--text-medium) 2px solid
+    border-left: var(--text-medium) 2px solid
+    .row
+      display: grid
+      grid-auto-flow: column
+      gap: 5px
+      p
+        padding: 0 4px
+
+    p
+      margin: 0
+      padding: 0
+      display: block
+      font-size: 13px
+      color: var(--text-dark)
+      font-weight: 700
+      text-align: center

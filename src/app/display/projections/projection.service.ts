@@ -59,7 +59,7 @@ export class ProjectionService {
         normals.push(rotatedPoint);
         projectionMatrixComponents.push(rotatedPoint.components);
       }
-    console.log("Normals", normals);
+    // console.log("Normals", normals);
     return point;
   }
   // projectWithMatrix(

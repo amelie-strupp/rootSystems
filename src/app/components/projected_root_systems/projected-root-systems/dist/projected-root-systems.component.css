@@ -10,6 +10,8 @@
   position: absolute;
   left: 24px;
   top: 100px;
+  display: block;
+  max-height: calc(100vh - 400px);
 }
 #projected-root-systems #projection-control-section, #projected-root-systems #projection-cubes, #projected-root-systems #ND-rotation-control {
   position: absolute;
@@ -19,7 +21,17 @@
   height: calc(100vh - 100px);
   display: block;
 }
+#projected-root-systems #dimension-indicator {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+}
 #projected-root-systems #canvas {
   height: 100vh;
   width: 100vw;
+}
+#projected-root-systems #rotation-matrix-display {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
 }
