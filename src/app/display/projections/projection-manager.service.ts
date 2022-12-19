@@ -78,7 +78,6 @@ export class ProjectionManagerService {
     if(this.rotationMatrix.components.length != this.startDimension){
       this.rotationMatrix = MatrixND.identity(this.startDimension);
     }
-    console.log("Rotation", this.rotationMatrix);
     switch(this.projectionType){
       case ProjectionType.orthogonal:
         // if(this.startDimension == 3 || this.startDimension == 4){
@@ -87,7 +86,7 @@ export class ProjectionManagerService {
         //     this.colorList,
         //     normal,
         //     this.endDimension
-        //   )  
+        //   )
         // }else{
           this.paintService.projectPointsOrthogonallyWithMatrix(
           this.rootList,
@@ -140,7 +139,7 @@ export class ProjectionManagerService {
   //   this.normalND = normalVector;
   //   this.drawAs3DProjection();
   // }
-  
+
   // drawAs3DProjection(){
   //   this.canvasService.reinitializePoints();
   //   // this.paintService.drawPointsWith3DStereographicProjection(
@@ -162,17 +161,17 @@ export class ProjectionManagerService {
   // }
   // projectFrom5DTo2D(){
   //   this.paintService
-  //   .draw5DPointsAs2DProjection(this.rootListND, 
+  //   .draw5DPointsAs2DProjection(this.rootListND,
   //   this.colorList);
   // }
   // projectFrom5DTo3D(){
   //   this.paintService
-  //   .draw5DPointsAs3DProjection(this.rootListND, 
+  //   .draw5DPointsAs3DProjection(this.rootListND,
   //   this.colorList);
   // }
   // projectFrom6DTo3D(){
   //   this.paintService
-  //   .draw6DPointsAs3DProjection(this.rootListND, 
+  //   .draw6DPointsAs3DProjection(this.rootListND,
   //   this.colorList);
   // }
 }

@@ -69,12 +69,15 @@ export default class RootSystem3D{
     private _simpleRoots: Array<Root3D> = [];
     private _positiveRoots: Array<Root3D> = [];
     coxeterMatrix: Array<number> = [];
+    orderOfWeylGroup: number = 0;
     // The minimum angle occuring in this root system
     constructor(
         type: RootSystems3D,
+        orderOfWeylGroup: number,
         coxeterMatrix: Array<number>,
         // simpleRoots: Array<Root3D>,
         positiveRoots: Array<Root3D>){
+        this.orderOfWeylGroup = orderOfWeylGroup;
         this.type = type;
         this.coxeterMatrix = coxeterMatrix;
         // this._simpleRoots = simpleRoots;
@@ -145,7 +148,7 @@ export default class RootSystem3D{
                     let direction = intersection![1];
                     let directionPoint = new Point3D(direction.x, direction.y, direction.z);
                     cutPoints.push(directionPoint)
-                    
+
                 }
             }
             index++;

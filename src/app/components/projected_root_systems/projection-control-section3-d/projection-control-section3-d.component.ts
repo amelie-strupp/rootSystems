@@ -86,6 +86,10 @@ export class ProjectionControlSection3DComponent {
 
     let matrixProduct = Rzw.multiply(Ryw)
     .multiply(Ryz).multiply(Rxw).multiply(Rxz).multiply(Rxy)
+    console.log("Rotate by", matrixProduct);
+    // for(let i = 0; i < matrixProduct.components.length-1; i++){
+    //   // console.log("Dot: ", new PointND(matrixProduct.components[i]).dotProduct(new PointND(matrixProduct.components[i+1])))
+    // }
     this.projectionManager.setRotationMatrix(matrixProduct);
   }
 }

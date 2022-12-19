@@ -59,12 +59,7 @@ export class ObjectSelector2DComponent implements OnInit {
   ngOnInit(): void {
   }
   switchHighlightMode(colorMode: RootSystemColorMode){
-    // If switch is called with the same color mode - switch to highlight mode
-    if(colorMode == this.getCurrentColorMode()){
-      this.rootSystemPainter.switchColorMode(RootSystemColorMode.highlight)
-    }else{
       this.rootSystemPainter.switchColorMode(colorMode);
-    }
   }
 
   switchAffineVersion(showAffine: boolean){
@@ -72,7 +67,6 @@ export class ObjectSelector2DComponent implements OnInit {
     this.rootSystemPainter.switchVersion(this.isAffineRootSystem);
   }
   toggleRootHighlight(root: Root){
-    this.rootSystemPainter.switchColorMode(RootSystemColorMode.highlight);
     if(this.rootSystemPainter.rootIsHighlighted(root)){
       this.rootSystemPainter.removeHighlightFromRoot(root);
     }else{
@@ -105,8 +99,8 @@ export class ObjectSelector2DComponent implements OnInit {
     if(this.allRootsHighlighted()){
       this.rootSystemPainter.clearRootHighlight();
     }else{
-    this.rootSystemPainter.highlightAllRoots();
-    this.rootSystemPainter.switchColorMode(RootSystemColorMode.highlight)
+      this.rootSystemPainter.highlightAllRoots();
+      this.rootSystemPainter.switchColorMode(RootSystemColorMode.highlight)
     }
   }
   toggleAllRootsHyperplanes(){

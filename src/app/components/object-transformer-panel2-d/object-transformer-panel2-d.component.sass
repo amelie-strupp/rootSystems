@@ -4,7 +4,7 @@
         width: 100% !important
         left: 16px  !important
         bottom: 70px !important
-    
+
 #object-selector-panel
     position: absolute
     right: 16px
@@ -129,11 +129,12 @@
             overflow: hidden
             #information-container
                 display: grid
-                grid-template-columns: repeat(3, 1fr)
+                grid-template-rows: repeat(2, max-content)
+                justify-content: flex-start
+                row-gap: 12px
                 .information-item
                     display: grid
-                    justify-items: center
-                    padding-bottom: 16px
+                    justify-items: flex-start
                     .information-item-text
                         font-size: 13px
                         color: var(--text-dark)
@@ -143,7 +144,7 @@
                         grid-template-columns: 16px 16px 16px
                         column-gap: 6px
                         position: relative
-                        margin-left: 4px
+                        margin-left: 14px
                         box-sizing: border-box
                         width: max-content
                         &.matrix2
@@ -164,7 +165,7 @@
                             padding: 0
                             top: -18px
                             color: var(--text-light)
-                            
+
                         .matrix-bracket-right
                             position: absolute
                             font-size: 62px
@@ -263,4 +264,3 @@
         cursor: pointer
         width: max-content
         margin-top: 12px
-        

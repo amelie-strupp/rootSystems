@@ -5,13 +5,14 @@ export enum RootSystems3D{
     A3 = "A3",
     B3 = "B3",
     C3 = "C3",
-    D3 = "D3"
+    // D3 = "D3"
 }
 const A3 = new RootSystem3D(
     RootSystems3D.A3,
+    24,
     [1,3,2,3,1,3,2,3,1],
     [
-        
+
         new Root3D({
             vector: new Point3D(
                 0,1,-1
@@ -48,7 +49,7 @@ const A3 = new RootSystem3D(
             isSimple: false,
             }
         ),
-        
+
         new Root3D({
             vector: new Point3D(
                 1,0,1
@@ -58,61 +59,62 @@ const A3 = new RootSystem3D(
         ),
     ]
 )
-const D3 = new RootSystem3D(
-    RootSystems3D.D3,
-    [
-        1,3,2,3,1,3,2,3,1
-    ],
-    [
-        new Root3D({
-            vector: new Point3D(
-                0,1,-1
-            ),
-            isSimple: true,
-            }
-        ),
-        new Root3D({
-            vector: new Point3D(
-                1,-1,0
-            ),
-            isSimple: true,
-            }
-        ),
-        new Root3D({
-            vector: new Point3D(
-                0,1,1
-            ),
-            isSimple: true,
-            }
-        ),
-        new Root3D({
-            vector: new Point3D(
-                1,0,-1
-            ),
-            isSimple: false,
-            }
-        ),
-        
-        new Root3D({
-            vector: new Point3D(
-                1,1,0
-            ),
-            isSimple: false,
-            }
-        ),
-        
-        new Root3D({
-            vector: new Point3D(
-                1,0,1
-            ),
-            isSimple: false,
-            }
-        ),
-    ]
-)
+// const D3 = new RootSystem3D(
+//     RootSystems3D.D3,
+//     [
+//         1,3,2,3,1,3,2,3,1
+//     ],
+//     [
+//         new Root3D({
+//             vector: new Point3D(
+//                 0,1,-1
+//             ),
+//             isSimple: true,
+//             }
+//         ),
+//         new Root3D({
+//             vector: new Point3D(
+//                 1,-1,0
+//             ),
+//             isSimple: true,
+//             }
+//         ),
+//         new Root3D({
+//             vector: new Point3D(
+//                 0,1,1
+//             ),
+//             isSimple: true,
+//             }
+//         ),
+//         new Root3D({
+//             vector: new Point3D(
+//                 1,0,-1
+//             ),
+//             isSimple: false,
+//             }
+//         ),
+
+//         new Root3D({
+//             vector: new Point3D(
+//                 1,1,0
+//             ),
+//             isSimple: false,
+//             }
+//         ),
+
+//         new Root3D({
+//             vector: new Point3D(
+//                 1,0,1
+//             ),
+//             isSimple: false,
+//             }
+//         ),
+//     ]
+// )
 
 const B3 = new RootSystem3D(
     RootSystems3D.B3,
+    48,
     [1,4,2,4,1,3,2,3,1],
     [new Root3D({
                     vector: new Point3D(
@@ -135,7 +137,7 @@ const B3 = new RootSystem3D(
                     isSimple: true,
                     }
                 ),
-                
+
                 new Root3D({
                     vector: new Point3D(
                         1,0,0
@@ -150,7 +152,7 @@ const B3 = new RootSystem3D(
                     isSimple: false,
                     }
                 ),
-                
+
                 new Root3D({
                     vector: new Point3D(
                         1,1,0
@@ -165,7 +167,7 @@ const B3 = new RootSystem3D(
                     isSimple: false,
                     }
                 ),
-                
+
                 new Root3D({
                     vector: new Point3D(
                         1,0,1
@@ -185,29 +187,31 @@ const B3 = new RootSystem3D(
 
 const C3 = new RootSystem3D(
     RootSystems3D.C3,
+    48,
     [1,4,2,4,1,3,2,3,1],
     [
-        new Root3D({
-            vector: new Point3D(
-                1,-1,0
-            ),
-            isSimple: true,
-            }
+      new Root3D({
+        vector: new Point3D(
+            0,0,2
         ),
+        isSimple: true,
+        }
+    ),
+
         new Root3D({
             vector: new Point3D(
                 0,1,-1
             ),
             isSimple: true,
             }
-        ),
-        new Root3D({
+        ),new Root3D({
             vector: new Point3D(
-                0,0,2
+                1,-1,0
             ),
             isSimple: true,
             }
         ),
+
                 new Root3D({
                     vector: new Point3D(
                         1,1,0
@@ -222,8 +226,8 @@ const C3 = new RootSystem3D(
                     isSimple: false,
                     }
                 ),
-                
-                
+
+
                 new Root3D({
                     vector: new Point3D(
                         1,0,1
@@ -252,12 +256,12 @@ const C3 = new RootSystem3D(
                     isSimple: false,
                     }
                 ),
-                
+
             ]
 )
 export const rootSystems3D = {
     A3: A3,
     B3: B3,
     C3: C3,
-    D3: D3
+    // D3: D3
 }

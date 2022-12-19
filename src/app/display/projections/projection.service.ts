@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Point } from '@svgdotjs/svg.js';
 import * as e from 'express';
+import * as math from 'mathjs';
+import { norm } from 'mathjs';
 import MatrixND from 'src/app/logic/maths/nD/MatrixND';
 import PointND from 'src/app/logic/maths/nD/PointND';
 import Point3D from 'src/app/logic/maths_objects/3D/Point3D';
@@ -43,21 +45,38 @@ export class ProjectionService {
     );
     return projectionPoint;
   }
-  projectWithMatrix(
+    projectWithMatrix(
     point: PointND,
     rotationMatrix: MatrixND,
     endDim: number){
+      let pointDim = point.dim;
       let baseMatrix = MatrixND.identity(point.dim);
-      baseMatrix = baseMatrix.multiply(rotationMatrix).transpose();
       let projectionMatrixComponents: Array<Array<number>> = []
-      for(let i = 0; i < endDim; i++){
-        projectionMatrixComponents.push(baseMatrix.components[i]);
+      let normals: Array<PointND> = [];
+      for(let i = endDim; i < pointDim; i++){
+        let rotatedPoint = new PointND(baseMatrix.components[i]).multiplyOnLeftWithMatrix(rotationMatrix);
+        point = point.add(rotatedPoint.getNegative().stretchedBy(point.dotProduct(rotatedPoint)));
+        normals.push(rotatedPoint);
+        projectionMatrixComponents.push(rotatedPoint.components);
       }
-      let projectionMatrix = new MatrixND(projectionMatrixComponents);
-      let projectionPoint = point.multiplyOnLeftWithMatrix(projectionMatrix);
-      console.log(projectionPoint.components);
-    return projectionPoint;
+    console.log("Normals", normals);
+    return point;
   }
+  // projectWithMatrix(
+  //   point: PointND,
+  //   rotationMatrix: MatrixND,
+  //   endDim: number){
+  //     let baseMatrix = MatrixND.identity(point.dim);
+  //     baseMatrix = baseMatrix.multiply(rotationMatrix).transpose();
+  //     let projectionMatrixComponents: Array<Array<number>> = []
+  //     for(let i = 0; i < endDim; i++){
+  //       projectionMatrixComponents.push(baseMatrix.components[i]);
+  //     }
+  //     let projectionMatrix = new MatrixND(projectionMatrixComponents);
+  //     let projectionPoint = point.multiplyOnLeftWithMatrix(projectionMatrix);
+  //     console.log(projectionPoint.components);
+  //   return projectionPoint;
+  // }
   // projectOnto2DHyperplaneIn5D(point: PointND) {
   //   let projectionMatrix = new MatrixND([
   //     [

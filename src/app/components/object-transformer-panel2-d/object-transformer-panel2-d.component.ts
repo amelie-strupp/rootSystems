@@ -27,7 +27,7 @@ import { RootSystemTransformer2DService } from 'src/app/services/2D/root-system-
       transition('true <=> false', [
         animate('125ms ease-in-out')
       ]),
-      
+
     ]),
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -63,7 +63,7 @@ export class ObjectTransformerPanel2DComponent {
     if(window.innerWidth < 1000){
       this.isExpanded = false;
     }
-    
+
   }
   toggleExpand(){
     this.isExpanded = !this.isExpanded;
@@ -94,6 +94,10 @@ export class ObjectTransformerPanel2DComponent {
   getCoxeterMatrix(){
     return this.rootSystemService.rootSystem.getCoxeterMatrix();
   }
+  getWeylGroupOrder(){
+    return this.rootSystemService.rootSystem.orderOfWeylGroup;
+
+  }
   getBase(){
     return this.rootSystemService.getBase();
   }
@@ -112,7 +116,7 @@ export class ObjectTransformerPanel2DComponent {
   }
   resetTransformations(){
     this.transformService.resetTransformation();
-    
+
   }
   resetAffineTransformation(){
     this.affinePainter.resetReflection();

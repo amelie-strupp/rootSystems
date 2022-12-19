@@ -26,8 +26,9 @@ export class Paint3dService {
     const sphere = new THREE.Mesh( geometry, material );
     sphere.position.set(sphereData.center.x*this.scaleFactor, sphereData.center.y*this.scaleFactor, sphereData.center.z*this.scaleFactor);
     this.sceneManager.addToRootGroup( sphere );
+    return sphere;
   }
-  
+
   drawLine(lineData: Line3D, group: 'ROOT'|'HYPERPLANE'|'WEYL_CHAMBER' = 'ROOT'){
     const directionVector = new Vector3(
       lineData.end.x - lineData.start.x,
@@ -35,7 +36,7 @@ export class Paint3dService {
       lineData.end.z - lineData.start.z,
     )
 
-    const geometry = new THREE.CylinderGeometry( lineData.width*2, lineData.width*2, 
+    const geometry = new THREE.CylinderGeometry( lineData.width*2, lineData.width*2,
       directionVector.length()*this.scaleFactor, 32 );
     const material = new THREE.MeshLambertMaterial( {color: lineData.color} );
     const cylinder = new THREE.Mesh( geometry, material );
@@ -101,7 +102,7 @@ transparent: true});
     const edgePoints = chamber.edgePoints;
     const size = chamber.size;
     while(i < chamber.edgePoints.length-1){
-      
+
       i+=1
       this.drawLine(
         new Line3D({start: chamber.centerPoint, end: edgePoints[i].stretchedBy(100), color: Colors.purple300, width: 0.05})
@@ -124,6 +125,6 @@ transparent: true});
         drawVertices(vertices);
       }
     }
-    
+
   }
 }

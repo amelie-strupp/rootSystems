@@ -1,6 +1,8 @@
 import { RootSystems2D } from "src/app/data/rootSystems";
 import { Matrix3, Vector3 } from "three";
 import Point from "../../maths_objects/2D/Point";
+import MatrixND from "../nD/MatrixND";
+import PointND from "../nD/PointND";
 import { Hyperplane } from "./Hyperplane";
 import { WeylChamber } from "./WeylChamber";
 
@@ -68,14 +70,18 @@ export default class RootSystem2D{
     private _positiveRoots: Array<Root> = [];
     // The minimum angle occuring in this root system
     private _minimumAngle: number;
+    orderOfWeylGroup: number = 0;
+
     coxeterMatrix: Array<number> = [];
     constructor(
         type: RootSystems2D,
+        orderOfWeylGroup: number,
         coxeterMatrix: Array<number>,
         simpleRoots: Array<Root>,
         minimumAngle: number,
         ){
         this.type = type;
+        this.orderOfWeylGroup = orderOfWeylGroup;
         this.coxeterMatrix = coxeterMatrix;
         this._positiveRoots = simpleRoots;
         this._minimumAngle = minimumAngle;
@@ -106,6 +112,41 @@ export default class RootSystem2D{
     }
         return [...this.getBase().map((root) => {return {root: root, hyperplane: root.getHyperplane()}})];
     }
+    getWeightsToHighestWeight(){
+      let weylGroup = [
+        new MatrixND( [[1,0],
+          [0,1]]),
+          new MatrixND( [[ 1,1],
+          [ 0,-1]] ),
+          new MatrixND( [[-1,0],
+          [ 3,1]] ),
+          new MatrixND( [[-1 -1],
+          [ 3,2]] ),
+          new MatrixND( [[ 2,1],
+          [-3,-1]] ),
+          new MatrixND( [[ 2 , 1],
+          [-3,-2]] ),
+          new MatrixND( [[-2 -1],
+          [ 3, 2]] ),
+          new MatrixND( [[-2 -1],
+          [ 3,1]] ),
+          new MatrixND( [[ 1 , 1],
+          [-3,-2]] ),
+          new MatrixND( [[ 1, 0],
+          [-3,-1]] ),
+          new MatrixND( [[-1,-1],
+          [ 0, 1]] ),
+          new MatrixND( [[-1, 0],
+          [ 0,-1]] ),]
+          let highestWeight = new PointND([1,1])
+          let convexHull = weylGroup.map((w)=> highestWeight.multiplyOnLeftWithMatrix(w));
+          console.log(convexHull);
+          let weights: Array<PointND> = [];
+          const rootTraversalAlgorithm = (currentElement: PointND, root: PointND) => {
+            let newElement = currentElement.add(root.getNegative())
+          }
+    }
+
     getHyperplanes(){
         const hyperplanes: Array<Hyperplane> = [];
         for(let root of this._positiveRoots){
@@ -123,6 +164,8 @@ export default class RootSystem2D{
         return hyperplanes;
     }
     getPositiveRoots(){
+      this.getWeightsToHighestWeight();
+
         return this._positiveRoots;
     }
     getAllWeylChambers(){
@@ -150,7 +193,7 @@ export default class RootSystem2D{
     getFundamentalWeylChamber(): WeylChamber{
         const fundamentalWeylChamber = this.getAllWeylChambers().filter((chamber)=>{
             let base = this.getBase();
-            let nonNegativeDotProductToEveryBaseVector = base.every((baseElement) => 
+            let nonNegativeDotProductToEveryBaseVector = base.every((baseElement) =>
             {
                 return baseElement.getVector().dot(chamber.getStartBoundingVector()) >= -0.01}
                 )

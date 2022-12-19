@@ -1,3 +1,4 @@
+import { style } from '@angular/animations';
 import { ThisReceiver } from "@angular/compiler";
 import { Injectable } from "@angular/core";
 import { iif, Subject } from "rxjs";
@@ -128,17 +129,21 @@ export default class RootSystemPainter implements Painter{
             case RootSystems2D.B2:
                 this.paintSquare();
                 break;
-            case RootSystems2D.C2:
-                this.paintSquare();
-                break;
+            // case RootSystems2D.C2:
+            //     this.paintSquare();
+            //     break;
             case RootSystems2D.G2:
                 this.paintHexagon();
                 break;
         }
     }
-    paintVectorEnd(point: Point, color: string, opacity: number = 1){
+    paintVectorEnd(point: Point, color: string, opacity: number = 1, borderColor: string = "transparent"){
         this.painter.paintCircle(
-            new Circle({center: point, color: color, radius: 16}), PaintLayer.layer4).opacity(opacity);
+            new Circle({center: point, color: color, radius: 16}), PaintLayer.layer4).opacity(opacity)
+            .stroke({
+              color: borderColor,
+              width: 3
+            });
     }
     paintVectorLine(startPoint: Point, endPoint: Point, opacity: number = 1, color: Colors = Colors.white){
         const line = new Line({
@@ -154,6 +159,7 @@ export default class RootSystemPainter implements Painter{
         const point = root.getVector();
         let color = Colors.white;
         let lineColor = Colors.white;
+        let borderColor = "transparent";
         let opacity = 1;
         // Only paint a grayed out root system with the affine version
         if(this.showAffineVersion){
@@ -163,13 +169,21 @@ export default class RootSystemPainter implements Painter{
         }
         else if(this.colorMode == RootSystemColorMode.base){
             color = root.isSimple ? Colors.brightRed : Colors.brightGreen;
+            if(this.rootIsHighlighted(root) || this.rootIsHighlighted(root.getNegative())){
+              const rootIndex = this.rootSystem.getPositiveRoots().findIndex((other)=>other.equal(root) || other.equal(root.getNegative()));
+              borderColor = rootSystemColors[this.rootSystem.getType()][rootIndex];
+            }
         }else if(this.colorMode == RootSystemColorMode.positiveRoots){
             color = root.isPositive ? Colors.brightRed : Colors.brightGreen;
+            if(this.rootIsHighlighted(root) || this.rootIsHighlighted(root.getNegative())){
+              const rootIndex = this.rootSystem.getPositiveRoots().findIndex((other)=>other.equal(root) || other.equal(root.getNegative()));
+              borderColor = rootSystemColors[this.rootSystem.getType()][rootIndex];
+            }
         }else{
             if(this.rootIsHighlighted(root) || this.rootIsHighlighted(root.getNegative())){
             const rootIndex = this.rootSystem.getPositiveRoots().findIndex((other)=>other.equal(root) || other.equal(root.getNegative()));
             color = rootSystemColors[this.rootSystem.getType()][rootIndex];
-            } 
+            }
         }
         this.paintVectorLine(new Point(0,0), point, opacity, lineColor);
 
@@ -177,10 +191,10 @@ export default class RootSystemPainter implements Painter{
         // to be transformed
         if(this.transformService.transformationAppliedTo('ROOTS')){
             const transformedPoint = root.getVectorUnderTransformation(this.transformService.currentTranformation);
-            this.paintVectorEnd(transformedPoint, color, opacity);
+            this.paintVectorEnd(transformedPoint, color, opacity, borderColor);
         }
         else{
-            this.paintVectorEnd(root.getVector(), color, opacity);
+            this.paintVectorEnd(root.getVector(), color, opacity, borderColor);
         }
     }
 
@@ -229,7 +243,7 @@ export default class RootSystemPainter implements Painter{
             triangle,
             PaintLayer.layer3
         ).opacity(0.5)
-        
+
     }
     paintSquare(){
         let square = new Polygon({

@@ -20,40 +20,56 @@ export class ProjectionPainterService {
   ) { }
   // Projects a 4D point to 3D space
   // or a 3D Point to 2D space
-  projectPointsOrthogonallyWithNormal(
-    points: Array<PointND>,
-    colors: Array<Colors>,
-    projectionNormal: PointND,
-    endDim: number){
-      let transformedPoints: Array<PointND> = [];
-      let projectionMatrix = new MatrixND([]);
-      if(endDim == 3){
-        projectionMatrix = this.rotateToNormalCube(projectionNormal.normalized());
-      }
-      else{
-        projectionMatrix = this.rotateToZPlane(projectionNormal);
-      }
-      for(let point of points){
-        let projectedPoint = this.projectionService.projectOntoHyperplane(point, projectionNormal);
-        let transformedPoint = projectedPoint.multiplyOnLeftWithMatrix(projectionMatrix);
-        transformedPoints.push(transformedPoint);
-      }
-    this.drawPoints(transformedPoints, colors, endDim);
-  }
+  // projectPointsOrthogonallyWithNormal(
+  //   points: Array<PointND>,
+  //   colors: Array<Colors>,
+  //   projectionNormal: PointND,
+  //   endDim: number){
+  //     let transformedPoints: Array<PointND> = [];
+  //     let projectionMatrix = new MatrixND([]);
+  //     if(endDim == 3){
+  //       projectionMatrix = this.rotateToNormalCube(projectionNormal.normalized());
+  //     }
+  //     else{
+  //       projectionMatrix = this.rotateToZPlane(projectionNormal);
+  //     }
+  //     for(let point of points){
+  //       let projectedPoint = this.projectionService.projectOntoHyperplane(point, projectionNormal);
+  //       let transformedPoint = projectedPoint.multiplyOnLeftWithMatrix(projectionMatrix);
+  //       transformedPoints.push(transformedPoint);
+  //     }
+  //   this.drawPoints(transformedPoints, colors, endDim);
+  // }
   projectPointsOrthogonallyWithMatrix(
     points: Array<PointND>,
     colors: Array<Colors>,
     rotationMatrix: MatrixND,
     endDim: number){
       let projectedPoints: Array<PointND> = [];
+      console.log("Rotate with", rotationMatrix);
+      let normalComponents = new Array(points[0].dim).fill(0);
+      if(endDim == 2){
+        normalComponents[2] = 1;
+      }
+      else{
+        normalComponents[3] = 1;
+      }
+      let normalRotation = new PointND(normalComponents).multiplyOnLeftWithMatrix(rotationMatrix);
+      let projectionRotationMatrix = MatrixND.identity(endDim);
+      console.log("Normal vector", normalRotation);
+      console.log("Normal vector start", normalComponents);
+      projectionRotationMatrix = this.rotateToNormalCube(normalRotation, new PointND(normalComponents));
+      console.log("Normal rotation matrix", projectionRotationMatrix)
+      console.log("Result", normalRotation.multiplyOnLeftWithMatrix(projectionRotationMatrix))
     for(let point of points){
       let projectedPoint = this.projectionService.projectWithMatrix(
         point,
         rotationMatrix,
         endDim
         );
-      projectedPoints.push(projectedPoint);
+      projectedPoints.push(projectedPoint.multiplyOnLeftWithMatrix(rotationMatrix.transpose()));
     }
+    console.log(projectedPoints);
     this.drawPoints(projectedPoints, colors, endDim);
   }
   projectPointsStereographically(
@@ -239,12 +255,12 @@ export class ProjectionPainterService {
   //     i += 1
   //   }
   // }
-  rotateToNormalCube(x: PointND){
+  rotateToNormalCube(y: PointND, x: PointND){
     // https://math.stackexchange.com/questions/598750/finding-the-rotation-matrix-in-n-dimensions
-    let dim = 4;
+    let dim = x.dim;
     x = x.normalized();
     // console.log("x", x);
-    let y = new PointND([0,0,0,1]);
+    y = y.normalized();
     let u = x.normalized();
     let utyu = u.asMatrix().scalarMultiply((u.getTranspose().multiply(y.asMatrix())).components[0][0])
     // console.log("UTYU", utyu);
@@ -256,6 +272,7 @@ export class ProjectionPainterService {
 
     let vvt = v.multiply(v.transpose());
     // console.log("VVT", vvt)
+
 
     let cos = x.dotProduct(y)*1/(x.length()*y.length());
     let sin = Math.sqrt(1-cos*cos);
@@ -278,23 +295,23 @@ export class ProjectionPainterService {
     // console.log("ID", MatrixND.identity(dim));
     let rotation = MatrixND.identity(dim).add(uut.scalarMultiply(-1)).add(vvt.scalarMultiply(-1)).add(secondPart);
     // console.log("Rotation", rotation);
-    return rotation;
+    return rotation.transpose();
   }
-  rotateToZPlane(point: PointND){
-    //https://math.stackexchange.com/questions/180418/calculate-rotation-matrix-to-align-vector-a-to-vector-b-in-3d
-    point = point.normalized();
-    let zPlaneNormalVector = new PointND([0,0,1]);
-    let v = point.crossProduct(zPlaneNormalVector);
-    let c = point.dotProduct(zPlaneNormalVector);
-    let m = new MatrixND([
-      [0, v.get(2), -v.get(1),],
-      [-v.get(2), 0, v.get(0),],
-      [v.get(1), -v.get(0), 0]
-    ])
-    let mSquared = m.multiply(m).scalarMultiply(1/(1+c));
-    let result = MatrixND.identity(3).add(m).add(mSquared);
-    return result;
-  }
+  // rotateToZPlane(point: PointND){
+  //   //https://math.stackexchange.com/questions/180418/calculate-rotation-matrix-to-align-vector-a-to-vector-b-in-3d
+  //   point = point.normalized();
+  //   let zPlaneNormalVector = new PointND([0,0,1]);
+  //   let v = point.crossProduct(zPlaneNormalVector);
+  //   let c = point.dotProduct(zPlaneNormalVector);
+  //   let m = new MatrixND([
+  //     [0, v.get(2), -v.get(1),],
+  //     [-v.get(2), 0, v.get(0),],
+  //     [v.get(1), -v.get(0), 0]
+  //   ])
+  //   let mSquared = m.multiply(m).scalarMultiply(1/(1+c));
+  //   let result = MatrixND.identity(3).add(m).add(mSquared);
+  //   return result;
+  // }
 
   // rotateToZPlane(point: Point3D){
   //   let v = new THREE.Vector3(point.x, point.y, point.z);

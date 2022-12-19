@@ -6,6 +6,7 @@ import { Camera, DirectionalLightHelper, Matrix4, PerspectiveCamera, Scene, Vect
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 
 @Injectable({
@@ -20,6 +21,8 @@ export class SceneManagerService {
   composer!: EffectComposer;
   orbitControls!: OrbitControls;
   rootGroup: THREE.Group = new THREE.Group();
+  highlightedRootGroup: THREE.Group = new THREE.Group();
+
   hyperplaneGroup: THREE.Group = new THREE.Group();
   weylChamberGroup: THREE.Group = new THREE.Group();
 
@@ -37,7 +40,7 @@ export class SceneManagerService {
 
 
   constructor() {
-    
+
   }
 
   initializeScene(canvasReference: HTMLElement){
@@ -48,7 +51,9 @@ export class SceneManagerService {
 
     this.renderer.setSize( canvasReference.clientWidth, canvasReference.clientHeight );
     this.rendererDom = this.renderer.domElement
+
     canvasReference.appendChild( this.rendererDom);
+
     this.camera.position.set( -20, 5, 0 );
     if(this.canvasReference.clientWidth < 500){
       this.camera.position.set( -25, 5, 0 );
@@ -63,7 +68,7 @@ export class SceneManagerService {
 
     this.addComposer();
     this.displayScene();
-    this.scene.add( this.rootGroup );
+    this.scene.add(this.rootGroup);
     this.scene.add(this.weylChamberGroup);
     this.scene.add(this.hyperplaneGroup)
     this.reactToMainSceneOrbitChange();
@@ -91,7 +96,7 @@ export class SceneManagerService {
   }
   rerender(){
     this.renderer.render(this.scene, this.camera);
-    this.composer.render();
+    // this.composer.render();
   }
   addToRootGroup(object: any){
     this.rootGroup.add( object );
@@ -140,23 +145,23 @@ export class SceneManagerService {
       return
     }
     function clearThree(obj: any){
-      while(obj.children.length > 0){ 
+      while(obj.children.length > 0){
         clearThree(obj.children[0]);
         obj.remove(obj.children[0]);
       }
       if(obj.geometry) obj.geometry.dispose();
-    
-      if(obj.material){ 
+
+      if(obj.material){
         //in case of map, bumpMap, normalMap, envMap ...
         Object.keys(obj.material).forEach(prop => {
           if(!obj.material[prop])
             return;
-          if(obj.material[prop] !== null && typeof obj.material[prop].dispose === 'function')                                  
-            obj.material[prop].dispose();                                                      
+          if(obj.material[prop] !== null && typeof obj.material[prop].dispose === 'function')
+            obj.material[prop].dispose();
         })
         obj.material.dispose();
       }
-    }   
+    }
     clearThree(this.scene);
     clearThree(this.sceneMiniView);
   }
@@ -198,9 +203,10 @@ export class SceneManagerService {
   }
   displayScene(){
     requestAnimationFrame( () => this.displayScene() );
-	  // this.renderer.render( this.scene, this.camera );
-    this.composer.render();
+	  this.renderer.render( this.scene, this.camera );
+    // this.composer.render();
   }
+
   adjustBackgroundColor(color: string){
     this.renderer.setClearColor( color);
   }
@@ -220,16 +226,15 @@ export class SceneManagerService {
     this.cameraMiniView.lookAt( new Vector3(0,0,0) );
   }
   addComposer(){
-    const renderScene = new RenderPass(this.scene, this.camera);
-    this.composer = new EffectComposer(this.renderer);
-    this.composer.addPass(renderScene);
+    // const renderScene = new RenderPass(this.scene, this.camera);
+    // this.composer = new EffectComposer(this.renderer);
+    // this.composer.addPass(renderScene);
     // const bloomPass = new UnrealBloomPass(new Vector2(this.canvasReference.clientWidth, this.canvasReference.clientHeight),
-    //   0.08,
+    //   0.5,
     //   0.2,
     //   0.1
     // );
     // this.composer.addPass(bloomPass);
-
   }
   addLight(){
     const ambientLight = new THREE.AmbientLight( 0xffffff, 0.8);

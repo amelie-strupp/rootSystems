@@ -24,7 +24,7 @@ import { RootSystemTransformer3DService } from 'src/app/services/3D/root-system-
       transition('true <=> false', [
         animate('125ms ease-in-out')
       ]),
-      
+
     ]),
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -35,7 +35,7 @@ export class ObjectTransformerPanelComponent {
   rootsToAppliedMirrorings: Array<Root3D> = [];
   isExpanded: boolean = true;
   moreInformationShown: boolean = false;
-  
+
   constructor(private rootSystemService: RootSystem3DService,
     private cd: ChangeDetectorRef, private transformService: RootSystemTransformer3DService){
     this.rootSystemService.rootSystemChangeEvent.subscribe(() => {
@@ -87,6 +87,9 @@ export class ObjectTransformerPanelComponent {
   }
   getCoxeterMatrix(){
     return this.rootSystemService.rootSystem.coxeterMatrix;
+  }
+  getWeylGroupOrder(){
+    return this.rootSystemService.rootSystem.orderOfWeylGroup;
   }
   getLength(){
     const reflectionRoots = this.transformService.appliedMirrorings;

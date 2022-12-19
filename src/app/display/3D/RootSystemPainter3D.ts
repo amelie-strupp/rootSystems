@@ -35,7 +35,7 @@ export class RootSystemPainter3D implements Painter3D {
         this.clearRootHighlight();
         this.clearHyperplaneVisibility();
       }
-      
+
       this.repaint();
     });
   }
@@ -282,7 +282,7 @@ export class RootSystemPainter3D implements Painter3D {
           color: Colors.white,
         })
       );
-    
+
   }
   paintWeylChambers() {
     const fundamentalWeylChamber = this.rootSystem.getFundamentalWeylChamber();

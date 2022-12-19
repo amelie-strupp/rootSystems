@@ -42,14 +42,14 @@ export class ProjectionSettingsPanelComponent {
   selectedRootSystem: string = "A3";
   possibleStartDimensions = [3,4,5,6]
   projectionType: ProjectionType = ProjectionType.orthogonal;
-  
+
   rootSystems: Array<
     {dim: number,
     systems: Array<
       {text: string, ref: Array<PointND>, colors: Array<Colors>}
     >}
   > = [
-    {dim: 3, 
+    {dim: 3,
       systems: [
       {text: "A3", ref: rootSystems3D.A3.getPositiveRoots().map((r)=>{
         let v = r.getVector();
@@ -66,7 +66,7 @@ export class ProjectionSettingsPanelComponent {
       }), colors: rootSystemColors.C3},
       ]
     },
-    {dim: 4, 
+    {dim: 4,
       systems: [
       {text: "A4", ref: rootSystemsND.A4, colors: rootSystemColors.A4},
       {text: "B4", ref: rootSystemsND.B4, colors: rootSystemColors.B4},
@@ -74,21 +74,21 @@ export class ProjectionSettingsPanelComponent {
       {text: "D4", ref: rootSystemsND.D4, colors: rootSystemColors.D4},
       {text: "F4", ref: rootSystemsND.F4, colors: rootSystemColors.F4},
     ]},
-    {dim: 5, 
+    {dim: 5,
       systems: [
       {text: "A5", ref: rootSystemsND.A5, colors: rootSystemColors.A5},
       {text: "B5", ref: rootSystemsND.B5, colors: rootSystemColors.B5},
       {text: "C5", ref: rootSystemsND.C5, colors: rootSystemColors.B5},
       {text: "D5", ref: rootSystemsND.D5, colors: rootSystemColors.B5},
   ]},
-    {dim: 6, 
+    {dim: 6,
       systems: [
       {text: "A6", ref: rootSystemsND.A6, colors: rootSystemColors.B5},
       {text: "B6", ref: rootSystemsND.B6, colors: rootSystemColors.B5},
       {text: "C6", ref: rootSystemsND.C6, colors: rootSystemColors.B5},
       {text: "D6", ref: rootSystemsND.D6, colors: rootSystemColors.B5},
       {text: "E6", ref: rootSystemsND.E6, colors: rootSystemColors.B5}
-  ]}
+    ]}
   ]
   constructor(private projectionManager: ProjectionManagerService,
     private canvasService: ProjectionCanvasService){
@@ -110,7 +110,7 @@ export class ProjectionSettingsPanelComponent {
     this.projectionEnd = this.projectionManager.endDimension;
     this.projectionStart = this.projectionManager.startDimension;
     this.selectedRootSystem = this.projectionManager.rootSystemIdentifier;
-    
+
   }
   toggleExpand(){
     this.isExpanded = !this.isExpanded;
@@ -144,7 +144,11 @@ export class ProjectionSettingsPanelComponent {
     this.paintRootSystem();
   }
   paintRootSystem(){
+    // if(this.selectedRootSystem == "E6"){
+    //   this.projectionManager.setStartDimension(8);
+    // }
     this.projectionManager.paintProjection();
+    // this.projectionManager.setStartDimension(6);
   }
   // switchProjectionType(start: number, end: number){
   //   this.projectionStart = start;
@@ -221,7 +225,7 @@ export class ProjectionSettingsPanelComponent {
   //       break;
   //   }
   //   this.projectionManager.removePoints();
-    
+
   //   this.projectionManager.setNDRootsAndColors(points, [...colors, ...colors]);
   //   if(this.projectionEnd == 2){
   //         this.projectionManager.projectFrom5DTo2D();
@@ -250,7 +254,7 @@ export class ProjectionSettingsPanelComponent {
   //       break;
   //   }
   //   this.projectionManager.removePoints();
-    
+
   //   this.projectionManager.setNDRootsAndColors(points, [...colors, ...colors]);
   //   if(this.projectionEnd == 2){
   //         // this.projectionManager.projectFrom6DTo3D();

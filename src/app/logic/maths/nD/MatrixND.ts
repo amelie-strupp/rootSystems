@@ -1,3 +1,5 @@
+import * as math from "mathjs";
+
 export default class MatrixND{
     components: Array<Array<number>> = [];
     constructor(components: Array<Array<number>>){
@@ -18,6 +20,9 @@ export default class MatrixND{
             components.push(column);
         }
         return new MatrixND(components)
+    }
+    invert(){
+      return new MatrixND(math.inv(this.components));
     }
     multiply(other: MatrixND) {
         let a = this.components
@@ -75,7 +80,7 @@ export default class MatrixND{
         for(let i = 0; i < numberOfColumns; i++){
             newMatrixComponents.push([]);
         }
-        
+
         for(let i = 0; i < numberOfColumns; i++){
             for(let j = 0; j < numberOfRows; j++){
                 newMatrixComponents[i].push(this.components[j][i])
