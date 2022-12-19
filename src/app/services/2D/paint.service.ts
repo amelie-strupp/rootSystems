@@ -36,7 +36,7 @@ export class PaintService {
     const paintCoordinates = this.coord.convertToPaintCoordinates(circle.center);
     return this.canvas.getPaintLayer(layer)
     .circle(circle.radius*2)
-    .move(paintCoordinates.x- circle.radius, paintCoordinates.y-circle.radius)
+    .move(paintCoordinates.x-circle.radius, paintCoordinates.y-circle.radius)
     .attr({ fill: circle.color })
   }
   paintPolygon(polygon: Polygon, layer: PaintLayer = PaintLayer.layer2){

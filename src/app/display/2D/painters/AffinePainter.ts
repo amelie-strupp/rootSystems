@@ -70,7 +70,7 @@ export default class AffinePainter implements Painter{
             let reflectedPoint = point;
             for(let h of this.appliedReflections){
                 reflectedPoint = h.hyperplane.reflect(reflectedPoint);
-                
+
             }
             reflectedPoints.push(reflectedPoint);
         }
@@ -119,7 +119,7 @@ export default class AffinePainter implements Painter{
             })
             this.painter.paintLine(line, PaintLayer.layer4).transform({rotate: -startAngleInDegree});
 
-            
+
         }
     }
 }

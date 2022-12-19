@@ -37,6 +37,7 @@ export class ObjectSelector2DComponent implements OnInit {
   roots: Array<Root>;
   rootListForDisplay: Array<Array<Root>> = [];
   isAffineRootSystem: boolean = false;
+  showDominantWeights: boolean = false;
   constructor(
     private rootSystemService: RootSystemService,
     private rootSystemPainter: RootSystemPainter,
@@ -45,6 +46,7 @@ export class ObjectSelector2DComponent implements OnInit {
     this.rootSystemService.repaintEvent.subscribe(() => {
       this.rootSystemColors = rootSystemColors[rootSystemService.rootSystem.type];
       this.roots = this.rootSystemService.getPositiveRoots();
+      this.showDominantWeights = this.rootSystemPainter.showDominantWeights;
       this.cd.detectChanges();
     })
       this.rootSystemColors = rootSystemColors[rootSystemService.rootSystem.type];
@@ -72,6 +74,10 @@ export class ObjectSelector2DComponent implements OnInit {
     }else{
       this.rootSystemPainter.highlightRoot(root);
     }
+  }
+  toggleDominantWeights(){
+    this.showDominantWeights = !this.showDominantWeights;
+    this.rootSystemPainter.setDisplayStateOfDominantWeights(this.showDominantWeights)
   }
   hyperplaneToRootHighlighted(root: Root){
     return this.rootSystemPainter.hyperplaneToRootHighlighted(root);

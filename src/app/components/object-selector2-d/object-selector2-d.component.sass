@@ -3,7 +3,7 @@
         max-width: calc(100% - 32px) !important
         width: 100% !important
         left: 16px  !important
-        bottom: 8px !important  
+        bottom: 8px !important
 #object-selector-panel
     min-width: 310px
     position: absolute
@@ -136,3 +136,25 @@
             justify-self: center
         .hyperplane-toggle
             justify-self: center
+    #weight-toggle-element
+      display: grid
+      grid-template-columns: max-content 1fr
+      align-items: flex-start
+      cursor: pointer
+      #weight-text-container
+        max-width: 250px
+        padding-top: 8px
+        p
+          font-size: 14px
+          color: var(--text-dark)
+          font-weight: 600
+          margin: 0
+          padding: 0
+        #weight-hint
+          font-size: 12px
+          color: var(--text-light)
+          font-weight: 600
+          margin: 0
+          line-height: 0.7em
+          padding: 0
+          font-style: italic

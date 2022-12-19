@@ -29,7 +29,7 @@ export default class RootSystemPainter implements Painter{
     repaintEvent: Subject<void> = new Subject();
     highlightedRoots: Array<Root> = [];
     highlightedHyperplanes: Array<Root> = [];
-
+    showDominantWeights: boolean = false;
     constructor(
         private canvas: CanvasService,
         private rootSystem: RootSystemService,
@@ -60,6 +60,10 @@ export default class RootSystemPainter implements Painter{
         if(this.showAffineVersion){
             this.affinePainter.paint(PaintLayer.layer3)
         }
+    }
+    setDisplayStateOfDominantWeights(display: boolean){
+      this.showDominantWeights = display;
+      this.repaintEvent.next();
     }
     switchColorMode(colorMode: RootSystemColorMode){
         this.colorMode = colorMode;
@@ -211,6 +215,8 @@ export default class RootSystemPainter implements Painter{
             plane = root.getHyperplane()
             .withTransformation(this.transformService.currentTranformation);
         }
+        console.log(root,plane.getDirection())
+
         let startAngle = plane.angle;
         const startAngleInDegree = (startAngle/(Math.PI*2))*360
         const maxLength = this.coord.getCrossLength()/2;

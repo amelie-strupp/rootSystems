@@ -4,6 +4,7 @@ import { rootSystems } from 'src/app/data/rootSystems';
 import AffinePainter from 'src/app/display/2D/painters/AffinePainter';
 import GridPainter from 'src/app/display/2D/painters/GridPainter';
 import RootSystemPainter from 'src/app/display/2D/painters/RootSystemPainter';
+import WeightPainter from 'src/app/display/2D/painters/WeightPainter';
 import WeylChamberPainter from 'src/app/display/2D/painters/WeylChamberPainter';
 import { RootSystemService } from 'src/app/logic/maths/2D/root-system.service';
 import RootSystem2D, { Root } from 'src/app/logic/maths/2D/RootSystem';
@@ -36,6 +37,7 @@ export class RootSystems2DComponent implements OnInit {
     private gridPainter: GridPainter,
     private rootSystemPainter: RootSystemPainter,
     private weylChamberPainter: WeylChamberPainter,
+    private weightPainter: WeightPainter,
     private rootSystemService: RootSystemService,
     private transformService: RootSystemTransformer2DService
     ) {
@@ -84,6 +86,9 @@ export class RootSystems2DComponent implements OnInit {
       this.transformService.transformationChanged.subscribe(() => {
         this.repaintObjects();
       })
+      this.weightPainter.repaintEvent.subscribe(() => {
+        this.repaintObjects();
+      })
 
   }
 
@@ -105,6 +110,8 @@ export class RootSystems2DComponent implements OnInit {
     if(!this.rootSystemPainter.showAffineVersion)
       this.weylChamberPainter.paint(PaintLayer.layer1);
     this.rootSystemPainter.paint(PaintLayer.layer4);
+    if(this.rootSystemPainter.showDominantWeights)
+      this.weightPainter.paint(PaintLayer.layer4);
   }
   clearCanvas(){
     if(this.paintSvgContainer != undefined)

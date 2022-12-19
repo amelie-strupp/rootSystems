@@ -1,11 +1,14 @@
 <div id="object-selector-panel">
-    <button id="expand-button">
-      <mat-icon [fontIcon]="isExpanded ? 'expand_more' : 'expand_less'" (click)="toggleExpand()"></mat-icon>
-    </button>
-    <h3 id="heading">Objects & Selection</h3>
-    <div id="inner-content" [@expanded]="isExpanded">
-      <div class="divider"></div>
-<!--
+  <button id="expand-button">
+    <mat-icon
+      [fontIcon]="isExpanded ? 'expand_more' : 'expand_less'"
+      (click)="toggleExpand()"
+    ></mat-icon>
+  </button>
+  <h3 id="heading">Objects & Selection</h3>
+  <div id="inner-content" [@expanded]="isExpanded">
+    <div class="divider"></div>
+    <!--
     <h4 class="subsection-heading">Type</h4>
     <div>
       <mat-radio-group id="version-switch-container">
@@ -29,88 +32,107 @@
       </mat-radio-group>
     </div> -->
     <div *ngIf="!isAffineRootSystem">
-    <!-- <div class="divider"></div> -->
+      <!-- <div class="divider"></div> -->
 
-    <h4 class="subsection-heading">Highlights</h4>
-    <mat-radio-group id="type-selection-container">
-      <div class="switch-mode-item" (click)="switchHighlightMode(RootSystemColorMode.base)">
-      <mat-radio-button
-      [checked]="getCurrentColorMode() == RootSystemColorMode.base"
-
-      [value]="RootSystemColorMode.base">
-      </mat-radio-button>
-        <p class="switch-mode-text">Base</p>
-      </div>
-      <div class="switch-mode-item" (click)="switchHighlightMode(RootSystemColorMode.positiveRoots)">
+      <h4 class="subsection-heading">Highlights</h4>
+      <mat-radio-group id="type-selection-container">
+        <div
+          class="switch-mode-item"
+          (click)="switchHighlightMode(RootSystemColorMode.base)"
+        >
           <mat-radio-button
-          [checked]="getCurrentColorMode() == RootSystemColorMode.positiveRoots"
+            [checked]="getCurrentColorMode() == RootSystemColorMode.base"
+            [value]="RootSystemColorMode.base"
           >
-        </mat-radio-button>
-        <p class="switch-mode-text">Positive roots</p>
-      </div>
-      <div class="switch-mode-item" (click)="switchHighlightMode(RootSystemColorMode.highlight)">
-          <mat-radio-button
-          [checked]="getCurrentColorMode() == RootSystemColorMode.highlight"
-          >
-        </mat-radio-button>
-        <p class="switch-mode-text">Custom Highlight</p>
-      </div>
-    </mat-radio-group>
-    <div class="divider"></div>
-    <h4 class="subsection-heading">Highlight specific object</h4>
-    <div id="highlight-table">
-      <div
-        class="highlight-table-column"
-      >
-        <div class="highlight-table-header">
-          <p></p>
-          <p>Root (+,-)</p>
-          <p>Hyperplanes</p>
+          </mat-radio-button>
+          <p class="switch-mode-text">Base</p>
         </div>
-        <div class="object-highlight-item">
-          <div class="root-vector">
+        <div
+          class="switch-mode-item"
+          (click)="switchHighlightMode(RootSystemColorMode.positiveRoots)"
+        >
+          <mat-radio-button
+            [checked]="
+              getCurrentColorMode() == RootSystemColorMode.positiveRoots
+            "
+          >
+          </mat-radio-button>
+          <p class="switch-mode-text">Positive roots</p>
+        </div>
+        <div
+          class="switch-mode-item"
+          (click)="switchHighlightMode(RootSystemColorMode.highlight)"
+        >
+          <mat-radio-button
+            [checked]="getCurrentColorMode() == RootSystemColorMode.highlight"
+          >
+          </mat-radio-button>
+          <p class="switch-mode-text">Custom Highlight</p>
+        </div>
+      </mat-radio-group>
+      <div class="divider"></div>
+      <h4 class="subsection-heading">Highlight specific object</h4>
+      <div id="highlight-table">
+        <div class="highlight-table-column">
+          <div class="highlight-table-header">
+            <p></p>
+            <p>Root (+,-)</p>
+            <p>Hyperplanes</p>
+          </div>
+          <div class="object-highlight-item">
+            <div class="root-vector">
               <p class="root-vector-text">All</p>
-              <div
-                class="root-vector-background"
-              ></div>
+              <div class="root-vector-background"></div>
             </div>
             <div class="highlight-toggle">
               <mat-checkbox
-              [checked]="allRootsHighlighted()"
-              (click)="toggleAllRootsHighlighted()"></mat-checkbox>
+                [checked]="allRootsHighlighted()"
+                (click)="toggleAllRootsHighlighted()"
+              ></mat-checkbox>
             </div>
 
             <div class="hyperplane-toggle">
               <mat-checkbox
-              [checked]="allHyperplanesHighlighted()"
-              (click)="toggleAllRootsHyperplanes()"></mat-checkbox>
+                [checked]="allHyperplanesHighlighted()"
+                (click)="toggleAllRootsHyperplanes()"
+              ></mat-checkbox>
             </div>
           </div>
 
-        <div
-          class="object-highlight-item"
-          *ngFor="let root of roots"
-        >
-          <div class="root-vector">
-            <p class="root-vector-text">{{ root.name }}</p>
-            <div
-              class="root-vector-background"
-              [style.background-color]="getColor(root)"
-            ></div>
-          </div>
-          <div class="highlight-toggle">
-            <mat-checkbox
-            [checked]="rootHighlighted(root)"
-            (click)="toggleRootHighlight(root)"></mat-checkbox>
-          </div>
+          <div class="object-highlight-item" *ngFor="let root of roots">
+            <div class="root-vector">
+              <p class="root-vector-text">{{ root.name }}</p>
+              <div
+                class="root-vector-background"
+                [style.background-color]="getColor(root)"
+              ></div>
+            </div>
+            <div class="highlight-toggle">
+              <mat-checkbox
+                [checked]="rootHighlighted(root)"
+                (click)="toggleRootHighlight(root)"
+              ></mat-checkbox>
+            </div>
 
-          <div class="hyperplane-toggle">
-            <mat-checkbox
-            [checked]="hyperplaneToRootHighlighted(root)"
-            (click)="toggleHyperplane(root)"></mat-checkbox>
+            <div class="hyperplane-toggle">
+              <mat-checkbox
+                [checked]="hyperplaneToRootHighlighted(root)"
+                (click)="toggleHyperplane(root)"
+              ></mat-checkbox>
+            </div>
           </div>
         </div>
       </div>
-    </div></div>
+      <div class="divider"></div>
+      <h4 class="subsection-heading">Show Weights</h4>
+      <div id="weight-toggle-element" (click)="toggleDominantWeights()">
+        <mat-checkbox
+                [checked]="showDominantWeights"
+          ></mat-checkbox>
+        <div id="weight-text-container">
+        <p>Show integral weights</p>
+        <small id="weight-hint">Hint: Select one of the dominant integral elements to highlight the weights occuring in the representation with the selected weight as the highest weight</small>
+      </div></div>
+    </div>
   </div>
-  </div>
+</div>

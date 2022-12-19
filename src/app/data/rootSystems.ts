@@ -1,5 +1,6 @@
-import { Point } from '@svgdotjs/svg.js';
 import RootSystem2D, { Root } from '../logic/maths/2D/RootSystem';
+import MatrixND from '../logic/maths/nD/MatrixND';
+import Point from '../logic/maths_objects/2D/Point';
 
 export enum RootSystems2D{
     A1 = "A1",
@@ -13,8 +14,19 @@ export enum RootSystems2D{
 
 const A1 = new RootSystem2D(
     RootSystems2D.A1,
+
     2,
+    [
+    new MatrixND([
+      [1, 0],
+      [0, 1]]),
+      new MatrixND([
+        [-1, 0],
+        [0, 1]]),
+    ],
+    [new Point(1,0)],
     [1],
+
   [
     new Root({
       angle: 0,
@@ -61,6 +73,71 @@ const A1 = new RootSystem2D(
 const A2 = new RootSystem2D(
     RootSystems2D.A2,
     6,
+    [new MatrixND([
+      [1, 0],
+      [0, 1],
+    ]),
+    new MatrixND([
+      [-1, 0],
+      [0, 1],
+    ]),
+    new MatrixND([
+      [0.5,  0.86602539 ],
+      [0.86602539, -0.5],
+    ]),
+    new MatrixND([
+      [ 0.5 ,  -0.8660254],
+      [-0.8660254,-0.5],
+    ]),
+    new MatrixND([
+      [ 0.5 ,  -0.8660254  	],
+      [-0.8660254,-0.5],
+    ]).multiply(new MatrixND([
+      [0.5,  0.86602539 ],
+      [0.86602539, -0.5],
+    ])),
+    new MatrixND([
+      [-1, 0],
+      [0, 1],
+    ]).multiply(new MatrixND([
+      [0.5,  0.86602539 ],
+      [0.86602539, -0.5],
+    ])),
+  ],
+  // [new MatrixND([
+  //       [1, 0],
+  //       [0, 1],
+  //     ]),
+  //     new MatrixND([
+  //       [1, 0],
+  //       [0, -1],
+  //     ]),
+  //     new MatrixND([
+  //       [-0.5, 0.86602539],
+  //       [ 0.86602539 , 0.5],
+  //     ]),
+  //     new MatrixND([
+  //       [-0.5, -0.86602539],
+  //       [  -0.8660254  , 0.5],
+  //     ]),
+  //     new MatrixND([
+  //       [1, 0],
+  //       [0, -1],
+  //     ]).multiply(new MatrixND([
+  //       [-0.5, 0.86602539],
+  //       [ 0.86602539 , 0.5],
+  //     ])),
+  //     new MatrixND([
+  //       [-0.5, -0.86602539],
+  //       [  -0.8660254  , 0.5],
+  //     ]).multiply(
+  //     new MatrixND([
+  //       [-0.5, 0.86602539],
+  //       [ 0.86602539 , 0.5],
+  //     ]),)
+  //   ],
+  [new Point(0, 0.58), new Point(-0.8660254037844388, -0.4999999999999997).normalized().multiply(0.575)],
+
     [1,3,3,1],
   [
     new Root({
@@ -86,6 +163,41 @@ const A2 = new RootSystem2D(
 const B2 = new RootSystem2D(
     RootSystems2D.B2,
     8,
+    [new MatrixND([
+      [1, 0],
+      [0, 1],
+    ]),
+    new MatrixND([
+      [0, -1],
+      [-1, 0],
+    ]),
+    new MatrixND([
+      [1, 0],
+      [0, -1],
+    ]),
+    new MatrixND([
+      [0, 1],
+      [-1, 0],
+    ]),
+    new MatrixND([
+      [0, 1],
+      [1, 0],
+    ]),
+    new MatrixND([
+      [-1, 0],
+      [0, -1],
+    ]),
+    new MatrixND([
+      [0, -1],
+      [1, 0],
+    ]),
+    new MatrixND([
+      [-1, 0],
+      [0, 1],
+    ]),
+  ],
+  [new Point(1, 0), new Point(1/2, 1/2)],
+
     [1,4,4,1],
     [
       new Root({
@@ -144,6 +256,16 @@ const B2 = new RootSystem2D(
 const G2 = new RootSystem2D(
     RootSystems2D.G2,
     12,
+    [
+      new MatrixND([[-1,0], [0,1]]),
+      new MatrixND([[-0.5, -0.8660254], [ -0.8660254 ,0.5]]),
+      new MatrixND([[0.5, -0.8660254], [ -0.8660254 ,-0.5]]),
+      new MatrixND([[1, 0], [0,-1]]),
+      new MatrixND([[0.5, 0.8660254], [ 0.8660254 ,-0.5]]),
+      new MatrixND([[-0.5, 0.8660254], [ 0.8660254 ,0.5]]),
+
+    ],
+    [new Point(0, 989/571), new Point(0.5, 0.8660254)],
     [1,6,6,1],
     [
     new Root({

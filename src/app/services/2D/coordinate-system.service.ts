@@ -9,7 +9,6 @@ export class CoordinateSystemService {
   topOffset: number = -100;
   constructor(private c: CanvasService) { }
   getCenterPoint(){
-    
     return new Point(this.c.width/2, this.c.height/2 + this.c.canvas.offsetTop);
   }
   getCoordinateSystemDimensions(){
@@ -18,7 +17,7 @@ export class CoordinateSystemService {
       right: this.convertToMathsCoordinates(new Point(this.c.width, this.c.height/2)).x,
       top: -this.convertToMathsCoordinates(new Point(this.c.width/2, 0)).y,
       bottom: this.convertToMathsCoordinates(new Point(this.c.width/2, this.c.height)).y
-    } 
+    }
     return {
       left: distances.left,
       right: distances.right,
